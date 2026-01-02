@@ -121,6 +121,75 @@
     font-style: italic;
     color: #e2e8f0;
 }
+        /* पूरे ग्रिड का डिजाइन */
+.course-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px 10px;
+}
+
+/* हर एक कोर्स कार्ड का डिजाइन */
+.course-card {
+    background: linear-gradient(145deg, #1e293b, #0f172a); /* गहरा प्रीमियम रंग */
+    border: 1px solid rgba(255, 215, 0, 0.2); /* हल्का गोल्डन बॉर्डर */
+    border-radius: 15px;
+    padding: 25px 20px;
+    width: 280px;
+    text-align: center;
+    transition: all 0.3s ease; /* धीरे से हिलने के लिए */
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* जब कोई माउस ले जाए या टच करे */
+.course-card:hover {
+    transform: translateY(-10px); /* थोड़ा ऊपर उठेगा */
+    border-color: var(--gold); /* बॉर्डर गोल्डन हो जाएगा */
+    box-shadow: 0 15px 30px rgba(255, 215, 0, 0.1);
+}
+
+/* कार्ड के अंदर की हेडिंग */
+.course-card h3 {
+    color: var(--gold);
+    margin: 15px 0 10px 0;
+    font-size: 1.5rem;
+}
+
+/* बटन का डिजाइन */
+.view-btn {
+    display: inline-block;
+    margin-top: 15px;
+    background: var(--gold);
+    color: #000;
+    padding: 10px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.view-btn:hover {
+    background: #fff; /* टच करने पर बटन सफेद होगा */
+    transform: scale(1.05);
+}
+
+/* बैच (Badge) जो कोने में आता है */
+.badge {
+    background: #ff4757; /* लाल रंग का बैच */
+    color: white;
+    font-size: 10px;
+    padding: 4px 12px;
+    border-radius: 50px;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%); /* ऊपर सेंटर में दिखेगा */
+    text-transform: uppercase;
+    font-weight: bold;
+}
         /* --- 6. हेडिंग्स (बीच में लाने के लिए) --- */
         .section-title {
             text-align: center;
@@ -312,6 +381,7 @@
 </body>
 
 </html>
+
 
 
 
