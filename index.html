@@ -503,22 +503,26 @@
                 <p>Most Expected Questions class 10/12 </p>
                 <a href="#class-seletion" class="btn btn-pdf">⬇ Download PDF</a>
             </div>
-            <div id="class-selection" style="margin: 50px auto; max-width: 800px; padding: 30px; background: #fff; border: 2px solid #eee; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
-    <h2 style="color: #333; margin-bottom: 25px;">कक्षा का चयन करें (Select Class)</h2>
+            <div id="class-selection" style="display: none; margin: 30px auto; max-width: 700px; padding: 25px; background: #ffffff; border: 2px solid #007bff; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1); animation: fadeIn 0.5s;">
+    <h2 style="color: #333; font-size: 22px; margin-bottom: 20px;">कक्षा का चयन करें</h2>
     
-    <div style="display: flex; justify-content: center; gap: 20px;">
-        
-        <a href="यहाँ_10th_का_ड्राइव_लिंक" target="_blank" style="flex: 1; text-decoration: none; background: #f9f9f9; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px; color: #4CAF50; font-weight: bold;">
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <a href="यहाँ_10th_लिंक" target="_blank" style="text-decoration: none; flex: 1; min-width: 140px; background: #f0fff0; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px; color: #2e7d32; font-weight: bold;">
             <div style="font-size: 30px;">📖</div>
-            Class 10th PDF
+            Class 10th
         </a>
 
-        <a href="यहाँ_12th_का_ड्राइव_लिंक" target="_blank" style="flex: 1; text-decoration: none; background: #f9f9f9; padding: 20px; border: 2px solid #2196F3; border-radius: 10px; color: #2196F3; font-weight: bold;">
+        <a href="यहाँ_12th_लिंक" target="_blank" style="text-decoration: none; flex: 1; min-width: 140px; background: #f0f7ff; padding: 20px; border: 2px solid #2196F3; border-radius: 10px; color: #1565c0; font-weight: bold;">
             <div style="font-size: 30px;">📘</div>
-            Class 12th PDF
+            Class 12th
         </a>
-        
     </div>
+    <button onclick="document.getElementById('class-selection').style.display='none'" style="margin-top: 15px; border: none; background: none; color: red; cursor: pointer; text-decoration: underline;">बंद करें (Close)</button>
+</div>
+
+<style>
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
 </div>
             <div class="section-title">📝 PREVIOUS YEAR BOARD PAPERS (2014-2024)</div>
 
@@ -598,6 +602,7 @@
 </body>
 
 </html>
+
 
 
 
