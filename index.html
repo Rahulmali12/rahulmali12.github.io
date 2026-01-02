@@ -129,7 +129,33 @@
     justify-content: center;
     padding: 20px 10px;
 }
+/* कोर्सेस की लिस्ट (Bullet Points) का स्टाइल */
+.course-features {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    text-align: left;
+}
 
+.course-features li {
+    color: #cbd5e1;
+    font-size: 14px;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+/* बटन को और चमकाने के लिए */
+.view-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
 /* हर एक कोर्स कार्ड का डिजाइन */
 .course-card {
     background: linear-gradient(145deg, #1e293b, #0f172a); /* गहरा प्रीमियम रंग */
@@ -334,7 +360,30 @@
     </div>
 </div>
         </div>
+<div class="section-title">📚 OUR PREMIUM COURSES</div>
+<div class="course-grid">
+    <div class="course-card">
+        <span class="badge">Board 2026</span>
+        <h3>Class 10th</h3>
+        <ul class="course-features">
+            <li>✔ पूरी Maths Course</li>
+            <li>✔ Notes + PYQ</li>
+            <li>✔ Practice Sets</li>
+        </ul>
+        <a href="#" class="view-btn">Coming Soon</a>
+    </div>
 
+    <div class="course-card airforce">
+        <span class="badge">Defence</span>
+        <h3>Airforce (X & Y)</h3>
+        <ul class="course-features">
+            <li>✔ Selection-Oriented Maths</li>
+            <li>✔ Short-Tricks + Concepts</li>
+            <li>✔ Mock Rank System</li>
+        </ul>
+        <a href="#" class="view-btn">Coming Soon</a>
+    </div>
+</div>
         <div id="notes" class="section-title">📚 PDF Notes</div>
         <div class="grid">
             <div class="card">
@@ -381,6 +430,7 @@
 </body>
 
 </html>
+
 
 
 
