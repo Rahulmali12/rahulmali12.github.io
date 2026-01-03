@@ -713,6 +713,15 @@ const firebaseConfig = {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
+    // --- कनेक्शन चेक करने वाला कोड ---
+try {
+    const checkDb = firebase.database();
+    console.log("Firebase is Ready!"); 
+    alert("✅ बधाई हो! Firebase सही से कनेक्ट हो गया है।");
+} catch (error) {
+    alert("❌ गलती पकड़ी गई: " + error.message);
+    console.error(error);
+}
   const db = firebase.database();
 
   // 3. लीडरबोर्ड का जादू (यह कोड लिस्ट को अपडेट करेगा)
@@ -791,6 +800,7 @@ function submitQuiz() {
 </body>
 
 </html>
+
 
 
 
