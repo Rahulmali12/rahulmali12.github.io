@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Force Math: Complex Number Practice Set</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .question-box {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .q-text {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style-type: none; /* A, B, C, D handled manually or by grid */
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .options li {
+            background: #f9f9f9;
+            padding: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .answer-key {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            border-radius: 5px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Air Force X Group: Complex Numbers (25 Questions)</h1>
+    <p style="text-align:center;">विषय: सम्मिश्र संख्या (Complex Numbers) | स्तर: Air Force/NDA</p>
+
+    <div class="question-box">
+        <div class="q-text">Q1. \( i^{257} \) का मान क्या है?</div>
+        <ul class="options">
+            <li>(a) 1</li>
+            <li>(b) -1</li>
+            <li>(c) \( i \)</li>
+            <li>(d) \( -i \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q2. यदि \( z = 3 + 4i \), तो \( |z| \) (मापांक) क्या होगा?</div>
+        <ul class="options">
+            <li>(a) 3</li>
+            <li>(b) 4</li>
+            <li>(c) 5</li>
+            <li>(d) 7</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q3. \( 1 + i^2 + i^4 + i^6 + ... + i^{20} \) का मान क्या है?</div>
+        <ul class="options">
+            <li>(a) 0</li>
+            <li>(b) 1</li>
+            <li>(c) -1</li>
+            <li>(d) \( i \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q4. सम्मिश्र संख्या \( 1 + i\sqrt{3} \) का कोणांक (Argument) क्या है?</div>
+        <ul class="options">
+            <li>(a) \( \pi/3 \)</li>
+            <li>(b) \( \pi/6 \)</li>
+            <li>(c) \( \pi/4 \)</li>
+            <li>(d) \( 2\pi/3 \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q5. \( (1-\omega+\omega^2)^5 + (1+\omega-\omega^2)^5 \) का मान क्या है? (जहाँ \( \omega \) इकाई का घनमूल है)</div>
+        <ul class="options">
+            <li>(a) 32</li>
+            <li>(b) -32</li>
+            <li>(c) 0</li>
+            <li>(d) 64</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q6. \( \frac{1+i}{1-i} \) का मान किसके बराबर है?</div>
+        <ul class="options">
+            <li>(a) 1</li>
+            <li>(b) -1</li>
+            <li>(c) \( i \)</li>
+            <li>(d) \( -i \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q7. \( i^{-35} \) का मान है:</div>
+        <ul class="options">
+            <li>(a) \( i \)</li>
+            <li>(b) \( -i \)</li>
+            <li>(c) 1</li>
+            <li>(d) -1</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q8. यदि \( x + iy = \sqrt{\frac{1+i}{1-i}} \), तो \( x^2 + y^2 \) का मान है:</div>
+        <ul class="options">
+            <li>(a) 0</li>
+            <li>(b) 1</li>
+            <li>(c) 2</li>
+            <li>(d) -1</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q9. समीकरण \( x^2 + 4 = 0 \) के मूल हैं:</div>
+        <ul class="options">
+            <li>(a) \( \pm 2 \)</li>
+            <li>(b) \( \pm 2i \)</li>
+            <li>(c) \( 2, 2i \)</li>
+            <li>(d) \( 4i, -4i \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q10. \( z = -1 - i \) का ध्रुवीय रूप (Polar Form) क्या है?</div>
+        <ul class="options">
+            <li>(a) \( \sqrt{2}(\cos \frac{3\pi}{4} + i \sin \frac{3\pi}{4}) \)</li>
+            <li>(b) \( \sqrt{2}(\cos \frac{5\pi}{4} + i \sin \frac{5\pi}{4}) \)</li>
+            <li>(c) \( \sqrt{2}(\cos \frac{\pi}{4} + i \sin \frac{\pi}{4}) \)</li>
+            <li>(d) \( 2(\cos \frac{5\pi}{4} + i \sin \frac{5\pi}{4}) \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q11. \( (1 + \omega - \omega^2)^3 - (1 - \omega + \omega^2)^3 \) का मान है:</div>
+        <ul class="options">
+            <li>(a) 0</li>
+            <li>(b) -16</li>
+            <li>(c) 16</li>
+            <li>(d) 32</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q12. \( \sqrt{-25} \times \sqrt{-49} \) का मान क्या है?</div>
+        <ul class="options">
+            <li>(a) 35</li>
+            <li>(b) -35</li>
+            <li>(c) \( 35i \)</li>
+            <li>(d) \( -35i \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q13. \( 3 - 4i \) का गुणात्मक प्रतिलोम (Multiplicative Inverse) क्या है?</div>
+        <ul class="options">
+            <li>(a) \( \frac{3}{25} + \frac{4}{25}i \)</li>
+            <li>(b) \( \frac{3}{25} - \frac{4}{25}i \)</li>
+            <li>(c) \( 3 + 4i \)</li>
+            <li>(d) \( \frac{1}{3} - \frac{1}{4}i \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q14. \( |\frac{2+i}{2-i}| \) का मान क्या है?</div>
+        <ul class="options">
+            <li>(a) 2</li>
+            <li>(b) 1</li>
+            <li>(c) 5</li>
+            <li>(d) \(\sqrt{5}\)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q15. यदि \( z = x + iy \) और \( |z-1| = |z+1| \), तो बिंदु \( z \) कहाँ स्थित है?</div>
+        <ul class="options">
+            <li>(a) X-अक्ष पर</li>
+            <li>(b) Y-अक्ष पर</li>
+            <li>(c) मूल बिंदु पर</li>
+            <li>(d) एक वृत्त पर</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q16. \( i^n + i^{n+1} + i^{n+2} + i^{n+3} \) का मान क्या है (जहाँ \( n \) एक पूर्णांक है)?</div>
+        <ul class="options">
+            <li>(a) 0</li>
+            <li>(b) 1</li>
+            <li>(c) \( i \)</li>
+            <li>(d) \( -1 \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q17. \( -2i \) का वर्गमूल (Square root) क्या है?</div>
+        <ul class="options">
+            <li>(a) \( 1-i \)</li>
+            <li>(b) \( 1+i \)</li>
+            <li>(c) \( \pm(1-i) \)</li>
+            <li>(d) \( \pm(1+i) \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q18. \( \arg(-1) \) का मान क्या है?</div>
+        <ul class="options">
+            <li>(a) 0</li>
+            <li>(b) \( \pi \)</li>
+            <li>(c) \( \pi/2 \)</li>
+            <li>(d) \( -\pi/2 \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q19. यदि \( \omega \) इकाई का घनमूल है, तो \( (1+\omega)(1+\omega^2)(1+\omega^4)(1+\omega^8) \) का मान है:</div>
+        <ul class="options">
+            <li>(a) 0</li>
+            <li>(b) 1</li>
+            <li>(c) \(\omega\)</li>
+            <li>(d) 3</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q20. \( \frac{1+7i}{(2-i)^2} \) को \( a+ib \) रूप में लिखें:</div>
+        <ul class="options">
+            <li>(a) \( -1+i \)</li>
+            <li>(b) \( 1-i \)</li>
+            <li>(c) \( -1-i \)</li>
+            <li>(d) \( 1+i \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q21. \( z \bar{z} \) का मान हमेशा होता है:</div>
+        <ul class="options">
+            <li>(a) एक शुद्ध काल्पनिक संख्या</li>
+            <li>(b) एक ऋणात्मक वास्तविक संख्या</li>
+            <li>(c) एक धनात्मक वास्तविक संख्या (यदि \( z \neq 0 \))</li>
+            <li>(d) 0</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q22. \( (1+i)^4 \) का मान है:</div>
+        <ul class="options">
+            <li>(a) 4</li>
+            <li>(b) -4</li>
+            <li>(c) \( 4i \)</li>
+            <li>(d) \( -4i \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q23. यदि \( a = \cos \theta + i \sin \theta \), तो \( \frac{1+a}{1-a} \) का मान है:</div>
+        <ul class="options">
+            <li>(a) \( \cot (\theta/2) \)</li>
+            <li>(b) \( i \cot (\theta/2) \)</li>
+            <li>(c) \( i \tan (\theta/2) \)</li>
+            <li>(d) \( \tan (\theta/2) \)</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q24. वह न्यूनतम धनात्मक पूर्णांक \( n \) क्या है जिसके लिए \( (\frac{1+i}{1-i})^n = 1 \)?</div>
+        <ul class="options">
+            <li>(a) 2</li>
+            <li>(b) 4</li>
+            <li>(c) 8</li>
+            <li>(d) 12</li>
+        </ul>
+    </div>
+
+    <div class="question-box">
+        <div class="q-text">Q25. \( \sqrt{3+4i} + \sqrt{3-4i} \) का मान क्या हो सकता है?</div>
+        <ul class="options">
+            <li>(a) 4</li>
+            <li>(b) \( \pm 4 \)</li>
+            <li>(c) \( \pm 2 \)</li>
+            <li>(d) 0</li>
+        </ul>
+    </div>
+
+    <button class="btn" onclick="toggleAnswers()">उत्तर देखें (Show Answers)</button>
+
+    <div id="answerKey" class="answer-key">
+        <h3>उत्तर माला (Answer Key):</h3>
+        <p><strong>1.</strong> (c) \(i\) (क्योंकि \(257 = 4 \times 64 + 1\))</p>
+        <p><strong>2.</strong> (c) 5 (\(\sqrt{3^2+4^2}=5\))</p>
+        <p><strong>3.</strong> (b) 1 (GP Series Formula)</p>
+        <p><strong>4.</strong> (a) \(\pi/3\) (\(\tan^{-1}(\sqrt{3}/1) = 60^\circ\))</p>
+        <p><strong>5.</strong> (a) 32 (ट्रिक: \(1+\omega+\omega^2=0\) का उपयोग करें)</p>
+        <p><strong>6.</strong> (c) \(i\) (Rationalize करने पर)</p>
+        <p><strong>7.</strong> (a) \(i\) (\(1/i^{35} = 1/i^3 \times 1 = i\))</p>
+        <p><strong>8.</strong> (b) 1 (Modulus दोनों तरफ लेने पर)</p>
+        <p><strong>9.</strong> (b) \(\pm 2i\)</p>
+        <p><strong>10.</strong> (b) \(\sqrt{2}(\cos \frac{5\pi}{4} + i \sin \frac{5\pi}{4})\) (3rd Quadrant)</p>
+        <p><strong>11.</strong> (a) 0</p>
+        <p><strong>12.</strong> (b) -35 (\(5i \times 7i = 35i^2 = -35\))</p>
+        <p><strong>13.</strong> (a) \(\frac{3}{25} + \frac{4}{25}i\) (\(\bar{z}/|z|^2\))</p>
+        <p><strong>14.</strong> (b) 1 (\(|z_1/z_2| = |z_1|/|z_2|\))</p>
+        <p><strong>15.</strong> (b) Y-अक्ष पर (लम्ब समद्विभाजक)</p>
+        <p><strong>16.</strong> (a) 0 (लगातार 4 घातों का योग शून्य होता है)</p>
+        <p><strong>17.</strong> (c) \(\pm(1-i)\)</p>
+        <p><strong>18.</strong> (b) \(\pi\) (Negative Real Axis)</p>
+        <p><strong>19.</strong> (b) 1</p>
+        <p><strong>20.</strong> (a) \(-1+i\)</p>
+        <p><strong>21.</strong> (c) एक धनात्मक वास्तविक संख्या</p>
+        <p><strong>22.</strong> (b) -4 (\(((1+i)^2)^2 = (2i)^2 = -4\))</p>
+        <p><strong>23.</strong> (b) \(i \cot (\theta/2)\)</p>
+        <p><strong>24.</strong> (b) 4 (क्योंकि \((i)^4 = 1\))</p>
+        <p><strong>25.</strong> (b) \(\pm 4\)</p>
+    </div>
+
+    <script>
+        function toggleAnswers() {
+            var x = document.getElementById("answerKey");
+            var btn = document.querySelector(".btn");
+            if (x.style.display === "none" || x.style.display === "") {
+                x.style.display = "block";
+                btn.textContent = "उत्तर छिपाएं (Hide Answers)";
+            } else {
+                x.style.display = "none";
+                btn.textContent = "उत्तर देखें (Show Answers)";
+            }
+        }
+    </script>
+</body>
+</html>
