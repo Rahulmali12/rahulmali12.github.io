@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revento Academy - Math Ch-5</title>
+    
+    <meta property="og:title" content="⚡ Math Ch-5: समांतर श्रेढ़ी (Mission 2026)">
+    <meta property="og:description" content="Class 10th Math Chapter 5 (A.P.). 25 Most Important Questions. RBSE PYQs Included.">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3574/3574608.png">
+
+    <style>
+        /* "Electric Thunder" Theme */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #020210;
+            background-image: radial-gradient(circle at 50% 50%, #0b0b2e 0%, #020210 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            color: white;
+        }
+
+        .quiz-container {
+            background: rgba(10, 15, 30, 0.95);
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 16px;
+            border: 2px solid #00f3ff; /* Electric Blue Border */
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top Badge */
+        .top-badge {
+            background: linear-gradient(90deg, #00f3ff, #0066ff);
+            color: black;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px #00f3ff;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #fff, #00f3ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        h3 {
+            margin: 5px 0 20px;
+            font-size: 15px;
+            color: #8ab4f8;
+        }
+
+        .question-box {
+            background: #0d1b2a;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #00f3ff;
+            text-align: left;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.5;
+            color: #e0f7fa;
+        }
+
+        /* Options */
+        button.option-btn {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            background: #1b263b;
+            border: 1px solid #415a77;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        button.option-btn:hover {
+            background: #00f3ff;
+            color: #000;
+            border-color: #00f3ff;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+            font-weight: bold;
+        }
+
+        /* Correct/Wrong Logic */
+        .correct { background: linear-gradient(90deg, #00e676, #00c853) !important; color: black !important; border: none !important; }
+        .wrong { background: linear-gradient(90deg, #ff1744, #d50000) !important; border: none !important; }
+
+        #next-btn {
+            width: 100%;
+            padding: 15px;
+            background: #00f3ff;
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 243, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
+        }
+
+        .result-box { display: none; }
+        .score-big {
+            font-size: 70px;
+            color: #00f3ff;
+            font-weight: bold;
+            text-shadow: 0 0 20px #00f3ff;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="top-badge">RBSE 2026 SPECIAL</div>
+    <h1>REVENTO ACADEMY</h1>
+    <h3>⚡ समांतर श्रेढ़ी (Arithmetic Progression)</h3>
+    <div style="height: 1px; background: #333; margin-bottom: 15px;"></div>
+    
+    <div id="quiz">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #8ab4f8; margin-bottom: 10px;">
+            <span id="q-progress">Question 1/25</span>
+            <span>Target: 25/25</span>
+        </div>
+
+        <div class="question-box">
+            <div class="question" id="q-text">Loading...</div>
+        </div>
+
+        <div id="options"></div>
+        <button id="next-btn" onclick="nextQuestion()">NEXT QUESTION ➡</button>
+    </div>
+
+    <div id="result" class="result-box">
+        <h2 style="color: #fff;">TEST SUBMITTED! ⚡</h2>
+        <div class="score-big" id="score">0</div>
+        <p style="color: #bbb;">Out of 25 Questions</p>
+        <p>इसका स्क्रीनशॉट लेकर ग्रुप में भेजें!</p>
+        <button onclick="location.reload()" style="background: transparent; border: 2px solid #00f3ff; color: #00f3ff; padding: 10px 25px; border-radius: 30px; cursor: pointer; margin-top: 15px; font-weight: bold;">🔄 RE-ATTEMPT</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "1. A.P. का सार्व अंतर (Common Difference) 'd' ज्ञात करने का सूत्र क्या है?", options: ["a₂ - a₁", "a₂ + a₁", "a₁ - a₂", "a₂ / a₁"], answer: 0 },
+        { q: "2. A.P.: 10, 7, 4... का 30वाँ पद क्या है?", options: ["97", "77", "-77", "-87"], answer: 2 }, /* a=10, d=-3, a30 = 10 + 29(-3) = 10 - 87 = -77 */
+        { q: "3. A.P.: 2, 7, 12... का 10वाँ पद ज्ञात कीजिए।", options: ["50", "40", "47", "52"], answer: 2 }, /* a=2, d=5, a10 = 2+45=47 */
+        { q: "4. A.P. का nवाँ पद ज्ञात करने का सूत्र (aₙ) क्या है?", options: ["a + nd", "a + (n-1)d", "a + (n+1)d", "2a + nd"], answer: 1 },
+        { q: "5. A.P.: 3, 1, -1, -3... के लिए सार्व अंतर (d) क्या है?", options: ["2", "-2", "3", "1"], answer: 1 },
+        { q: "6. A.P.: 21, 18, 15... का कौन सा पद -81 है?", options: ["34वाँ", "35वाँ", "36वाँ", "33वाँ"], answer: 1 },
+        { q: "7. प्रथम n धन पूर्णांकों का योग ज्ञात करने का सूत्र क्या है?", options: ["n(n+1)/2", "n(n-1)/2", "n²", "n(n+1)"], answer: 0 },
+        { q: "8. यदि A.P. का तीसरा पद 5 और 7वाँ पद 9 है, तो वह A.P. क्या है?", options: ["1, 2, 3, 4...", "3, 4, 5, 6...", "2, 4, 6, 8...", "1, 3, 5, 7..."], answer: 1 }, /* a+2d=5, a+6d=9 => 4d=4 => d=1, a=3 */
+        { q: "9. क्या संख्याओं की सूची 2, 4, 8, 16... एक A.P. है?", options: ["हाँ", "नहीं", "कहा नहीं जा सकता", "शायद"], answer: 1 },
+        { q: "10. 10 और 250 के बीच में 4 के कितने गुणज (Multiples) हैं?", options: ["50", "60", "59", "61"], answer: 1 }, /* 12...248. n = (248-12)/4 + 1 = 59+1=60 */
+        { q: "11. A.P.: 3, 8, 13, ..., 253 में अंतिम पद से 20वाँ पद ज्ञात कीजिए।", options: ["153", "158", "163", "150"], answer: 1 }, /* l=253, d=5. From end: l-(n-1)d = 253 - 19(5) = 253-95 = 158 */
+        { q: "12. यदि किसी A.P. के प्रथम n पदों का योग Sₙ = 3n² + n है, तो उसका दूसरा पद क्या होगा?", options: ["10", "4", "14", "7"], answer: 0 }, /* S1=a1=4. S2=12+2=14. a2 = S2-S1 = 14-4=10 */
+        { q: "13. दो अंकों वाली कितनी संख्याएँ 3 से विभाज्य हैं?", options: ["25", "30", "29", "31"], answer: 1 },
+        { q: "14. A.P.: -5, -1, 3, 7... के लिए प्रथम पद (a) और सार्व अंतर (d) क्या है?", options: ["a=-5, d=4", "a=-5, d=-4", "a=5, d=4", "a=5, d=-4"], answer: 0 },
+        { q: "15. A.P.: 8, 3, -2... के प्रथम 22 पदों का योग ज्ञात कीजिए।", options: ["-979", "-900", "979", "-879"], answer: 0 },
+        { q: "16. यदि a = 7 और a₁₃ = 35 हो, तो d का मान क्या होगा?", options: ["7/3", "28/3", "2.5", "28/12"], answer: 0 }, /* a+12d=35 => 12d=28 => d=28/12 = 7/3 */
+        { q: "17. 0 और 50 के बीच की विषम संख्याओं (Odd numbers) का योग कितना है?", options: ["600", "625", "500", "250"], answer: 1 }, /* n=25. Sum=n^2=625 */
+        { q: "18. यदि किसी A.P. का nवाँ पद (3 + 4n) है, तो यह A.P. होगी:", options: ["7, 11, 15...", "3, 7, 11...", "4, 8, 12...", "7, 10, 13..."], answer: 0 },
+        { q: "19. प्रथम 1000 धन पूर्णांकों का योग क्या होगा?", options: ["500500", "500000", "50500", "100500"], answer: 0 },
+        { q: "20. किस A.P. का प्रथम पद 5, अंतिम पद 45 और योग 400 है। पदों की संख्या (n) क्या है?", options: ["15", "16", "20", "25"], answer: 1 }, /* 400 = n/2 (5+45) => 800=50n => n=16 */
+        { q: "21. समांतर श्रेढ़ी √2, √8, √18, √32... का सार्व अंतर क्या है?", options: ["√2", "2√2", "√6", "2"], answer: 0 }, /* root8 = 2root2. diff = root2 */
+        { q: "22. यदि k, 2k-1 और 2k+1 समांतर श्रेढ़ी में हैं, तो k का मान?", options: ["3", "-3", "0", "1"], answer: 0 }, /* 2(2k-1) = k + 2k+1 => 4k-2 = 3k+1 => k=3 */
+        { q: "23. 5 के प्रथम 10 गुणजों का योग (Sum of first 10 multiples of 5) क्या होगा?", options: ["250", "275", "300", "225"], answer: 1 }, /* 5(55) = 275 */
+        { q: "24. यदि A.P. के p पदों का योग q है और q पदों का योग p है, तो (p+q) पदों का योग क्या होगा?", options: ["p+q", "p-q", "-(p+q)", "0"], answer: 2 },
+        { q: "25. Sₙ ज्ञात करने का वह सूत्र जिसमें अंतिम पद (l) का प्रयोग होता है?", options: ["n/2 [a + l]", "n/2 [2a + l]", "n [a + l]", "n/2 [a - l]"], answer: 0 }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function loadQ() {
+        const data = questions[current];
+        document.getElementById("q-progress").innerText = `Question ${current + 1}/${questions.length}`;
+        document.getElementById("q-text").innerText = data.q;
+        const optDiv = document.getElementById("options");
+        optDiv.innerHTML = "";
+        
+        data.options.forEach((opt, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerHTML = `<span style="color:#00f3ff; font-weight:bold; margin-right:15px; font-size:18px;">${String.fromCharCode(65+idx)}</span> ${opt}`;
+            btn.onclick = () => check(btn, idx);
+            optDiv.appendChild(btn);
+        });
+        document.getElementById("next-btn").style.display = "none";
+    }
+
+    function check(btn, idx) {
+        const correct = questions[current].answer;
+        const allBtns = document.querySelectorAll(".option-btn");
+        
+        if(idx === correct) { 
+            btn.classList.add("correct"); 
+            score++; 
+        } else { 
+            btn.classList.add("wrong"); 
+            allBtns[correct].classList.add("correct"); 
+        }
+        
+        allBtns.forEach(b => b.disabled = true);
+        document.getElementById("next-btn").style.display = "block";
+    }
+
+    function nextQuestion() {
+        current++;
+        if(current < questions.length) loadQ();
+        else {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").style.display = "block";
+            document.getElementById("score").innerText = `${score} / 25`;
+        }
+    }
+    loadQ();
+</script>
+
+</body>
+</html>
