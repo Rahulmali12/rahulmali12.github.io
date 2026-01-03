@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revento Academy - Math Ch-4</title>
+    
+    <meta property="og:title" content="🔥 Math Ch-4: द्विघात समीकरण (2026 Special)">
+    <meta property="og:description" content="Class 10th Math Chapter 4 (Quadratic Eq). 25 Most Likely Questions for 2026 Exam.">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/1046/1046355.png">
+
+    <style>
+        /* "Warrior/Lava" Theme */
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: #050000;
+            background-image: linear-gradient(315deg, #000000 0%, #2b0000 74%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            color: white;
+        }
+
+        .quiz-container {
+            background: rgba(20, 0, 0, 0.95);
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #ff0000; /* Red Border */
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+            text-align: center;
+            position: relative;
+        }
+
+        /* Gold Header */
+        h1 {
+            margin: 0;
+            font-size: 26px;
+            text-transform: uppercase;
+            color: #ffd700; /* Gold */
+            text-shadow: 2px 2px #550000;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        h3 {
+            margin: 10px 0 20px;
+            font-size: 14px;
+            color: #ffcccc;
+        }
+
+        .question-box {
+            background: #1a0505;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 6px solid #ffd700;
+            text-align: left;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.5;
+            color: #fff;
+        }
+
+        /* Options */
+        button.option-btn {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            background: #330000;
+            border: 1px solid #ff4444;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        button.option-btn:hover {
+            background: #660000;
+            border-color: #ffd700;
+            transform: scale(1.02);
+        }
+
+        /* Correct/Wrong Logic */
+        .correct { background: #006600 !important; border-color: #00ff00 !important; }
+        .wrong { background: #990000 !important; border-color: #ff0000 !important; }
+
+        #next-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #ff0000, #990000);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
+        }
+
+        .result-box { display: none; }
+        .badge {
+            font-size: 50px;
+            margin: 20px 0;
+            filter: drop-shadow(0 0 10px gold);
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div style="color: #ff4444; font-size: 12px; font-weight: bold; letter-spacing: 1px;">TARGET: BOARD EXAM 2026</div>
+    <h1>REVENTO ACADEMY</h1>
+    <h3>⚔️ द्विघात समीकरण (Quadratic Equations) ⚔️</h3>
+    
+    <div id="quiz">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #aaa; margin-bottom: 10px;">
+            <span id="q-progress">Question 1/25</span>
+            <span>Difficulty: EXAM LEVEL</span>
+        </div>
+
+        <div class="question-box">
+            <div class="question" id="q-text">Loading...</div>
+        </div>
+
+        <div id="options"></div>
+        <button id="next-btn" onclick="nextQuestion()">NEXT BATTLE ➤</button>
+    </div>
+
+    <div id="result" class="result-box">
+        <div class="badge">🏆</div>
+        <h2 style="color: #ffd700;">MISSION ACCOMPLISHED!</h2>
+        <h1 id="score" style="font-size: 60px; margin: 10px 0; border: none;">0</h1>
+        <p style="color: #ccc;">Out of 25 Questions</p>
+        <p>अपना स्कोर ग्रुप में शेयर करें!</p>
+        <button onclick="location.reload()" style="background: #333; color: white; padding: 10px 20px; border: 1px solid #555; border-radius: 5px; cursor: pointer; margin-top: 15px;">🔄 RESTART WAR</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "1. द्विघात समीकरण का मानक रूप (Standard Form) क्या है?", options: ["ax² + bx + c = 0", "ax + bx + c = 0", "ax² + bx = 0", "ax³ + bx² + c = 0"], answer: 0 },
+        { q: "2. यदि 'विविक्तकर' (Discriminant) D > 0 हो, तो मूल कैसे होंगे?", options: ["काल्पनिक", "वास्तविक और बराबर", "वास्तविक और भिन्न", "इनमें से कोई नहीं"], answer: 2 },
+        { q: "3. द्विघात समीकरण 2x² - 4x + 3 = 0 का विविक्तकर (D) क्या होगा?", options: ["8", "-8", "4", "16"], answer: 1 }, /* D = 16 - 24 = -8 */
+        { q: "4. यदि द्विघात समीकरण के मूल वास्तविक और बराबर हों, तो D का मान क्या होगा?", options: ["D > 0", "D < 0", "D = 0", "D = 1"], answer: 2 },
+        { q: "5. श्रीधराचार्य सूत्र (Quadratic Formula) क्या है?", options: ["-b ± √(b²-4ac) / 2a", "-b ± √(b²-4ac) / a", "b ± √(b²+4ac) / 2a", "-b ± √(b²+4ac) / 2a"], answer: 0 },
+        { q: "6. समीकरण x² - 9 = 0 के मूल क्या होंगे?", options: ["3, 3", "3, -3", "9, -9", "0, 9"], answer: 1 },
+        { q: "7. k के किस मान के लिए समीकरण 2x² + kx + 3 = 0 के मूल बराबर होंगे?", options: ["±√6", "±2√6", "±4", "6"], answer: 1 }, /* b^2-4ac=0 => k^2 - 24 = 0 => k = root 24 = 2 root 6 */
+        { q: "8. द्विघात समीकरण में चर (variable) की अधिकतम घात कितनी होती है?", options: ["1", "2", "3", "0"], answer: 1 },
+        { q: "9. यदि x = 1, समीकरण x² + x + k = 0 का एक मूल है, तो k का मान क्या होगा?", options: ["-1", "-2", "2", "1"], answer: 1 },
+        { q: "10. समीकरण x² + 5x + 6 = 0 के गुणनखण्ड क्या होंगे?", options: ["(x+2)(x+3)", "(x-2)(x-3)", "(x+1)(x+6)", "(x-1)(x-6)"], answer: 0 },
+        { q: "11. 'दो क्रमागत धनात्मक पूर्णांकों का गुणनफल 306 है', इसका गणितीय रूप क्या होगा?", options: ["x(x+1) = 306", "x + (x+1) = 306", "x(x+2) = 306", "x² = 306"], answer: 0 },
+        { q: "12. यदि α और β समीकरण ax² + bx + c = 0 के मूल हैं, तो मूलों का योग (α + β) क्या होगा?", options: ["b/a", "-b/a", "c/a", "-c/a"], answer: 1 },
+        { q: "13. मूलों का गुणनफल (α × β) का सूत्र क्या है?", options: ["c/a", "-c/a", "b/a", "-b/a"], answer: 0 },
+        { q: "14. निम्न में से कौन द्विघात समीकरण नहीं है?", options: ["x² + 3x = 1", "(x+1)² = 2(x-3)", "x² - 2x = (-2)(3-x)", "(x-2)(x+1) = (x-1)(x+3)"], answer: 3 }, /* x^2 cuts on both sides */
+        { q: "15. समीकरण 3x² - 2x + 1/3 = 0 का विविक्तकर क्या है?", options: ["0", "1", "2", "3"], answer: 0 },
+        { q: "16. एक आयताकार खेत का क्षेत्रफल 528 m² है। यदि लंबाई, चौड़ाई के दुगुने से एक अधिक हो, तो समीकरण होगा:", options: ["2x² + x - 528 = 0", "2x² - x - 528 = 0", "x² + 2x - 528 = 0", "2x² + x + 528 = 0"], answer: 0 },
+        { q: "17. समीकरण x² + 4x + 5 = 0 के मूलों की प्रकृति कैसी है?", options: ["वास्तविक और असमान", "वास्तविक और बराबर", "कोई वास्तविक मूल नहीं", "कहा नहीं जा सकता"], answer: 2 }, /* D = 16-20 = -4 */
+        { q: "18. वह द्विघात समीकरण जिसके मूल 3 और 4 हैं?", options: ["x² - 7x + 12 = 0", "x² + 7x + 12 = 0", "x² - x - 12 = 0", "x² - 7x - 12 = 0"], answer: 0 },
+        { q: "19. यदि 1/x + 1/(x-2) = 3, (x ≠ 0, 2) हो, तो यह किस प्रकार का समीकरण बनेगा?", options: ["रैखिक", "द्विघात", "त्रिघात", "कोई नहीं"], answer: 1 },
+        { q: "20. x² = 25 का हल समुच्चय क्या है?", options: ["{5}", "{-5}", "{5, -5}", "{25}"], answer: 2 },
+        { q: "21. p के किस मान के लिए समीकरण px(x-2) + 6 = 0 के मूल बराबर हैं?", options: ["0", "6", "-6", "2"], answer: 1 }, /* px^2 - 2px + 6 = 0 => D=0 => 4p^2 - 24p = 0 => 4p(p-6)=0 => p=6 */
+        { q: "22. यदि किसी संख्या और उसके व्युत्क्रम (Reciprocal) का योग 10/3 है, तो वह संख्या है?", options: ["3", "1/3", "3 या 1/3", "9"], answer: 2 },
+        { q: "23. द्विघात समीकरण के ग्राफ का आकार कैसा होता है?", options: ["वृत्त", "सरल रेखा", "परवलय (Parabola)", "अंडाकार"], answer: 2 },
+        { q: "24. दो वर्गों के क्षेत्रफलों का योग 468 m² है। यह समस्या किस समीकरण से हल होगी?", options: ["x² + y² = 468", "x + y = 468", "xy = 468", "x - y = 468"], answer: 0 },
+        { q: "25. द्विघात समीकरण ax² + bx + c = 0 को हल करने की विधियाँ हैं:", options: ["गुणनखंड विधि", "पूर्ण वर्ग विधि", "द्विघाती सूत्र", "उपरोक्त सभी"], answer: 3 }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function loadQ() {
+        const data = questions[current];
+        document.getElementById("q-progress").innerText = `Question ${current + 1}/${questions.length}`;
+        document.getElementById("q-text").innerText = data.q;
+        const optDiv = document.getElementById("options");
+        optDiv.innerHTML = "";
+        
+        data.options.forEach((opt, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerHTML = `<span style="color:#ffd700; font-weight:bold; margin-right:10px;">${String.fromCharCode(65+idx)}</span> ${opt}`;
+            btn.onclick = () => check(btn, idx);
+            optDiv.appendChild(btn);
+        });
+        document.getElementById("next-btn").style.display = "none";
+    }
+
+    function check(btn, idx) {
+        const correct = questions[current].answer;
+        const allBtns = document.querySelectorAll(".option-btn");
+        
+        if(idx === correct) { 
+            btn.classList.add("correct"); 
+            score++; 
+        } else { 
+            btn.classList.add("wrong"); 
+            allBtns[correct].classList.add("correct"); 
+        }
+        
+        allBtns.forEach(b => b.disabled = true);
+        document.getElementById("next-btn").style.display = "block";
+    }
+
+    function nextQuestion() {
+        current++;
+        if(current < questions.length) loadQ();
+        else {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").style.display = "block";
+            document.getElementById("score").innerText = `${score} / 25`;
+        }
+    }
+    loadQ();
+</script>
+
+</body>
+</html>
