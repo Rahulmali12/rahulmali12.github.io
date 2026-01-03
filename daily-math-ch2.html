@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revento Academy - Math Ch-2</title>
+    <meta property="og:title" content="🔥 Math Ch-2: बहुपद (Polynomials)">
+    <meta property="og:description" content="Class 10th Math Chapter 2 (RBSE). 25 Most Important Questions. Target 20+ Score!">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/2641/2641457.png">
+
+    <style>
+        /* "Cyberpunk/Neon" Theme */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #050505;
+            background-image: linear-gradient(45deg, #000 25%, #0a0a0a 25%, #0a0a0a 50%, #000 50%, #000 75%, #0a0a0a 75%, #0a0a0a 100%);
+            background-size: 20px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            color: #fff;
+        }
+
+        .quiz-container {
+            background: rgba(15, 15, 20, 0.95);
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #d500f9; /* Neon Purple Border */
+            box-shadow: 0 0 20px rgba(213, 0, 249, 0.4);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 26px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #d500f9, #651fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        h3 { margin: 5px 0 20px; font-size: 14px; color: #aaa; }
+
+        .question-box {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #00e5ff; /* Cyan Accent */
+            text-align: left;
+        }
+
+        .question { font-size: 18px; font-weight: 600; line-height: 1.5; color: #e0e0e0; }
+
+        button.option-btn {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            background: #252525;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        button.option-btn:hover {
+            background: #333;
+            border-color: #d500f9;
+            box-shadow: 0 0 10px rgba(213, 0, 249, 0.3);
+            transform: translateX(5px);
+        }
+
+        .correct { background: linear-gradient(90deg, #00c853, #009624) !important; border-color: #00e676 !important; }
+        .wrong { background: linear-gradient(90deg, #b71c1c, #d32f2f) !important; border-color: #ff1744 !important; }
+
+        #next-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #d500f9, #651fff);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 5px 15px rgba(101, 31, 255, 0.4);
+        }
+
+        .result-box { display: none; }
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border: 5px solid #d500f9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            font-weight: bold;
+            margin: 20px auto;
+            color: #d500f9;
+            box-shadow: 0 0 20px rgba(213, 0, 249, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div style="background: #d500f9; color: white; padding: 3px 10px; border-radius: 10px; font-size: 11px; display: inline-block; margin-bottom: 5px;">LIVE TEST</div>
+    <h1>REVENTO ACADEMY</h1>
+    <h3>MATH CHAPTER 02 (Polynomials)</h3>
+    <hr style="border-color: #333; opacity: 0.3;">
+
+    <div id="quiz">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #888; margin-bottom: 10px;">
+            <span id="q-progress">Question 1/25</span>
+            <span>Target: 20+</span>
+        </div>
+
+        <div class="question-box">
+            <div class="question" id="q-text">Loading...</div>
+        </div>
+
+        <div id="options"></div>
+        <button id="next-btn" onclick="nextQuestion()">NEXT QUESTION ➤</button>
+    </div>
+
+    <div id="result" class="result-box">
+        <h2 style="color: #00e5ff;">TEST COMPLETED! 🚀</h2>
+        <div class="score-circle" id="score">0</div>
+        <p>स्कोर का Screenshot लेकर ग्रुप में भेजें!</p>
+        <button onclick="location.reload()" style="background: #333; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer;">🔄 Restart Test</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "1. रैखिक बहुपद (Linear Polynomial) की घात कितनी होती है?", options: ["0", "1", "2", "3"], answer: 1 },
+        { q: "2. द्विघात बहुपद का ग्राफ (Graph) कैसा होता है?", options: ["सरल रेखा", "वृत्त", "परवलय (Parabola)", "दीर्घवृत्त"], answer: 2 },
+        { q: "3. बहुपद x² - 3 के शून्यक (Zeroes) क्या होंगे?", options: ["3, 3", "-√3, +√3", "3, -3", "√3, √3"], answer: 1 },
+        { q: "4. यदि द्विघात बहुपद ax² + bx + c के शून्यक α और β हों, तो α + β का मान क्या होगा?", options: ["b/a", "-b/a", "c/a", "-c/a"], answer: 1 },
+        { q: "5. एक त्रिघात बहुपद (Cubic Polynomial) के अधिकतम कितने शून्यक हो सकते हैं?", options: ["1", "2", "3", "4"], answer: 2 },
+        { q: "6. बहुपद x² - 2x - 8 के शून्यक क्या हैं?", options: ["(2, -4)", "(4, -2)", "(-4, -2)", "(2, 2)"], answer: 1 },
+        { q: "7. यदि किसी बहुपद का ग्राफ x-अक्ष को 3 बार काटता है, तो उसके शून्यकों की संख्या क्या होगी?", options: ["1", "2", "3", "0"], answer: 2 },
+        { q: "8. द्विघात बहुपद x² + 7x + 10 के शून्यकों का गुणनफल (Product of Zeroes) क्या होगा?", options: ["10", "-10", "7", "-7"], answer: 0 },
+        { q: "9. एक द्विघात बहुपद ज्ञात करें जिसके शून्यकों का योग 4 और गुणनफल 1 है?", options: ["x² - 4x + 1", "x² + 4x + 1", "x² + 4x - 1", "x² - 4x - 1"], answer: 0 },
+        { q: "10. बहुपद P(x) = 2x + 5 का शून्यक क्या है?", options: ["2/5", "-2/5", "5/2", "-5/2"], answer: 3 },
+        { q: "11. किस बहुपद की घात 'शून्य' (0) होती है?", options: ["रैखिक बहुपद", "द्विघात बहुपद", "अचर बहुपद (Constant Polynomial)", "शून्य बहुपद"], answer: 2 },
+        { q: "12. यदि α और β बहुपद x² - px + q के शून्यक हैं, तो 1/α + 1/β का मान होगा?", options: ["p/q", "-p/q", "q/p", "-q/p"], answer: 0 },
+        { q: "13. बहुपद x² - 9x + a के शून्यकों का गुणनफल 8 है, तो 'a' का मान क्या होगा?", options: ["9", "-9", "8", "-8"], answer: 2 },
+        { q: "14. विभाजन एल्गोरिथ्म के अनुसार, p(x) = g(x) × q(x) + ____?", options: ["r(x)", "s(x)", "1", "0"], answer: 0 },
+        { q: "15. निम्नलिखित में से कौन बहुपद नहीं है?", options: ["2x² + 3x + 5", "x³ + 1", "x + 1/x", "√2 x + 5"], answer: 2 },
+        { q: "16. द्विघात बहुपद के शून्यकों और गुणांकों के बीच संबंध है: α.β = ?", options: ["-b/a", "c/a", "a/c", "-d/a"], answer: 1 },
+        { q: "17. यदि एक बहुपद का एक शून्यक दूसरे का व्युत्क्रम (Reciprocal) हो, तो कौन सा संबंध सही है?", options: ["a = c", "a = b", "b = c", "a = -c"], answer: 0 },
+        { q: "18. वह द्विघात बहुपद जिसके शून्यक 3 और -3 हैं?", options: ["x² - 9", "x² - 6", "x² + 9", "x² - 3"], answer: 0 },
+        { q: "19. यदि बहुपद का ग्राफ x-अक्ष को स्पर्श ही न करे, तो शून्यकों की संख्या होगी?", options: ["1", "2", "अनंत", "0 (कोई वास्तविक शून्यक नहीं)"], answer: 3 },
+        { q: "20. यदि (x - 1), बहुपद p(x) का एक गुणनखंड है, तो p(1) का मान क्या होगा?", options: ["1", "-1", "0", "2"], answer: 2 },
+        { q: "21. त्रिघात बहुपद ax³ + bx² + cx + d में शून्यकों का योग (α+β+γ) क्या होता है?", options: ["-b/a", "c/a", "-d/a", "b/c"], answer: 0 },
+        { q: "22. बहुपद 4u² + 8u के शून्यक हैं?", options: ["0, -2", "0, 2", "4, 8", "-4, -8"], answer: 0 },
+        { q: "23. एक n घात वाले बहुपद के अधिकतम कितने शून्यक हो सकते हैं?", options: ["n - 1", "n", "n + 1", "2n"], answer: 1 },
+        { q: "24. यदि α, β बहुपद x² - 3x + 5 के शून्यक हैं, तो α/β + β/α का मान होगा?", options: ["5/3", "-1/5", "-1/5", "-1/5"], answer: 1 }, /* Note: Calculation (a+b)^2 - 2ab / ab = (3^2 - 10)/5 = -1/5 */
+        { q: "25. क्या √x + 2 एक बहुपद है?", options: ["हाँ", "नहीं", "कहा नहीं जा सकता", "शायद"], answer: 1 }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function loadQ() {
+        const data = questions[current];
+        document.getElementById("q-progress").innerText = `Question ${current + 1}/${questions.length}`;
+        document.getElementById("q-text").innerText = data.q;
+        const optDiv = document.getElementById("options");
+        optDiv.innerHTML = "";
+        
+        data.options.forEach((opt, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerHTML = `<span style="color:#d500f9; font-weight:bold; margin-right:10px;">${String.fromCharCode(65+idx)}</span> ${opt}`;
+            btn.onclick = () => check(btn, idx);
+            optDiv.appendChild(btn);
+        });
+        document.getElementById("next-btn").style.display = "none";
+    }
+
+    function check(btn, idx) {
+        const correct = questions[current].answer;
+        const allBtns = document.querySelectorAll(".option-btn");
+        
+        if(idx === correct) { 
+            btn.classList.add("correct"); 
+            score++; 
+        } else { 
+            btn.classList.add("wrong"); 
+            allBtns[correct].classList.add("correct"); 
+        }
+        
+        allBtns.forEach(b => b.disabled = true);
+        document.getElementById("next-btn").style.display = "block";
+    }
+
+    function nextQuestion() {
+        current++;
+        if(current < questions.length) loadQ();
+        else {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").style.display = "block";
+            document.getElementById("score").innerText = `${score} / 25`;
+        }
+    }
+    loadQ();
+</script>
+
+</body>
+</html>
