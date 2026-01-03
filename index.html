@@ -644,7 +644,7 @@ input[type="radio"] {
     </button>
 </div>
 </div>             
-<div id="leaderboard-section" style="display: none; margin-top: 20px; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+<div id="leaderboard-section" style="display: none;color: blue; margin-top: 20px; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
     <h4 style="margin: 0 0 10px 0; color: #333; font-size: 16px; border-bottom: 2px solid #eee; padding-bottom: 5px;">
         🏆 Live Top Rankers
     </h4>
@@ -826,47 +826,62 @@ function saveScoreToFirebase(studentName, finalScore) {
     document.getElementById('quiz-container').style.display = 'block';
 }
 //    
+// --- 3. सख्त सिक्योरिटी वाला फंक्शन (One Attempt Only) ---
 function submitQuiz() {
     let score = 0;
     
-    // Q1 चेक करें (अगर सही है तो +2)
+    // Q1 चेक (सही जवाब 'hockey' है)
     let q1 = document.querySelector('input[name="q1"]:checked');
-    if (q1 && q1.value === "सोडियम") { score += 2; }
+    if (q1 && q1.value === "hockey") { score += 10; }
 
-    // Q2 चेक करें (अगर सही है तो +2)
+    // Q2 चेक (सही जवाब '10' है)
     let q2 = document.querySelector('input[name="q2"]:checked');
-    if (q2 && q2.value === "10") { score += 2; }
+    if (q2 && q2.value === "10") { score += 10; }
 
-    // विद्यार्थी का नाम उठाएं
-    let name = document.getElementById("studentName").value;
-    if(name === "") { name = "Unknown Student"; } // अगर नाम खाली हो
+    // Q3 चेक (अगर आपने और सवाल जोड़े हैं)
+    // ...
 
-    // --- स्कोर को Firebase Database में भेजना ---
-    // (सुनिश्चित करें कि ऊपर Firebase config वाला कोड पहले से डला हो)
+    // विद्यार्थी का नाम उठाएं और साफ़ करें (Trim)
+    let nameInput = document.getElementById("studentName");
+    let name = nameInput.value.trim(); 
     
-    firebase.database().ref('students').push({
-        name: name,
-        score: score,
-        time: Date.now()
-    }).then(() => {
-        alert("बधाई हो! आपका स्कोर सबमिट हो गया है: " + score);
-        
-        // --- जादू यहाँ है (Hide & Show) ---
-        
-        // 1. क्विज के सवालों को छुपा दें
-        document.getElementById("quiz-container").style.display = "none";
-        
-        // 2. अब लीडरबोर्ड को दिखाएं
-        document.getElementById("leaderboard-section").style.display = "block";
+    if (!name) { 
+        alert("कृपया अपना नाम लिखें!"); 
+        return; 
+    }
 
-    }).catch((error) => {
-        alert("Error saving score: " + error.message);
+    // --- यहाँ हम चेक करेंगे कि क्या इसने पहले टेस्ट दिया है? ---
+    db.ref('students').orderByChild('name').equalTo(name).once('value', (snapshot) => {
+        
+        if (snapshot.exists()) {
+            // ❌ अगर नाम मिला -> मतलब पहले टेस्ट दे चुका है
+            alert("🚫 रुकिए! " + name + ", आप पहले ही यह टेस्ट दे चुके हैं।\nदुबारा टेस्ट देने की अनुमति नहीं है।");
+            
+            // चाहे तो फॉर्म खाली कर दें या बंद कर दें
+            // location.reload(); // पेज रीफ्रेश कर सकते हैं
+
+        } else {
+            // ✅ अगर नाम नहीं मिला -> मतलब पहली बार आया है -> स्कोर सेव करें
+            db.ref('students').push({
+                name: name,
+                score: score,
+                time: Date.now()
+            }).then(() => {
+                alert("✅ बधाई हो! आपका टेस्ट सबमिट हो गया है।\nScore: " + score);
+                
+                // क्विज छुपाएं और लीडरबोर्ड दिखाएं
+                document.getElementById('quiz-container').style.display = 'none';
+                document.getElementById('leaderboard-section').style.display = 'block';
+            });
+        }
     });
+}
 }
 </script>  
 </body>
 
 </html>
+
 
 
 
