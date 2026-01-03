@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revento Academy - Math Ch-1</title>
+    <meta property="og:title" content="🔥 Math Ch-1 Test: Real Numbers">
+    <meta property="og:description" content="Class 10th Math Chapter 1 (RBSE). 20 Important Questions. Target 15+ Score!">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3771/3771278.png">
+
+    <style>
+        /* "Cyberpunk/Hacker" Theme */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #000000;
+            background-image: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+            color: #fff;
+        }
+
+        .quiz-container {
+            background: rgba(20, 20, 20, 0.95);
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid #00ffcc; /* Neon Cyan Border */
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.4);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glitch Effect Header */
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            text-transform: uppercase;
+            color: #00ffcc;
+            text-shadow: 2px 2px #ff0055;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+
+        h3 {
+            margin: 5px 0 20px;
+            font-size: 14px;
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+
+        .question-box {
+            background: #111;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #ff0055; /* Neon Pink */
+            box-shadow: inset 0 0 10px #000;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.5;
+            text-align: left;
+            color: #e0e0e0;
+        }
+
+        /* Options */
+        button.option-btn {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        button.option-btn:hover {
+            background: #252525;
+            border-color: #00ffcc;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+        }
+
+        /* Correct/Wrong Colors */
+        .correct { background: linear-gradient(90deg, #004d40, #00695c) !important; border-color: #00e676 !important; }
+        .wrong { background: linear-gradient(90deg, #621b16, #c62828) !important; border-color: #ff1744 !important; }
+
+        /* Next Button */
+        #next-btn {
+            width: 100%;
+            padding: 15px;
+            background: #00ffcc;
+            color: #000;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 0 15px #00ffcc;
+            text-transform: uppercase;
+        }
+
+        .result-box { display: none; }
+        .score-display {
+            font-size: 60px;
+            font-weight: bold;
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    
+    <h1>REVENTO ACADEMY</h1>
+    <h3>MATH CHAPTER 01 TEST</h3>
+    <div style="height: 2px; background: #333; margin-bottom: 15px;"></div>
+
+    <div id="quiz">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: #777;">
+            <span id="q-progress">Question 01/20</span>
+            <span>Target: 100%</span>
+        </div>
+
+        <div class="question-box">
+            <div class="question" id="q-text">Loading...</div>
+        </div>
+
+        <div id="options"></div>
+        <button id="next-btn" onclick="nextQuestion()">NEXT MISSION ➤</button>
+    </div>
+
+    <div id="result" class="result-box">
+        <h2 style="color: #ff0055; text-transform: uppercase;">Mission Complete!</h2>
+        <div class="score-display" id="score">0</div>
+        <p style="color: #bbb;">Out of 20 Questions</p>
+        <p style="font-size: 14px; color: #888;">Screenshot लेकर Group में भेजें 👇</p>
+        
+        <button onclick="location.reload()" style="background: #333; color: white; padding: 12px 25px; border: 1px solid #555; border-radius: 50px; cursor: pointer; margin-top: 15px;">🔄 RESTART TEST</button>
+    </div>
+
+</div>
+
+<script>
+    const questions = [
+        { q: "1. दो परिमेय संख्याओं के बीच कितनी परिमेय संख्याएं हो सकती हैं?", options: ["एक", "दो", "तीन", "अनंत (Infinite)"], answer: 3 },
+        { q: "2. सबसे छोटी अभाज्य संख्या (Smallest Prime Number) कौन सी है?", options: ["0", "1", "2", "3"], answer: 2 },
+        { q: "3. π (Pi) एक कैसी संख्या है?", options: ["परिमेय संख्या", "अपरिमेय संख्या (Irrational)", "पूर्णांक", "इनमें से कोई नहीं"], answer: 1 },
+        { q: "4. यदि दो संख्याओं का HCF = 1 हो, तो वे संख्याएं क्या कहलाती हैं?", options: ["सह-अभाज्य (Co-prime)", "भाज्य", "सम संख्या", "विषम संख्या"], answer: 0 },
+        { q: "5. √3 एक कैसी संख्या है?", options: ["परिमेय", "प्राकृत", "अपरिमेय (Irrational)", "पूर्ण"], answer: 2 },
+        { q: "6. यूक्लिड विभाजन प्रमेयिका (Euclid's Division Lemma) के अनुसार, a = bq + r में शेषफल 'r' के लिए क्या सही है?", options: ["r > b", "0 ≤ r < b", "r < 0", "r = b"], answer: 1 },
+        { q: "7. निम्न में से कौन सी संख्या अलग (Irrational) है?", options: ["√4", "√9", "√16", "√5"], answer: 3 },
+        { q: "8. 140 के अभाज्य गुणनखंड (Prime Factors) क्या होंगे?", options: ["2² × 5 × 7", "2 × 5 × 7", "2³ × 5", "2 × 5² × 7"], answer: 0 },
+        { q: "9. दो लगातार सम संख्याओं (Even numbers) का HCF क्या होगा?", options: ["1", "2", "4", "0"], answer: 1 },
+        { q: "10. परिमेय संख्या 33/50 का दशमलव प्रसार कैसा होगा?", options: ["सांत (Terminating)", "असांत आवर्ती", "असांत अनावर्ती", "इनमें से कोई नहीं"], answer: 0 },
+        { q: "11. यदि HCF(a, b) × LCM(a, b) = ______ होता है।", options: ["a + b", "a - b", "a × b", "a ÷ b"], answer: 2 },
+        { q: "12. सबसे छोटी भाज्य संख्या (Composite Number) कौन सी है?", options: ["2", "4", "1", "3"], answer: 1 },
+        { q: "13. 96 और 404 का HCF क्या होगा?", options: ["4", "2", "8", "16"], answer: 0 },
+        { q: "14. एक अशून्य परिमेय और अपरिमेय संख्या का गुणनफल हमेशा क्या होता है?", options: ["परिमेय", "अपरिमेय", "पूर्णांक", "एक"], answer: 1 },
+        { q: "15. संख्या 2.131131113... किस प्रकार की संख्या है?", options: ["परिमेय", "अपरिमेय", "पूर्णांक", "प्राकृत"], answer: 1 },
+        { q: "16. 6, 72 और 120 का LCM क्या होगा?", options: ["120", "240", "360", "480"], answer: 2 },
+        { q: "17. किसी पूर्णांक m के लिए, प्रत्येक सम (Even) पूर्णांक किस रूप का होता है?", options: ["m", "m + 1", "2m", "2m + 1"], answer: 2 },
+        { q: "18. वह सबसे बड़ी संख्या जिससे 70 और 125 को विभाजित करने पर शेषफल क्रमशः 5 और 8 बचे?", options: ["13", "65", "875", "1750"], answer: 0 },
+        { q: "19. (7 × 11 × 13 + 13) एक कैसी संख्या है?", options: ["अभाज्य", "भाज्य (Composite)", "विषम", "इनमें से कोई नहीं"], answer: 1 },
+        { q: "20. यदि p एक अभाज्य संख्या है, तो √p कैसी संख्या होगी?", options: ["सम", "परिमेय", "अपरिमेय", "भाज्य"], answer: 2 }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function loadQ() {
+        const data = questions[current];
+        document.getElementById("q-progress").innerText = `Question ${current + 1}/${questions.length}`;
+        document.getElementById("q-text").innerText = data.q;
+        const optDiv = document.getElementById("options");
+        optDiv.innerHTML = "";
+        
+        data.options.forEach((opt, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerHTML = `<span style="color:#00ffcc; font-weight:bold; margin-right:10px;">${String.fromCharCode(65+idx)}</span> ${opt}`;
+            btn.onclick = () => check(btn, idx);
+            optDiv.appendChild(btn);
+        });
+        document.getElementById("next-btn").style.display = "none";
+    }
+
+    function check(btn, idx) {
+        const correct = questions[current].answer;
+        const allBtns = document.querySelectorAll(".option-btn");
+        
+        if(idx === correct) { 
+            btn.classList.add("correct"); 
+            score++; 
+        } else { 
+            btn.classList.add("wrong"); 
+            allBtns[correct].classList.add("correct"); 
+        }
+        
+        allBtns.forEach(b => b.disabled = true);
+        document.getElementById("next-btn").style.display = "block";
+    }
+
+    function nextQuestion() {
+        current++;
+        if(current < questions.length) loadQ();
+        else {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").style.display = "block";
+            document.getElementById("score").innerText = `${score} / 20`;
+        }
+    }
+    loadQ();
+</script>
+
+</body>
+</html>
