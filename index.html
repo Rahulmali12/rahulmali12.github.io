@@ -727,10 +727,29 @@ const analytics = getAnalytics(app);
         });
     }
   });
+    // --- यह कोड स्कोर को डेटाबेस में भेजेगा ---
+function saveScoreToFirebase(studentName, finalScore) {
+    if(!studentName || studentName === "") {
+        studentName = "Anonymous Student"; // अगर नाम न हो तो यह नाम जाएगा
+    }
+    
+    // डेटाबेस में भेजना
+    db.ref('students').push({
+        name: studentName,
+        score: finalScore
+    }).then(() => {
+        console.log("Score Saved Successfully!");
+        // आप चाहे तो यहाँ alert भी लगा सकते हैं
+        // alert("आपका रैंक लीडरबोर्ड में जुड़ गया है!");
+    }).catch((error) => {
+        console.error("Error saving score: ", error);
+    });
+}
 </script>  
 </body>
 
 </html>
+
 
 
 
