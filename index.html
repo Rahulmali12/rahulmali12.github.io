@@ -626,16 +626,7 @@ input[type="radio"] {
 </button><div id="quiz-container" style="display: none; color: blue; margin-top: 20px; background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
     <h3 style="color: #d32f2f;">📝 आज का टेस्ट</h3>
     <hr>
-    
-    <p><strong>निम्नलिखित में से कौन सी धातु चाकू से आसानी से काटी जा सकती है?</strong></p>
-    <label><input type="radio" name="q1" value="लोहा">(Fe)</label><br>
-    <label><input type="radio" name="q1" value="तांबा"> (Cu)</label><br>
-   <label><input type="radio" name="q1" value="सोडियम"> (Na)</label><br>
-
-    <p><strong>Q2. 5 + 5 = ?</strong></p>
-    <label><input type="radio" name="q2" value="10"> 10</label><br>
-    <label><input type="radio" name="q2" value="11"> 11</label><br>
-        <label><input type="radio" name="q2" value="12"> 12</label><br>
+    <div id="questions-area"></div>
     
     <br>
     <input type="text" id="studentName" placeholder="अपना नाम लिखें" style="width: 100%; padding: 8px; margin-bottom: 10px;">
@@ -774,110 +765,117 @@ const firebaseConfig = {
     firebase.initializeApp(firebaseConfig);
   }
 // ===================================================
-  //  REVENTO QUIZ SYSTEM (FINAL CODE)
+  //  REVENTO QUIZ SYSTEM (SMART VERSION)
   // ===================================================
 
-  // --- 1. डेटाबेस कनेक्ट करें ---
+  // --- 1. डेटाबेस कनेक्शन ---
   const db = firebase.database();
-  console.log("✅ Database Connected Successfully!");
+  console.log("✅ Database Connected!");
 
-  // --- 2. स्टार्ट क्विज फंक्शन (बटन दबाने पर) ---
-  window.startQuiz = function() {
-      console.log("Start Button Clicked");
-      
-      // 1. बटन छुपाएं
-      let btn = document.querySelector('.btn-quiz');
-      if(btn) { btn.style.display = 'none'; }
-
-      // 2. क्विज दिखाएं
-      let container = document.getElementById('quiz-container');
-      if(container) { 
-          container.style.display = 'block'; 
-      } else {
-          alert("Error: क्विज वाला डिब्बा नहीं मिला!");
+  // --- 2. क्वेश्चन बैंक (सारे प्रश्न यहाँ लिखें) ---
+  // आप यहाँ जितने चाहे उतने प्रश्न जोड़ सकते हैं
+  const questionsList = [
+      {
+          question: "Q1. निम्नलिखित में से कौन सी धातु चाकू से आसानी से काटी जा सकती है?",
+          options: ["लोहा (Fe)", "तांबा (Cu)", "सोडियम (Na)", "सोना (Au)"],
+          answer: "सोडियम (Na)" 
+      },
+      {
+          question: "Q2. 5 + 5 कितने होते हैं?",
+          options: ["10", "11", "12", "55"],
+          answer: "10"
+      },
+      {
+          question: "Q3. भारत की राजधानी क्या है?",
+          options: ["Mumbai", "New Delhi", "Kolkata", "Jaipur"],
+          answer: "New Delhi"
       }
+  ];
 
-      // 3. लीडरबोर्ड छुपाएं (ताकि ध्यान भटके नहीं)
-      let lb = document.getElementById('leaderboard-section');
-      if(lb) { lb.style.display = 'none'; }
+  // --- 3. स्टार्ट क्विज (जादू से प्रश्न दिखाना) ---
+  window.startQuiz = function() {
+      // स्टार्ट बटन छुपाएं
+      let btn = document.querySelector('.btn-quiz');
+      if(btn) btn.style.display = 'none';
+
+      // क्विज वाला डिब्बा दिखाएं
+      let container = document.getElementById('quiz-container');
+      if(container) container.style.display = 'block';
+      
+      // पुरानी चीजें साफ़ करें और खाली जगह ढूँढें
+      let qArea = document.getElementById('questions-area');
+      if(qArea) {
+          qArea.innerHTML = ""; // पुराना साफ़
+
+          // लूप चलाकर प्रश्न बनाएं
+          questionsList.forEach((item, index) => {
+              let html = `
+                <div style="margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 15px;">
+                    <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">${item.question}</p>
+                    ${item.options.map(opt => `
+                        <label style="display:block; margin: 5px 0; background:#f9f9f9; padding:10px; border-radius:5px; cursor:pointer;">
+                            <input type="radio" name="q${index}" value="${opt}" style="transform: scale(1.2); margin-right: 10px;"> ${opt}
+                        </label>
+                    `).join('')}
+                </div>
+              `;
+              qArea.innerHTML += html;
+          });
+      } else {
+          alert("Error: questions-area नहीं मिला! (क्या आपने HTML में div डाला?)");
+      }
   }
 
-  // --- 3. सबमिट क्विज (सख्त सिक्योरिटी - One Attempt Only) ---
+  // --- 4. सबमिट क्विज (ऑटोमैटिक चेकिंग) ---
   window.submitQuiz = function() {
       let score = 0;
+      let totalQ = questionsList.length;
+      let marksPerQ = 10; 
 
-      // Q1 चेक (सही जवाब: Na या सोडियम)
-      // नोट: अपनी HTML में value="Na" चेक कर लेना
-      let q1 = document.querySelector('input[name="q1"]:checked');
-      if (q1 && (q1.value === "Na" || q1.value === "सोडियम")) { score += 10; }
+      // ऑटोमैटिक चेक
+      questionsList.forEach((item, index) => {
+          let selected = document.querySelector(`input[name="q${index}"]:checked`);
+          if (selected && selected.value === item.answer) {
+              score += marksPerQ;
+          }
+      });
 
-      // Q2 चेक (सही जवाब: 10)
-      let q2 = document.querySelector('input[name="q2"]:checked');
-      if (q2 && q2.value === "10") { score += 10; }
-
-      // नाम उठाएं
+      // नाम चेक
       let nameInput = document.getElementById("studentName");
       let name = nameInput ? nameInput.value.trim() : "";
       
-      if (!name) { 
-          alert("कृपया अपना नाम लिखें!"); 
-          return; 
-      }
+      if (!name) { alert("कृपया अपना नाम लिखें!"); return; }
 
-      // --- डुप्लीकेट चेक (क्या इसने पहले टेस्ट दिया है?) ---
+      // डेटाबेस में भेजना (One Attempt Only)
       db.ref('students').orderByChild('name').equalTo(name).once('value', (snapshot) => {
-          
           if (snapshot.exists()) {
-              // ❌ अगर नाम मिला -> मतलब पहले टेस्ट दे चुका है
-              alert("🚫 " + name + ", आप पहले ही टेस्ट दे चुके हैं!\nदुबारा टेस्ट देने की अनुमति नहीं है।");
-              location.reload(); // पेज रिफ्रेश कर दें
-
+              alert("🚫 " + name + ", आप पहले ही टेस्ट दे चुके हैं!");
+              location.reload();
           } else {
-              // ✅ अगर नाम नहीं मिला -> मतलब पहली बार आया है -> स्कोर सेव करें
               db.ref('students').push({
                   name: name,
                   score: score,
                   time: Date.now()
               }).then(() => {
-                  alert("✅ बधाई हो! आपका टेस्ट सबमिट हो गया है।\nScore: " + score);
-                  
-                  // क्विज छुपाएं और लीडरबोर्ड दिखाएं
-                  document.getElementById('quiz-container').style.display = 'none';
-                  document.getElementById('leaderboard-section').style.display = 'block';
-                  
-                  // पेज रीलोड न करें ताकि वह अपना रैंक देख सके
-              }).catch((error) => {
-                  alert("Error saving score: " + error.message);
+                  alert(`✅ सबमिट! आपका स्कोर: ${score} / ${totalQ * marksPerQ}`);
+                  location.reload();
+              }).catch((e) => {
+                  alert("Error: " + e.message);
               });
           }
       });
   }
 
-  // --- 4. लाइव लीडरबोर्ड (अपने आप अपडेट होगा) ---
+  // --- 5. लीडरबोर्ड (सेम पुराना कोड) ---
   const leaderboardTable = document.querySelector('#leaderboard-section table tbody');
-  
   if (leaderboardTable) {
       db.ref('students').orderByChild('score').limitToLast(10).on('value', (snapshot) => {
-          leaderboardTable.innerHTML = ""; // पुरानी लिस्ट साफ़
+          leaderboardTable.innerHTML = "";
           let students = [];
-          
-          snapshot.forEach((child) => {
-              students.push(child.val());
-          });
-          
-          // सॉर्ट करें (Topper सबसे ऊपर)
-          students.sort((a, b) => b.score - a.score);
-
-          // टेबल में डालें
-          students.forEach((student, index) => {
-              let rank = index + 1;
-              let row = `
-                <tr style="border-bottom: 1px solid #eee;">
-                    <td style="padding: 10px;">#${rank}</td>
-                    <td style="padding: 10px; font-weight: bold;">${student.name}</td>
-                    <td style="padding: 10px; color: green; font-weight:bold;">${student.score}</td>
-                </tr>`;
-              leaderboardTable.innerHTML += row;
+          snapshot.forEach(c => students.push(c.val()));
+          students.sort((a, b) => b.score - a.score); 
+          students.forEach((s, i) => {
+              leaderboardTable.innerHTML += `<tr><td>#${i+1}</td><td>${s.name}</td><td>${s.score}</td></tr>`;
           });
       });
 }
@@ -885,6 +883,7 @@ const firebaseConfig = {
 </body>
 
 </html>
+
 
 
 
