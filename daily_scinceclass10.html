@@ -3,43 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Science Quiz Class 10</title>
+    <title>Revento Academy - Science Test</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #e0f7fa; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .quiz-box { background: white; width: 100%; max-width: 500px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; border-top: 6px solid #00acc1; }
-        h2 { color: #006064; margin-top: 0; font-size: 24px; }
-        .q-info { color: #555; font-size: 14px; margin-bottom: 15px; font-weight: bold; }
-        .question { font-size: 19px; font-weight: 600; margin: 20px 0; color: #333; line-height: 1.4; }
-        button { width: 100%; padding: 14px; margin: 8px 0; border: 2px solid #e0e0e0; border-radius: 10px; background: white; cursor: pointer; font-size: 16px; transition: 0.2s; color: #444; font-weight: 500; text-align: left; }
-        button:hover { background: #f0f4f8; border-color: #b0bec5; }
-        .correct { background: #d4edda !important; border-color: #28a745 !important; color: #155724 !important; }
-        .wrong { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24 !important; }
-        #next-btn { background: #00acc1; color: white; border: none; font-weight: bold; text-align: center; display: none; margin-top: 20px; }
-        #next-btn:hover { background: #00838f; }
-        .result { display: none; }
-        .score-big { font-size: 40px; color: #00acc1; font-weight: bold; display: block; margin: 10px 0; }
-        .home-btn { display: inline-block; margin-top: 20px; text-decoration: none; color: white; background: #333; padding: 10px 20px; border-radius: 5px; }
+        /* "खतरनाक" डार्क थीम स्टाइल */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #121212; /* गहरा काला बैकग्राउंड */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            color: white;
+        }
+
+        .quiz-box {
+            background: #1e1e1e; /* कार्ड का रंग */
+            width: 100%;
+            max-width: 480px;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); /* नीयन चमक */
+            border: 1px solid #333;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* टॉप हेडर डिज़ाइन */
+        .header-badge {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(255, 87, 34, 0.4);
+        }
+
+        h1 {
+            margin: 5px 0 0;
+            font-size: 26px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        h3 {
+            margin: 5px 0 20px;
+            font-size: 16px;
+            color: #ccc;
+            font-weight: 400;
+        }
+
+        .question-box {
+            background: #252525;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid #00d2ff;
+        }
+
+        .question {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        /* ऑप्शन बटन */
+        button.option-btn {
+            width: 100%;
+            padding: 14px 15px;
+            margin: 8px 0;
+            border: 1px solid #444;
+            border-radius: 10px;
+            background: #2c2c2c;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        button.option-btn:hover {
+            background: #333;
+            border-color: #00d2ff;
+            transform: translateX(5px); /* होवर पर थोड़ा हिलेगा */
+        }
+
+        /* सही/गलत रंग */
+        .correct { background: rgba(46, 125, 50, 0.9) !important; border-color: #00e676 !important; color: white !important; }
+        .wrong { background: rgba(198, 40, 40, 0.9) !important; border-color: #ff5252 !important; color: white !important; }
+
+        /* अगला बटन */
+        #next-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .result-box { display: none; }
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            background: #252525;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            border: 4px solid #00d2ff;
+            font-size: 32px;
+            font-weight: bold;
+            color: #00d2ff;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+        }
     </style>
 </head>
 <body>
 
 <div class="quiz-box">
+    
+    <div class="header-badge">LIVE TEST</div>
+    <h1>REVENTO ACADEMY</h1>
+    <h3>Daily Mock Test • Science (Class 10)</h3>
+    <hr style="border-color: #333; opacity: 0.5;">
+
     <div id="quiz">
-        <h2>🔬 Science Daily Test</h2>
-        <div class="q-info">Class 10th | Most Important Questions</div>
-        <p id="q-count" style="color: #0097a7; font-weight: bold;">Question 1 / 15</p>
-        <div class="question" id="q-text">Loading...</div>
+        <div style="display: flex; justify-content: space-between; color: #888; font-size: 14px; margin-bottom: 10px;">
+            <span id="q-progress">Question 01/15</span>
+            <span>Target: 12+</span>
+        </div>
+
+        <div class="question-box">
+            <div class="question" id="q-text">Loading question...</div>
+        </div>
+
         <div id="options"></div>
-        <button id="next-btn" onclick="nextQuestion()">NEXT QUESTION ➡</button>
+        <button id="next-btn" onclick="nextQuestion()">NEXT QUESTION ➤</button>
     </div>
 
-    <div id="result" class="result">
-        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Trophy" width="80">
-        <h2 style="color: #2e7d32; margin-top: 10px;">टेस्ट पूरा हुआ! 🎉</h2>
-        <span class="score-big" id="score">0/15</span>
-        <p>अपना स्कोर Screenshot लेकर ग्रुप में भेजें!</p>
-        <button onclick="location.reload()" style="background: #00acc1; color: white; text-align: center;">🔄 फिर से कोशिश करें</button>
+    <div id="result" class="result-box">
+        <h2 style="color: #00e676;">TEST COMPLETED! 🏆</h2>
+        <p style="color: #aaa;">Your Final Score</p>
+        
+        <div class="score-circle">
+            <span id="score">0</span>
+        </div>
+
+        <p>स्क्रीनशॉट लेकर ग्रुप में भेजें! 🔥</p>
+        
+        <button onclick="location.reload()" style="background: #333; color: white; border: 1px solid #555; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 10px;">🔄 Re-Attempt Test</button>
     </div>
+
 </div>
 
 <script>
@@ -66,14 +207,15 @@
 
     function loadQ() {
         const data = questions[current];
-        document.getElementById("q-count").innerText = `Question ${current + 1} / ${questions.length}`;
+        document.getElementById("q-progress").innerText = `Question ${current + 1}/${questions.length}`;
         document.getElementById("q-text").innerText = data.q;
         const optDiv = document.getElementById("options");
         optDiv.innerHTML = "";
         
         data.options.forEach((opt, idx) => {
             const btn = document.createElement("button");
-            btn.innerText = opt;
+            btn.className = "option-btn";
+            btn.innerHTML = `<span style="margin-right:10px; color:#00d2ff; font-weight:bold;">${String.fromCharCode(65+idx)}.</span> ${opt}`;
             btn.onclick = () => check(btn, idx);
             optDiv.appendChild(btn);
         });
@@ -82,9 +224,16 @@
 
     function check(btn, idx) {
         const correct = questions[current].answer;
-        const allBtns = document.querySelectorAll("#options button");
-        if(idx === correct) { btn.classList.add("correct"); score++; }
-        else { btn.classList.add("wrong"); allBtns[correct].classList.add("correct"); }
+        const allBtns = document.querySelectorAll(".option-btn");
+        
+        if(idx === correct) { 
+            btn.classList.add("correct"); 
+            score++; 
+        } else { 
+            btn.classList.add("wrong"); 
+            allBtns[correct].classList.add("correct"); 
+        }
+        
         allBtns.forEach(b => b.disabled = true);
         document.getElementById("next-btn").style.display = "block";
     }
@@ -95,7 +244,7 @@
         else {
             document.getElementById("quiz").style.display = "none";
             document.getElementById("result").style.display = "block";
-            document.getElementById("score").innerText = `${score} / ${questions.length}`;
+            document.getElementById("score").innerText = `${score}/${questions.length}`;
         }
     }
     loadQ();
