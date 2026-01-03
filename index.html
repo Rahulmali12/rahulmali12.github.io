@@ -577,7 +577,28 @@
             <div class="card" style="border-color: var(--gold);">
                 <h3>Daily Mock Test - 01</h3>
                 <p>Check Your Rank Now!</p>
-                <a href="YOUR_FORM_LINK" class="btn btn-quiz">⚡ Start Quiz</a>
+               <button onclick="startQuiz()" class="btn btn-quiz" style="cursor: pointer; background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px;">
+    ⚡ Start Quiz
+</button>
+
+<div id="leaderboard-section" style="margin-top: 20px; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <h4 style="margin: 0 0 10px 0; color: #333; font-size: 16px; border-bottom: 2px solid #eee; padding-bottom: 5px;">
+        🏆 Live Top Rankers
+    </h4>
+    
+    <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left;">
+        <thead>
+            <tr style="background-color: #f8f9fa; color: #555;">
+                <th style="padding: 8px; border-bottom: 1px solid #ddd;">#</th>
+                <th style="padding: 8px; border-bottom: 1px solid #ddd;">Name</th>
+                <th style="padding: 8px; border-bottom: 1px solid #ddd;">Score</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+            <tr><td colspan="3" style="padding:10px; text-align:center;">Loading Ranks...</td></tr>
+        </tbody>
+    </table>
+</div>
             </div>
         </div>
 
@@ -749,6 +770,7 @@ function saveScoreToFirebase(studentName, finalScore) {
 </body>
 
 </html>
+
 
 
 
