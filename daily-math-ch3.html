@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revento Academy - Math Ch-3</title>
+    
+    <meta property="og:title" content="💻 Math Ch-3: रैखिक समीकरण (Linear Equations)">
+    <meta property="og:description" content="Class 10th Math Chapter 3 (RBSE). 25 Board Exam Questions. Target: 20+ Correct!">
+    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/900/900967.png">
+
+    <style>
+        /* "The Matrix" Theme (Hacker Style) */
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+        body {
+            font-family: 'Share Tech Mono', monospace; /* Hacker Font */
+            background-color: #000;
+            background-image: linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            color: #0f0; /* Matrix Green */
+        }
+
+        .quiz-container {
+            background: rgba(0, 20, 0, 0.9);
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            border: 2px solid #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            position: relative;
+        }
+
+        /* Glitch Title */
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px #003300;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin: 10px 0 20px;
+            font-size: 16px;
+            color: #0a0;
+        }
+
+        .question-box {
+            background: #001100;
+            padding: 15px;
+            border: 1px dashed #0f0;
+            margin: 20px 0;
+        }
+
+        .question {
+            font-size: 18px;
+            line-height: 1.4;
+            color: #fff; /* प्रश्न सफेद रंग में ताकि पढ़ने में आए */
+        }
+
+        /* Options */
+        button.option-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: #000;
+            border: 1px solid #0f0;
+            color: #0f0;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            text-align: left;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        button.option-btn:hover {
+            background: #0f0;
+            color: #000; /* Hover पर काला टेक्स्ट */
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        /* Correct/Wrong Logic */
+        .correct { background: #0f0 !important; color: #000 !important; border-color: #0f0 !important; }
+        .wrong { background: #f00 !important; color: #fff !important; border-color: #f00 !important; }
+
+        #next-btn {
+            width: 100%;
+            padding: 15px;
+            background: #0f0;
+            color: #000;
+            border: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px #0f0;
+        }
+
+        .result-box { display: none; text-align: center; }
+        .score-display {
+            font-size: 80px;
+            color: #0f0;
+            text-shadow: 0 0 20px #0f0;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div style="font-size: 12px; color: #0f0; text-align: right;">SYSTEM: ONLINE 🟢</div>
+    <h1>REVENTO ACADEMY</h1>
+    <h3>> EXECUTE: MATH_CH3_TEST.EXE</h3>
+    
+    <div id="quiz">
+        <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">
+            <span id="q-progress">LOADING...</span>
+            <span>LEVEL: HARD</span>
+        </div>
+
+        <div class="question-box">
+            <div class="question" id="q-text">Loading Data...</div>
+        </div>
+
+        <div id="options"></div>
+        <button id="next-btn" onclick="nextQuestion()">>> NEXT CODE</button>
+    </div>
+
+    <div id="result" class="result-box">
+        <h2 style="color: #fff;">SYSTEM HACKED! 🔓</h2>
+        <p>MISSION REPORT:</p>
+        <div class="score-display" id="score">0</div>
+        <p>OUT OF 25</p>
+        <button onclick="location.reload()" style="background: transparent; border: 1px solid #0f0; color: #0f0; padding: 10px 20px; cursor: pointer; margin-top: 20px; font-family: inherit;">RESTART SYSTEM</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "1. दो चरों वाले रैखिक समीकरण का मानक रूप (Standard Form) क्या है?", options: ["ax + by + c = 0", "ax² + bx + c = 0", "ax + b = 0", "ax = by"], answer: 0 },
+        { q: "2. यदि a₁/a₂ ≠ b₁/b₂ हो, तो समीकरण निकाय का हल कैसा होगा?", options: ["कोई हल नहीं", "अद्वितीय हल (Unique Solution)", "अनंत हल", "इनमें से कोई नहीं"], answer: 1 },
+        { q: "3. यदि रेखाएँ संपाती (Coincident) हों, तो उनके कितने हल होंगे?", options: ["एक", "दो", "कोई नहीं", "अपरिमित रूप से अनेक"], answer: 3 },
+        { q: "4. समीकरण x + y = 14 और x - y = 4 का हल क्या है?", options: ["x=9, y=5", "x=10, y=4", "x=8, y=6", "x=7, y=7"], answer: 0 },
+        { q: "5. यदि a₁/a₂ = b₁/b₂ ≠ c₁/c₂ हो, तो रेखाएँ कैसी होंगी?", options: ["प्रतिच्छेदी", "संपाती", "समांतर (Parallel)", "लंबवत"], answer: 2 },
+        { q: "6. रैखिक समीकरण युग्म 2x + 3y = 9 और 4x + 6y = 18 कैसा है?", options: ["संगत (Consistent)", "असंगत (Inconsistent)", "दोनों", "कहा नहीं जा सकता"], answer: 0 },
+        { q: "7. k के किस मान के लिए समीकरण x + 2y = 3 और 5x + ky = 15 के अनंत हल होंगे?", options: ["5", "10", "2", "6"], answer: 1 },
+        { q: "8. एक रैखिक समीकरण का ग्राफ (Graph) क्या होता है?", options: ["सरल रेखा (Straight Line)", "परवलय", "वृत्त", "वक्र"], answer: 0 },
+        { q: "9. यदि दो रेखाएँ एक बिंदु पर प्रतिच्छेद करती हैं, तो समीकरण निकाय कैसा होता है?", options: ["असंगत", "संगत (Consistent)", "आश्रित", "कोई नहीं"], answer: 1 },
+        { q: "10. समीकरण 3x - y = 3 और 9x - 3y = 9 के कितने हल हैं?", options: ["एक", "दो", "अनंत", "कोई नहीं"], answer: 2 },
+        { q: "11. समीकरण युग्म x = a और y = b का ग्राफ किन बिंदुओं पर काटता है?", options: ["(a, b)", "(b, a)", "(a, 0)", "(0, b)"], answer: 0 },
+        { q: "12. यदि 2x + 3y = 11 और 2x - 4y = -24 हो, तो m का मान ज्ञात करें यदि y = mx + 3 हो?", options: ["1", "-1", "2", "0"], answer: 1 },
+        { q: "13. दो संख्याओं का अंतर 26 है और एक संख्या दूसरी की तीन गुनी है। संख्याएं क्या हैं?", options: ["39, 13", "30, 4", "26, 0", "36, 10"], answer: 0 },
+        { q: "14. पिता की आयु पुत्र की आयु की तिगुनी है। 5 वर्ष बाद वह ढ़ाई गुनी हो जाएगी। यह स्थिति किस अध्याय की समस्या है?", options: ["द्विघात समीकरण", "रैखिक समीकरण युग्म", "समांतर श्रेढ़ी", "बहुपद"], answer: 1 },
+        { q: "15. समीकरण x + y = 5 के कितने हल हो सकते हैं?", options: ["1", "2", "3", "अनंत"], answer: 3 },
+        { q: "16. समीकरण x = 0 का ग्राफ कौन सा अक्ष है?", options: ["X-अक्ष", "Y-अक्ष", "दोनों", "मूल बिंदु"], answer: 1 },
+        { q: "17. असंगत समीकरण युग्म (Inconsistent Pair) का हल होता है:", options: ["एक हल", "अनंत हल", "कोई हल नहीं (No Solution)", "दो हल"], answer: 2 },
+        { q: "18. यदि 2x + 3y = 7 और (k-1)x + (k+2)y = 3k के अनंत हल हों, तो k का मान क्या है?", options: ["5", "6", "7", "4"], answer: 2 },
+        { q: "19. 5 पेंसिल और 7 पेन का कुल मूल्य 50 रुपये है। इसे बीजगणितीय रूप में कैसे लिखेंगे?", options: ["5x + 7y = 50", "7x + 5y = 50", "x + y = 50", "5x - 7y = 50"], answer: 0 },
+        { q: "20. विलोपन विधि (Elimination Method) में हम क्या करते हैं?", options: ["एक चर को विलुप्त करना", "ग्राफ बनाना", "मान प्रतिस्थापित करना", "वज्र गुणन"], answer: 0 },
+        { q: "21. क्या रैखिक समीकरण युग्म का हल ग्राफ विधि से निकाला जा सकता है?", options: ["हाँ", "नहीं", "केवल कभी-कभी", "असंभव"], answer: 0 },
+        { q: "22. समीकरण 3x + 2k y = 2 और 2x + 5y + 1 = 0 द्वारा दी जाने वाली रेखाएँ परस्पर समांतर हैं, तो k का मान?", options: ["15/4", "3/2", "5/4", "2/5"], answer: 0 }, /* Note: a1/a2 = b1/b2 => 3/2 = 2k/5 => 15 = 4k => k=15/4 */
+        { q: "23. y - 3 = 0 का ग्राफ कैसा होगा?", options: ["x-अक्ष के समांतर", "y-अक्ष के समांतर", "मूल बिंदु से गुजरता हुआ", "तिरछा"], answer: 0 },
+        { q: "24. दो संपूरक कोणों (Supplementary Angles) का योग कितना होता है?", options: ["90°", "180°", "360°", "100°"], answer: 1 },
+        { q: "25. वज्र-गुणन विधि (Cross Multiplication) का सूत्र क्या है?", options: ["x/(b₁c₂-b₂c₁) = y/(c₁a₂-c₂a₁) = 1/(a₁b₂-a₂b₁)", "x/(a₁a₂) = y/(b₁b₂)", "x+y = xy", "इनमें से कोई नहीं"], answer: 0 }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function loadQ() {
+        const data = questions[current];
+        document.getElementById("q-progress").innerText = `CODE BLOCK: ${current + 1} / ${questions.length}`;
+        document.getElementById("q-text").innerText = data.q;
+        const optDiv = document.getElementById("options");
+        optDiv.innerHTML = "";
+        
+        data.options.forEach((opt, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerHTML = `<span style="margin-right:15px;">[ ${String.fromCharCode(65+idx)} ]</span> ${opt}`;
+            btn.onclick = () => check(btn, idx);
+            optDiv.appendChild(btn);
+        });
+        document.getElementById("next-btn").style.display = "none";
+    }
+
+    function check(btn, idx) {
+        const correct = questions[current].answer;
+        const allBtns = document.querySelectorAll(".option-btn");
+        
+        if(idx === correct) { 
+            btn.classList.add("correct"); 
+            score++; 
+        } else { 
+            btn.classList.add("wrong"); 
+            allBtns[correct].classList.add("correct"); 
+        }
+        
+        allBtns.forEach(b => b.disabled = true);
+        document.getElementById("next-btn").style.display = "block";
+    }
+
+    function nextQuestion() {
+        current++;
+        if(current < questions.length) loadQ();
+        else {
+            document.getElementById("quiz").style.display = "none";
+            document.getElementById("result").style.display = "block";
+            document.getElementById("score").innerText = `${score}`;
+        }
+    }
+    loadQ();
+</script>
+
+</body>
+</html>
