@@ -578,7 +578,7 @@
                 <h3>Daily Mock Test</h3>
                 <p>Check Your Rank Now!</p>
                <button onclick="startQuiz()" class="btn btn-quiz" style="cursor: pointer; background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px;">
-    ⚡ Start Quiz
+                                              ⚡ Start Quiz
 </button>
 
 <div id="leaderboard-section" style="display: none; margin-top: 20px; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
@@ -765,11 +765,49 @@ function saveScoreToFirebase(studentName, finalScore) {
     }).catch((error) => {
         console.error("Error saving score: ", error);
     });
+} // --- 2. क्विज सबमिट और स्कोर कैलकुलेट करने का फंक्शन ---
+function submitQuiz() {
+    let score = 0;
+    
+    // Q1 चेक करें (अगर सही है तो +10)
+    let q1 = document.querySelector('input[name="q1"]:checked');
+    if (q1 && q1.value === "correct") { score += 10; }
+
+    // Q2 चेक करें (अगर सही है तो +10)
+    let q2 = document.querySelector('input[name="q2"]:checked');
+    if (q2 && q2.value === "correct") { score += 10; }
+
+    // विद्यार्थी का नाम उठाएं
+    let name = document.getElementById("studentName").value;
+    if(name === "") { name = "Unknown Student"; } // अगर नाम खाली हो
+
+    // --- स्कोर को Firebase Database में भेजना ---
+    // (सुनिश्चित करें कि ऊपर Firebase config वाला कोड पहले से डला हो)
+    
+    firebase.database().ref('students').push({
+        name: name,
+        score: score,
+        time: Date.now()
+    }).then(() => {
+        alert("बधाई हो! आपका स्कोर सबमिट हो गया है: " + score);
+        
+        // --- जादू यहाँ है (Hide & Show) ---
+        
+        // 1. क्विज के सवालों को छुपा दें
+        document.getElementById("quiz-container").style.display = "none";
+        
+        // 2. अब लीडरबोर्ड को दिखाएं
+        document.getElementById("leaderboard-section").style.display = "block";
+
+    }).catch((error) => {
+        alert("Error saving score: " + error.message);
+    });
 }
 </script>  
 </body>
 
 </html>
+
 
 
 
