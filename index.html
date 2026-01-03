@@ -579,17 +579,19 @@
                 <p>Check Your Rank Now!</p>
                <button onclick="startQuiz()" class="btn btn-quiz" style="cursor: pointer; background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px;">
                                               ⚡ Start Quiz
-</button><div id="quiz-container" style="display: none; margin-top: 20px; background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+</button><div id="quiz-container" style="display: none; color: blue; margin-top: 20px; background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
     <h3 style="color: #d32f2f;">📝 आज का टेस्ट</h3>
     <hr>
     
-    <p><strong>Q1. भारत का राष्ट्रीय खेल क्या है?</strong></p>
-    <label><input type="radio" name="q1" value="hockey"> हॉकी</label><br>
-    <label><input type="radio" name="q1" value="cricket"> क्रिकेट</label><br>
+    <p><strong>निम्नलिखित में से कौन सी धातु चाकू से आसानी से काटी जा सकती है?</strong></p>
+    <label><input type="radio" name="q1" value="लोहा">(Fe)</label><br>
+    <label><input type="radio" name="q1" value="तांबा"> (Cu)</label><br>
+   <label><input type="radio" name="q1" value="सोडियम"> (Na)</label><br>
 
     <p><strong>Q2. 5 + 5 = ?</strong></p>
     <label><input type="radio" name="q2" value="10"> 10</label><br>
     <label><input type="radio" name="q2" value="11"> 11</label><br>
+        <label><input type="radio" name="q2" value="12"> 12</label><br>
     
     <br>
     <input type="text" id="studentName" placeholder="अपना नाम लिखें" style="width: 100%; padding: 8px; margin-bottom: 10px;">
@@ -783,13 +785,13 @@ function saveScoreToFirebase(studentName, finalScore) {
 function submitQuiz() {
     let score = 0;
     
-    // Q1 चेक करें (अगर सही है तो +10)
+    // Q1 चेक करें (अगर सही है तो +2)
     let q1 = document.querySelector('input[name="q1"]:checked');
-    if (q1 && q1.value === "correct") { score += 10; }
+    if (q1 && q1.value === "सोडियम") { score += 2; }
 
-    // Q2 चेक करें (अगर सही है तो +10)
+    // Q2 चेक करें (अगर सही है तो +2)
     let q2 = document.querySelector('input[name="q2"]:checked');
-    if (q2 && q2.value === "correct") { score += 10; }
+    if (q2 && q2.value === "10") { score += 2; }
 
     // विद्यार्थी का नाम उठाएं
     let name = document.getElementById("studentName").value;
@@ -821,6 +823,7 @@ function submitQuiz() {
 </body>
 
 </html>
+
 
 
 
