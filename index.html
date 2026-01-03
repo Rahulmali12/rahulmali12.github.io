@@ -579,9 +579,8 @@
                 <p>Check Your Rank Now!</p>
                <button onclick="startQuiz()" class="btn btn-quiz" style="cursor: pointer; background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px;">
                                               ⚡ Start Quiz
-</button>
-   <div id="quiz-container" style="display: none; margin-top: 20px; background: #fff; padding: 20px; border: 1px solid #ddd;">
-    <h3>📝 आज का टेस्ट</h3>
+</button><div id="quiz-container" style="display: none; margin-top: 20px; background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+    <h3 style="color: #d32f2f;">📝 आज का टेस्ट</h3>
     <hr>
     
     <p><strong>Q1. भारत का राष्ट्रीय खेल क्या है?</strong></p>
@@ -593,8 +592,11 @@
     <label><input type="radio" name="q2" value="11"> 11</label><br>
     
     <br>
-    <input type="text" id="studentName" placeholder="अपना नाम लिखें" style="padding: 5px;">
-    <button onclick="submitQuiz()" style="background: green; color: white; padding: 5px 10px;">Submit</button>
+    <input type="text" id="studentName" placeholder="अपना नाम लिखें" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+    <button onclick="submitQuiz()" style="background: green; color: white; padding: 10px 20px; border: none; cursor: pointer; width: 100%;">
+        ✅ Submit Quiz
+    </button>
+</div>
 </div>             
 <div id="leaderboard-section" style="display: none; margin-top: 20px; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
     <h4 style="margin: 0 0 10px 0; color: #333; font-size: 16px; border-bottom: 2px solid #eee; padding-bottom: 5px;">
@@ -814,6 +816,7 @@ function submitQuiz() {
 </body>
 
 </html>
+
 
 
 
