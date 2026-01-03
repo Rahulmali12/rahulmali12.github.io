@@ -775,112 +775,76 @@ const firebaseConfig = {
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
-    // --- कनेक्शन चेक करने वाला कोड ---
-try {
-    const checkDb = firebase.database();
-    console.log("Firebase is Ready!"); 
-    alert("✅ बधाई हो! Firebase सही से कनेक्ट हो गया है।");
-} catch (error) {
-    alert("❌ गलती पकड़ी गई: " + error.message);
-    console.error(error);
-}
-  const db = firebase.database();
+  // --- 1. कनेक्शन चेक (ताकि आपको पता चले सब ठीक है) ---
+  console.log("Firebase is Ready!");
+  alert("✅ बधाई हो! Firebase सही से कनेक्ट हो गया है।");
 
-  // 3. लीडरबोर्ड का जादू (यह कोड लिस्ट को अपडेट करेगा)
-  const leaderboardTable = document.getElementById('leaderboard-body');
+  // --- 2. स्टार्ट क्विज फंक्शन (बटन इसी से चलेगा) ---
+  function startQuiz() {
+      // बटन छुपाएं
+      let btn = document.querySelector('.btn-quiz');
+      if(btn) btn.style.display = 'none';
 
-  db.ref('students').orderByChild('score').limitToLast(10).on('value', (snapshot) => {
-    if(leaderboardTable) {
-        leaderboardTable.innerHTML = ""; 
-        let students = [];
-        snapshot.forEach((child) => { students.push(child.val()); });
-        students.sort((a, b) => b.score - a.score); // टॉपर ऊपर
+      // क्विज दिखाएं
+      let container = document.getElementById('quiz-container');
+      if(container) container.style.display = 'block';
+  }
 
-        students.forEach((student, index) => {
-            let rank = index + 1;
-            let row = `<tr><td>#${rank}</td><td>${student.name}</td><td>${student.score}</td></tr>`;
-            leaderboardTable.innerHTML += row;
-        });
-    }
-  });
-    // --- यह कोड स्कोर को डेटाबेस में भेजेगा ---
-function saveScoreToFirebase(studentName, finalScore) {
-    if(!studentName || studentName === "") {
-        studentName = "Anonymous Student"; // अगर नाम न हो तो यह नाम जाएगा
-    }
-    
-    // डेटाबेस में भेजना
-    db.ref('students').push({
-        name: studentName,
-        score: finalScore
-    }).then(() => {
-        console.log("Score Saved Successfully!");
-        // आप चाहे तो यहाँ alert भी लगा सकते हैं
-        // alert("आपका रैंक लीडरबोर्ड में जुड़ गया है!");
-    }).catch((error) => {
-        console.error("Error saving score: ", error);
-    });
-} // --- 2. क्विज सबमिट और स्कोर कैलकुलेट करने का फंक्शन ---
- function startQuiz() {
-    document.querySelector('.btn-quiz').style.display = 'none';
-    document.getElementById('quiz-container').style.display = 'block';
-}
-//    
-// --- 3. सख्त सिक्योरिटी वाला फंक्शन (One Attempt Only) ---
-function submitQuiz() {
-    let score = 0;
-    
-    // Q1 चेक (सही जवाब 'hockey' है)
-    let q1 = document.querySelector('input[name="q1"]:checked');
-    if (q1 && q1.value === "hockey") { score += 10; }
+  // --- 3. सबमिट क्विज (सख्त सिक्योरिटी वाला - One Attempt) ---
+  function submitQuiz() {
+      let score = 0;
+      
+      // Q1 चेक (सही जवाब 'hockey' है) - इसे अपने सवाल के हिसाब से बदलें
+      let q1 = document.querySelector('input[name="q1"]:checked');
+      if (q1 && q1.value === "hockey") { score += 10; } // यहाँ सही value लिखें
 
-    // Q2 चेक (सही जवाब '10' है)
-    let q2 = document.querySelector('input[name="q2"]:checked');
-    if (q2 && q2.value === "10") { score += 10; }
+      // Q2 चेक (सही जवाब '10' है)
+      let q2 = document.querySelector('input[name="q2"]:checked');
+      if (q2 && q2.value === "10") { score += 10; }
 
-    // Q3 चेक (अगर आपने और सवाल जोड़े हैं)
-    // ...
+      // नाम उठाएं
+      let nameInput = document.getElementById("studentName");
+      let name = nameInput.value.trim(); 
+      
+      if (!name) { 
+          alert("कृपया अपना नाम लिखें!"); 
+          return; 
+      }
 
-    // विद्यार्थी का नाम उठाएं और साफ़ करें (Trim)
-    let nameInput = document.getElementById("studentName");
-    let name = nameInput.value.trim(); 
-    
-    if (!name) { 
-        alert("कृपया अपना नाम लिखें!"); 
-        return; 
-    }
+      // --- डुप्लीकेट चेक करना ---
+      db.ref('students').orderByChild('name').equalTo(name).once('value', (snapshot) => {
+          if (snapshot.exists()) {
+              // अगर पहले से दिया है
+              alert("🚫 " + name + ", आप पहले ही टेस्ट दे चुके हैं!");
+              location.reload(); // पेज रिफ्रेश कर दें
+          } else {
+              // अगर पहली बार है -> स्कोर सेव करें
+              db.ref('students').push({
+                  name: name,
+                  score: score,
+                  time: Date.now()
+              }).then(() => {
+                  alert("✅ स्कोर सबमिट हो गया: " + score);
+                  finishQuiz(); // क्विज बंद करें
+              }).catch((error) => {
+                  alert("Error: " + error.message);
+              });
+          }
+      });
+  }
 
-    // --- यहाँ हम चेक करेंगे कि क्या इसने पहले टेस्ट दिया है? ---
-    db.ref('students').orderByChild('name').equalTo(name).once('value', (snapshot) => {
-        
-        if (snapshot.exists()) {
-            // ❌ अगर नाम मिला -> मतलब पहले टेस्ट दे चुका है
-            alert("🚫 रुकिए! " + name + ", आप पहले ही यह टेस्ट दे चुके हैं।\nदुबारा टेस्ट देने की अनुमति नहीं है।");
-            
-            // चाहे तो फॉर्म खाली कर दें या बंद कर दें
-            // location.reload(); // पेज रीफ्रेश कर सकते हैं
-
-        } else {
-            // ✅ अगर नाम नहीं मिला -> मतलब पहली बार आया है -> स्कोर सेव करें
-            db.ref('students').push({
-                name: name,
-                score: score,
-                time: Date.now()
-            }).then(() => {
-                alert("✅ बधाई हो! आपका टेस्ट सबमिट हो गया है।\nScore: " + score);
-                
-                // क्विज छुपाएं और लीडरबोर्ड दिखाएं
-                document.getElementById('quiz-container').style.display = 'none';
-                document.getElementById('leaderboard-section').style.display = 'block';
-            });
-        }
-    });
+  // --- 4. क्विज खत्म होने पर ---
+  function finishQuiz() {
+      document.getElementById('quiz-container').style.display = 'none';
+      document.getElementById('leaderboard-section').style.display = 'block';
+  } 
 }
 }
 </script>  
 </body>
 
 </html>
+
 
 
 
