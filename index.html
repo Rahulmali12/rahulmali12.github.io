@@ -767,83 +767,126 @@ const firebaseConfig = {
   appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
   measurementId: "G-4L8YC6J095"
 };
-
 // Initialize Firebase
-
   // 
   // Firebase चालू करें
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
-  // --- 1. कनेक्शन चेक (ताकि आपको पता चले सब ठीक है) ---
-  console.log("Firebase is Ready!");
-  alert("✅ बधाई हो! Firebase सही से कनेक्ट हो गया है।");
+// ===================================================
+  //  REVENTO QUIZ SYSTEM (FINAL CODE)
+  // ===================================================
 
-  // --- 2. स्टार्ट क्विज फंक्शन (बटन इसी से चलेगा) ---
-  function startQuiz() {
-      // बटन छुपाएं
+  // --- 1. डेटाबेस कनेक्ट करें ---
+  const db = firebase.database();
+  console.log("✅ Database Connected Successfully!");
+
+  // --- 2. स्टार्ट क्विज फंक्शन (बटन दबाने पर) ---
+  window.startQuiz = function() {
+      console.log("Start Button Clicked");
+      
+      // 1. बटन छुपाएं
       let btn = document.querySelector('.btn-quiz');
-      if(btn) btn.style.display = 'none';
+      if(btn) { btn.style.display = 'none'; }
 
-      // क्विज दिखाएं
+      // 2. क्विज दिखाएं
       let container = document.getElementById('quiz-container');
-      if(container) container.style.display = 'block';
+      if(container) { 
+          container.style.display = 'block'; 
+      } else {
+          alert("Error: क्विज वाला डिब्बा नहीं मिला!");
+      }
+
+      // 3. लीडरबोर्ड छुपाएं (ताकि ध्यान भटके नहीं)
+      let lb = document.getElementById('leaderboard-section');
+      if(lb) { lb.style.display = 'none'; }
   }
 
-  // --- 3. सबमिट क्विज (सख्त सिक्योरिटी वाला - One Attempt) ---
-  function submitQuiz() {
+  // --- 3. सबमिट क्विज (सख्त सिक्योरिटी - One Attempt Only) ---
+  window.submitQuiz = function() {
       let score = 0;
-      
-      // Q1 चेक (सही जवाब 'hockey' है) - इसे अपने सवाल के हिसाब से बदलें
-      let q1 = document.querySelector('input[name="q1"]:checked');
-      if (q1 && q1.value === "hockey") { score += 10; } // यहाँ सही value लिखें
 
-      // Q2 चेक (सही जवाब '10' है)
+      // Q1 चेक (सही जवाब: Na या सोडियम)
+      // नोट: अपनी HTML में value="Na" चेक कर लेना
+      let q1 = document.querySelector('input[name="q1"]:checked');
+      if (q1 && (q1.value === "Na" || q1.value === "सोडियम")) { score += 10; }
+
+      // Q2 चेक (सही जवाब: 10)
       let q2 = document.querySelector('input[name="q2"]:checked');
       if (q2 && q2.value === "10") { score += 10; }
 
       // नाम उठाएं
       let nameInput = document.getElementById("studentName");
-      let name = nameInput.value.trim(); 
+      let name = nameInput ? nameInput.value.trim() : "";
       
       if (!name) { 
           alert("कृपया अपना नाम लिखें!"); 
           return; 
       }
 
-      // --- डुप्लीकेट चेक करना ---
+      // --- डुप्लीकेट चेक (क्या इसने पहले टेस्ट दिया है?) ---
       db.ref('students').orderByChild('name').equalTo(name).once('value', (snapshot) => {
+          
           if (snapshot.exists()) {
-              // अगर पहले से दिया है
-              alert("🚫 " + name + ", आप पहले ही टेस्ट दे चुके हैं!");
+              // ❌ अगर नाम मिला -> मतलब पहले टेस्ट दे चुका है
+              alert("🚫 " + name + ", आप पहले ही टेस्ट दे चुके हैं!\nदुबारा टेस्ट देने की अनुमति नहीं है।");
               location.reload(); // पेज रिफ्रेश कर दें
+
           } else {
-              // अगर पहली बार है -> स्कोर सेव करें
+              // ✅ अगर नाम नहीं मिला -> मतलब पहली बार आया है -> स्कोर सेव करें
               db.ref('students').push({
                   name: name,
                   score: score,
                   time: Date.now()
               }).then(() => {
-                  alert("✅ स्कोर सबमिट हो गया: " + score);
-                  finishQuiz(); // क्विज बंद करें
+                  alert("✅ बधाई हो! आपका टेस्ट सबमिट हो गया है।\nScore: " + score);
+                  
+                  // क्विज छुपाएं और लीडरबोर्ड दिखाएं
+                  document.getElementById('quiz-container').style.display = 'none';
+                  document.getElementById('leaderboard-section').style.display = 'block';
+                  
+                  // पेज रीलोड न करें ताकि वह अपना रैंक देख सके
               }).catch((error) => {
-                  alert("Error: " + error.message);
+                  alert("Error saving score: " + error.message);
               });
           }
       });
   }
 
-  // --- 4. क्विज खत्म होने पर ---
-  function finishQuiz() {
-      document.getElementById('quiz-container').style.display = 'none';
-      document.getElementById('leaderboard-section').style.display = 'block';
-  } 
-}
+  // --- 4. लाइव लीडरबोर्ड (अपने आप अपडेट होगा) ---
+  const leaderboardTable = document.querySelector('#leaderboard-section table tbody');
+  
+  if (leaderboardTable) {
+      db.ref('students').orderByChild('score').limitToLast(10).on('value', (snapshot) => {
+          leaderboardTable.innerHTML = ""; // पुरानी लिस्ट साफ़
+          let students = [];
+          
+          snapshot.forEach((child) => {
+              students.push(child.val());
+          });
+          
+          // सॉर्ट करें (Topper सबसे ऊपर)
+          students.sort((a, b) => b.score - a.score);
+
+          // टेबल में डालें
+          students.forEach((student, index) => {
+              let rank = index + 1;
+              let row = `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px;">#${rank}</td>
+                    <td style="padding: 10px; font-weight: bold;">${student.name}</td>
+                    <td style="padding: 10px; color: green; font-weight:bold;">${student.score}</td>
+                </tr>`;
+              leaderboardTable.innerHTML += row;
+          });
+      });
+  }
 }
 </script>  
 </body>
 
 </html>
+
 
 
 
