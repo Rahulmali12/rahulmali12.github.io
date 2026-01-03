@@ -775,6 +775,11 @@ function saveScoreToFirebase(studentName, finalScore) {
         console.error("Error saving score: ", error);
     });
 } // --- 2. क्विज सबमिट और स्कोर कैलकुलेट करने का फंक्शन ---
+ function startQuiz() {
+    document.querySelector('.btn-quiz').style.display = 'none';
+    document.getElementById('quiz-container').style.display = 'block';
+}
+//    
 function submitQuiz() {
     let score = 0;
     
@@ -816,6 +821,7 @@ function submitQuiz() {
 </body>
 
 </html>
+
 
 
 
