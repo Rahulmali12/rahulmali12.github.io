@@ -6,61 +6,119 @@
 <title>Airforce Physics MCQ Quiz - 90 Questions</title>
 
 <style>
+*{box-sizing:border-box;}
+
 body{
 font-family: Arial;
-background:#e9f0ff;
-padding:20px;
+background:linear-gradient(135deg,#a8c0ff,#3f2b96);
+padding:25px;
 }
+
 .container{
-max-width:950px;
+max-width:980px;
 margin:auto;
 background:white;
-padding:25px;
-border-radius:12px;
-box-shadow:0 0 15px rgba(0,0,0,0.15);
+padding:28px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.25);
 }
+
 h1{
 text-align:center;
-color:#0b5ed7;
+color:#3f2b96;
+margin-bottom:8px;
 }
+
+.sub{
+text-align:center;
+color:#444;
+margin-bottom:20px;
+}
+
+.question-box{
+background:#f5f7ff;
+padding:15px;
+border-radius:12px;
+margin:12px 0;
+border:1px solid #dde3ff;
+}
+
 .question{
-margin:15px 0;
 font-weight:bold;
 color:#222;
+margin-bottom:10px;
 }
+
 .options label{
 display:block;
-margin-left:10px;
-margin-bottom:5px;
-}
-button{
-background:#0b5ed7;
-color:white;
-padding:12px 20px;
-border:none;
-border-radius:8px;
+padding:6px 10px;
+border-radius:6px;
 cursor:pointer;
-font-size:16px;
-margin-top:15px;
+transition:.2s;
 }
+
+.options input{
+margin-right:6px;
+}
+
+.options label:hover{
+background:#e9efff;
+}
+
+button{
+background:#3f2b96;
+color:white;
+padding:12px 25px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:17px;
+margin-top:18px;
+display:block;
+margin-left:auto;
+margin-right:auto;
+}
+
 button:hover{
-background:#0844a5;
+background:#2a1d6f;
 }
+
 #result{
 margin-top:20px;
 font-size:22px;
 font-weight:bold;
-color:green;
+text-align:center;
 }
-hr{margin:15px 0;}
+
+.correct{background:#d5ffdf !important; color:#056312;}
+.wrong{background:#ffdada !important; color:#770000;}
+
+.progress{
+height:10px;
+background:#ddd;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.bar{
+height:10px;
+width:0%;
+background:#3f2b96;
+border-radius:10px;
+transition:.5s;
+}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>Indian Airforce Physics MCQ Practice Test (90 Questions)</h1>
-<p style="text-align:center;">हर प्रश्न के नीचे सही विकल्प चुनें और नीचे दिए गए बटन पर क्लिक करें</p>
+<h1>Indian Airforce Physics MCQ Practice Test</h1>
+<p class="sub">90 Important Physics Questions</p>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
 
 <form id="quizForm">
 
@@ -168,11 +226,13 @@ let questions = [
 
 let html="";
 questions.forEach((q,i)=>{
-html+=`<div class='question'>${q.q}</div>`;
+html+=`<div class='question-box'>
+<div class='question'>${q.q}</div>
+<div class='options'>`;
 q.o.forEach((o,j)=>{
 html+=`<label><input type='radio' name='q${i}' value='${j}'> ${o}</label>`;
 });
-html+="<hr>";
+html+=`</div></div>`;
 });
 document.write(html);
 </script>
@@ -188,9 +248,26 @@ function checkScore(){
 let score=0;
 questions.forEach((q,i)=>{
 let radios=document.getElementsByName("q"+i);
-radios.forEach(r=>{ if(r.checked && r.value==q.a) score++; });
+radios.forEach(r=>{
+if(r.checked){
+if(r.value==q.a){
+score++;
+r.parentElement.classList.add("correct");
+}
+else{
+r.parentElement.classList.add("wrong");
+}
+}
 });
-document.getElementById("result").innerHTML="आपका Score है: "+score+" / 90";
+});
+
+let percent=Math.round((score/questions.length)*100);
+
+document.getElementById("result").innerHTML=
+"आपका Score: "+score+" / "+questions.length+
+" ("+percent+"%)";
+
+document.getElementById("bar").style.width=percent+"%";
 }
 </script>
 
