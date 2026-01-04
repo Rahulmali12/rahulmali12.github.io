@@ -3,166 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Revento Academy - Ultimate NDA Test</title>
+    <title>Rivento Academy - NDA Exam</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* --- Colors & Theme --- */
-        :root { 
-            --primary-dark: #0d1b42; /* Deep Navy */
-            --primary-light: #1a237e; 
-            --accent-gold: #ffc107; /* NDA Gold */
-            --danger: #d32f2f;
-            --bg-grey: #eef2f5;
-        }
+        /* --- DESIGN SETTINGS --- */
+        :root { --primary-dark: #0d1b42; --primary-light: #1a237e; --gold: #ffc107; --bg: #eef2f5; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding-bottom: 80px; }
+
+        /* Timer Bar */
+        #timer-bar { position: fixed; top: 0; left: 0; width: 100%; background: rgba(13,27,66,0.95); color: white; padding: 10px 15px; z-index: 2000; display: none; justify-content: space-between; align-items: center; box-sizing: border-box; backdrop-filter: blur(5px); }
+        .timer-clock { font-family: 'Montserrat', sans-serif; color: var(--gold); font-weight: bold; }
+
+        /* Header */
+        .hero-header { background: linear-gradient(135deg, rgba(13, 27, 66, 0.9), rgba(26, 35, 126, 0.8)), url('https://upload.wikimedia.org/wikipedia/commons/8/8d/Khadakwasla_Dam_Pune.jpg'); background-size: cover; color: white; text-align: center; padding: 80px 20px; border-radius: 0 0 40px 40px; margin-bottom: -50px; }
+        .brand-title { font-family: 'Montserrat', sans-serif; font-size: 2.2rem; font-weight: 800; margin: 0; }
         
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background: var(--bg-grey); 
-            margin: 0; padding: 0; 
-            padding-bottom: 80px; /* Space for footer buttons */
-        }
+        /* Container */
+        .container { max-width: 800px; margin: 0 auto 20px; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative; width: 90%; }
 
-        /* --- 1. TIMER BAR (Fixed Top) --- */
-        #timer-bar {
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(13, 27, 66, 0.95); /* Semi-transparent Navy */
-            color: white; padding: 10px 15px; z-index: 2000;
-            display: none; /* Hidden until test starts */
-            justify-content: space-between; align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            backdrop-filter: blur(5px);
-            box-sizing: border-box;
-        }
-        .timer-clock { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: var(--accent-gold); font-weight: bold; letter-spacing: 1px; }
+        /* Questions */
+        .question-card { background: #f9f9f9; padding: 15px; margin-bottom: 20px; border-radius: 12px; border-left: 5px solid var(--gold); }
+        .q-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; margin-bottom: 10px; }
+        .options label { display: flex; align-items: center; padding: 12px; background: white; margin-top: 8px; border-radius: 8px; border: 1px solid #eee; cursor: pointer; }
+        .options input { margin-right: 15px; transform: scale(1.3); }
 
-        /* --- 2. HERO HEADER (The "Dangerous" Look) --- */
-        .hero-header {
-            /* खड़कवासला / मिलिट्री बैकग्राउंड */
-            background: linear-gradient(135deg, rgba(13, 27, 66, 0.9), rgba(26, 35, 126, 0.8)), url('https://upload.wikimedia.org/wikipedia/commons/8/8d/Khadakwasla_Dam_Pune.jpg');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
-            padding: 80px 20px 80px 20px; /* Big padding */
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-            position: relative;
-            z-index: 1;
-        }
-
-        .brand-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; margin: 0;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-        }
-        .brand-accent { color: var(--accent-gold); }
-        .mission-tagline {
-            font-size: 1.1rem; font-weight: 300; letter-spacing: 2px;
-            color: rgba(255,255,255,0.9); margin-top: 10px; text-transform: uppercase;
-        }
-
-        /* --- 3. MAIN CARD (Overlapping Effect) --- */
-        .container { 
-            max-width: 800px; 
-            margin: -50px auto 20px auto; /* Negative margin for overlap */
-            background: white; 
-            padding: 25px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
-            position: relative; 
-            z-index: 10;
-            width: 90%;
-        }
-
-        /* Login Styling */
-        .google-btn {
-            background: #4285F4; color: white; border: none; padding: 15px 30px;
-            font-size: 16px; border-radius: 50px; cursor: pointer; display: inline-flex; align-items: center; gap: 15px;
-            font-weight: 600; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
-            margin-top: 20px;
-        }
-
-        /* Question Cards */
-        .question-card { 
-            background: #f9f9f9; padding: 15px; margin-bottom: 20px; 
-            border-radius: 12px; border-left: 5px solid var(--accent-gold);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .q-info { display: flex; justify-content: space-between; font-size: 0.8rem; color: #666; margin-bottom: 8px; }
-        .q-marks { background: #e3f2fd; color: var(--primary-dark); padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+        /* Footer Buttons */
+        .fixed-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px; display: none; gap: 10px; z-index: 2000; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); box-sizing: border-box; }
+        .btn-action { padding: 12px; border: none; border-radius: 10px; font-weight: bold; flex: 1; cursor: pointer; text-transform: uppercase; }
+        .btn-submit { background: var(--primary-light); color: white; }
         
-        .options label { display: flex; align-items: center; padding: 12px; cursor: pointer; background: white; margin-top: 8px; border-radius: 8px; border: 1px solid #eee; transition: 0.2s; }
-        .options input { margin-right: 15px; transform: scale(1.3); accent-color: var(--primary-light); }
-        .options label:hover { background: #e8eaf6; border-color: var(--primary-light); }
-
-        /* FIXED BOTTOM BUTTONS */
-        .fixed-footer {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: white;
-            padding: 15px; box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
-            display: none; /* Hidden initially */
-            gap: 10px; z-index: 2000; box-sizing: border-box;
-        }
-        .btn-action { padding: 12px; border: none; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; flex: 1; text-transform: uppercase; }
-        .btn-clear { background: #eceff1; color: #37474f; }
-        .btn-submit { background: linear-gradient(45deg, var(--primary-light), var(--primary-dark)); color: white; }
-
-        /* Leaderboard */
-        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 20px; }
-        th { color: var(--primary-dark); padding: 10px; text-align: left; }
-        td { padding: 12px; background: white; border: 1px solid #eee; }
-        .score-val { font-weight: bold; color: var(--primary-dark); }
-        .score-neg { color: var(--danger); }
-
+        /* Login & Result Styles */
+        .google-btn { background: #4285F4; color: white; border: none; padding: 12px 30px; border-radius: 50px; font-weight: bold; cursor: pointer; display: inline-flex; gap: 10px; margin-top: 20px; }
+        table { width: 100%; margin-top: 20px; border-collapse: separate; border-spacing: 0 5px; }
+        td { padding: 10px; background: #fff; border: 1px solid #eee; }
     </style>
 </head>
 <body>
 
     <div id="timer-bar">
-        <div style="font-size:0.9rem;">NDA MATH MOCK</div>
-        <div class="timer-clock"><i class="fas fa-stopwatch"></i> <span id="countdown">00:00</span></div>
+        <div>NDA MOCK TEST</div>
+        <div class="timer-clock"><i class="fas fa-clock"></i> <span id="countdown">00:00</span></div>
     </div>
 
     <div class="hero-header">
-        <h1 class="brand-title">REVENTO <span class="brand-accent">ACADEMY</span></h1>
-        <p class="mission-tagline"><i class="fas fa-crosshairs"></i> Mission NDA Khadakwasla</p>
+        <h1 class="brand-title">REVENTO <span style="color:var(--gold)">ACADEMY</span></h1>
+        <p style="letter-spacing:2px; text-transform:uppercase; font-size:0.9rem;">Mission Khadakwasla</p>
     </div>
 
     <div class="container">
-        
         <div id="login-view" style="text-align: center;">
-            <i class="fas fa-user-shield fa-3x" style="color:var(--primary-light); margin-bottom:15px;"></i>
-            <h2 style="color:var(--primary-dark); margin:0;">Secure Online Test</h2>
-            <p style="color:#666;">Vector Algebra & 3D Geometry</p>
-            
-            <div style="background:#fffde7; padding:15px; border-radius:10px; margin:20px 0; text-align:left; font-size:0.9rem;">
-                <strong><i class="fas fa-info-circle"></i> Instructions:</strong>
-                <ul style="margin:5px 0 0 20px; padding:0; color:#444;">
-                    <li>Time: <strong>15 Minutes</strong></li>
-                    <li>Correct: <span style="color:green; font-weight:bold;">+2.5 Marks</span></li>
-                    <li>Wrong: <span style="color:red; font-weight:bold;">-0.83 Marks</span> (Negative)</li>
-                    <li><strong>Note:</strong> Auto-submit when time ends.</li>
-                </ul>
+            <h2 style="color:var(--primary-dark)">Secure Online Test</h2>
+            <p>Mathematics: Vector & 3D Geometry</p>
+            <div style="background:#fff3e0; padding:15px; border-radius:10px; text-align:left; font-size:0.9rem; margin:20px 0;">
+                <strong>Instructions:</strong><br>
+                • Correct: <span style="color:green">+2.5</span> | Wrong: <span style="color:red">-0.83</span><br>
+                • Don't refresh the page.
             </div>
-
-            <button class="google-btn" onclick="signInWithGoogle()">
-                <i class="fab fa-google"></i> Login with Google
-            </button>
+            <button class="google-btn" onclick="signInWithGoogle()"><i class="fab fa-google"></i> Login to Start</button>
         </div>
 
         <div id="quiz-view" style="display: none;">
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; padding-bottom:15px; border-bottom:1px solid #eee;">
-                <img id="user-pic" src="" style="width:45px; height:45px; border-radius:50%; border:2px solid var(--accent-gold);">
-                <div>
-                    <strong id="user-name" style="color:var(--primary-dark);">Cadet</strong><br>
-                    <small style="color:green; font-weight:600;">● Attempting Live</small>
-                </div>
+            <div style="display:flex; gap:10px; align-items:center; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #eee;">
+                <img id="user-pic" src="" style="width:40px; border-radius:50%;">
+                <strong id="user-name" style="color:var(--primary-dark)">Cadet</strong>
             </div>
 
             <form id="quizForm">
-               <!-- ===== NDA MATH 50 PYQ STYLE MCQ ===== -->
+                
+                <!-- ===== NDA MATH 50 PYQ STYLE MCQ ===== -->
 
 <!-- Q1 -->
 <div class="question-card">
@@ -353,35 +263,21 @@
 
 <!-- (… इसी तरह Q16 से Q50 तक पूरे MCQ मौजूद हैं …) -->
 
-
-                <p style="text-align:center; color:#999; margin:30px 0;">-- End of Paper --</p>
-            </form>
+                </form>
         </div>
 
         <div id="result-view" style="display: none; text-align: center;">
-            <i class="fas fa-award fa-4x" style="color:var(--accent-gold); margin-bottom:10px;"></i>
-            <h2 style="color:var(--primary-dark);">Test Submitted!</h2>
-            
-            <div style="font-size:2.5rem; font-weight:800; color:var(--primary-dark); margin:10px 0;">
-                <span id="final-score">0.0</span> <span style="font-size:1rem; color:#666;">/ 5.0</span>
-            </div>
-
-            <div style="display:flex; justify-content:space-between; background:#f5f5f5; padding:15px; border-radius:10px; margin:20px 0;">
-                <div><strong style="color:green; font-size:1.2rem;" id="correct-count">0</strong><br><small>Correct</small></div>
-                <div style="border-left:1px solid #ddd; border-right:1px solid #ddd; padding:0 15px;">
-                    <strong style="color:red; font-size:1.2rem;" id="wrong-count">0</strong><br><small>Wrong</small>
-                </div>
-                <div><strong style="color:#777; font-size:1.2rem;" id="unattempted-count">0</strong><br><small>Skipped</small></div>
-            </div>
-
-            <h3 style="text-align:left; color:var(--primary-dark); border-bottom:2px solid var(--accent-gold); display:inline-block;">Top Commanders</h3>
-            <table id="leaderboard-table">
-                </table>
+            <h2 style="color:var(--primary-dark)">Result Declared</h2>
+            <h1 id="final-score" style="font-size:3rem; margin:10px 0;">0.0</h1>
+            <p>Your Score</p>
+            <h3 style="text-align:left; margin-top:30px;">Top Rankers</h3>
+            <table id="leaderboard-table"></table>
         </div>
+    </div>
 
-    </div> <div class="fixed-footer" id="footer-actions">
-        <button class="btn-action btn-clear" onclick="clearForm()">Clear</button>
-        <button class="btn-action btn-submit" onclick="submitQuiz()">Final Submit</button>
+    <div class="fixed-footer" id="footer-actions">
+        <button class="btn-action" style="background:#eee; color:#333;" onclick="document.getElementById('quizForm').reset()">Clear</button>
+        <button class="btn-action btn-submit" onclick="submitQuiz()">Submit</button>
     </div>
 
 <script type="module">
@@ -389,9 +285,11 @@
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  // 👇👇👇 YOUR API KEY HERE 👇👇👇
+  // ========================================================
+  // 🔴 1. FIREBASE CONFIG (यहाँ अपनी API Key डालें)
+  // ========================================================
   const firebaseConfig = {
-  apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+     apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
   authDomain: "revento-academy.firebaseapp.com",
   databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
   projectId: "revento-academy",
@@ -401,32 +299,52 @@
   measurementId: "G-4L8YC6J095"
   };
 
+  // ========================================================
+  // 🔴 2. EXAM SETTINGS (यहाँ उत्तर कुंजी सेट करें)
+  // ========================================================
+  
+  const EXAM_TIME_MINUTES = 15; // टाइमर सेट करें
+  
+ // 👉 ANSWER KEY: बस यहाँ सही ऑप्शन लिखें (a, b, c, या d)
+const CORRECT_ANSWERS = {
+    q1: 'b',   // 44
+    q2: 'c',   // i
+    q3: 'a',   // 4/5
+    q4: 'a',   // 2
+    q5: 'a',   // 1/3
+    q6: 'a',   // 20
+    q7: 'a',   // b² − 4ac
+    q8: 'b',   // 45°
+    q9: 'a',   // 10
+    q10: 'b',  // 2x
+    q11: 'b',  // 1
+    q12: 'a',  // x²/2 + C
+    q13: 'b',  // Perpendicular
+    q14: 'a',  // 5
+    q15: 'a',  // 0
+    q16: 'a'   // (इसको अपने Q16 के अनुसार बदलें)
+};
+
+
+  // ========================================================
+  // 👇 नीचे का कोड छेड़ने की जरुरत नहीं है (DO NOT TOUCH) 👇
+  // ========================================================
+
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
-  let currentUser = null;
-  let timerInterval;
-
-  // --- CONFIG ---
-  const EXAM_DURATION = 15; // Minutes
-  const POS_MARKS = 2.5;
-  const NEG_MARKS = 0.83;
+  let currentUser = null, timerInterval;
 
   window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e => alert(e.message));
 
   onAuthStateChanged(auth, async (user) => {
       if (user) {
           currentUser = user;
-          const docSnap = await getDoc(doc(db, "nda_mock_final", user.uid)); // New DB Collection
-          
+          const docSnap = await getDoc(doc(db, "nda_mock_v4", user.uid));
           document.getElementById('login-view').style.display = 'none';
-          
-          if (docSnap.exists()) {
-              showResult(docSnap.data());
-          } else {
-              startTest(user);
-          }
+          if (docSnap.exists()) showResult(docSnap.data());
+          else startTest(user);
       }
   });
 
@@ -434,67 +352,46 @@
       document.getElementById('quiz-view').style.display = 'block';
       document.getElementById('footer-actions').style.display = 'flex';
       document.getElementById('timer-bar').style.display = 'flex';
-      
       document.getElementById('user-name').innerText = user.displayName;
       document.getElementById('user-pic').src = user.photoURL;
 
-      // Timer Logic
-      let time = EXAM_DURATION * 60;
+      let time = EXAM_TIME_MINUTES * 60;
       updateTimer(time);
       timerInterval = setInterval(() => {
           time--;
           updateTimer(time);
-          if (time <= 0) {
-              clearInterval(timerInterval);
-              submitQuiz(true);
-          }
+          if (time <= 0) { clearInterval(timerInterval); submitQuiz(true); }
       }, 1000);
   }
 
-  function updateTimer(seconds) {
-      let m = Math.floor(seconds / 60).toString().padStart(2, '0');
-      let s = (seconds % 60).toString().padStart(2, '0');
-      let el = document.getElementById('countdown');
-      el.innerText = `${m}:${s}`;
-      if(seconds < 60) el.style.color = '#ff5252';
+  function updateTimer(s) {
+      let m = Math.floor(s/60).toString().padStart(2,'0'), sec = (s%60).toString().padStart(2,'0');
+      document.getElementById('countdown').innerText = `${m}:${sec}`;
+      if(s<60) document.getElementById('countdown').style.color = 'red';
   }
 
-  window.clearForm = () => document.getElementById('quizForm').reset();
-
   window.submitQuiz = async (auto = false) => {
-      if (!auto && !confirm("Confirm Submission? You cannot change answers later.")) return;
-      
+      if (!auto && !confirm("Final Submit?")) return;
       clearInterval(timerInterval);
-      document.getElementById('footer-actions').style.display = 'none'; // Hide buttons
+      document.getElementById('footer-actions').style.display = 'none';
 
-      // SCORING
       let score = 0, correct = 0, wrong = 0, skipped = 0;
       const form = document.forms['quizForm'];
-      
-      // ANSWER KEY
-      const key = { q1: '44', q2: 'i' };
 
-      for (let q in key) {
-          let val = form[q].value;
-          if (!val) skipped++;
-          else if (val === key[q]) { score += POS_MARKS; correct++; }
-          else { score -= NEG_MARKS; wrong++; }
+      // Automatic Checking Loop
+      for (let qID in CORRECT_ANSWERS) {
+          let userVal = form[qID]?.value;
+          let correctVal = CORRECT_ANSWERS[qID];
+
+          if (!userVal) skipped++;
+          else if (userVal === correctVal) { score += 2.5; correct++; }
+          else { score -= 0.83; wrong++; }
       }
+      score = parseFloat(score.toFixed(2));
 
-      score = parseFloat(score.toFixed(2)); // Round to 2 decimals
-
-      const data = {
-          name: currentUser.displayName,
-          score: score, correct, wrong, skipped,
-          timestamp: new Date()
-      };
-
-      try {
-          await setDoc(doc(db, "nda_mock_final", currentUser.uid), data);
-          showResult(data);
-      } catch (e) {
-          alert("Error: " + e.message);
-      }
+      const data = { name: currentUser.displayName, score, correct, wrong, skipped, timestamp: new Date() };
+      await setDoc(doc(db, "nda_mock_v4", currentUser.uid), data);
+      showResult(data);
   };
 
   async function showResult(data) {
@@ -502,26 +399,14 @@
       document.getElementById('timer-bar').style.display = 'none';
       document.getElementById('footer-actions').style.display = 'none';
       document.getElementById('result-view').style.display = 'block';
-
       document.getElementById('final-score').innerText = data.score;
-      document.getElementById('correct-count').innerText = data.correct;
-      document.getElementById('wrong-count').innerText = data.wrong;
-      document.getElementById('unattempted-count').innerText = data.skipped;
 
-      // Leaderboard
-      const q = query(collection(db, "nda_mock_final"), orderBy("score", "desc"), limit(50));
+      const q = query(collection(db, "nda_mock_v4"), orderBy("score", "desc"), limit(10));
       const snap = await getDocs(q);
-      let html = '';
-      let rank = 1;
+      let html = ''; let r = 1;
       snap.forEach(doc => {
           let d = doc.data();
-          let medal = rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : `#${rank}`));
-          html += `<tr>
-              <td>${medal}</td>
-              <td>${d.name}</td>
-              <td class="score-val">${d.score}</td>
-          </tr>`;
-          rank++;
+          html += `<tr><td>#${r++}</td><td>${d.name}</td><td><b>${d.score}</b></td></tr>`;
       });
       document.getElementById('leaderboard-table').innerHTML = html;
   }
