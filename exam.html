@@ -107,13 +107,26 @@
     </div>
 
     <script>
-        // --- 1. CONFIGURATION ---
-        const firebaseConfig = {
-            // YAHAN APNI FIREBASE CONFIG PASTE KARNA
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+      
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+  authDomain: "revento-academy.firebaseapp.com",
+  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
+  projectId: "revento-academy",
+  storageBucket: "revento-academy.firebasestorage.app",
+  messagingSenderId: "384071300366",
+  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
+  measurementId: "G-4L8YC6J095"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
         let currentUser = null;
         let currentQuizId = '';
