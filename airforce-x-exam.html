@@ -3,197 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Revento Academy - Airforce X CBT</title>
+    <title>Revento Academy - Professional CBT</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* --- RIVENTO / AIRFORCE THEME --- */
-        :root { 
-            --af-blue: #00308F; 
-            --af-dark: #002266;
-            --rivento-gold: #FFD700;
-            --locked: #ccc;
-            --active: #e3f2fd;
-        }
+        :root { --af-blue: #00308F; --bg-gray: #eef2f5; --text-dark: #2c3e50; }
         
-        body { font-family: 'Roboto', sans-serif; background: #f4f6f9; margin: 0; padding-bottom: 70px; user-select: none; }
+        body { font-family: 'Roboto', sans-serif; background: var(--bg-gray); margin: 0; padding: 0; user-select: none; height: 100vh; overflow: hidden; }
 
-        /* HEADER */
+        /* --- 1. HEADER --- */
         .cbt-header {
-            position: fixed; top: 0; left: 0; width: 100%; height: 65px;
-            background: var(--af-blue); color: white;
+            height: 60px; background: var(--af-blue); color: white;
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0 20px; box-sizing: border-box; z-index: 1000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            padding: 0 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
         }
-        .brand-name { font-weight: 900; font-size: 1.2rem; letter-spacing: 1px; }
-        .timer-box { 
-            background: black; color: #00ff00; padding: 5px 12px; border-radius: 4px; 
-            font-family: monospace; font-size: 1.3rem; border: 2px solid #444; 
+        .brand { font-weight: 900; letter-spacing: 1px; font-size: 1.2rem; }
+        .exam-name { font-size: 0.9rem; opacity: 0.9; }
+
+        /* --- 2. MAIN LAYOUT (Split Screen) --- */
+        .main-wrapper {
+            display: flex;
+            margin-top: 60px; /* Header height */
+            height: calc(100vh - 60px);
         }
 
-        /* STRICT TABS (No Click Allowed) */
-        .subject-bar {
-            position: fixed; top: 65px; left: 0; width: 100%;
-            background: white; display: flex; border-bottom: 2px solid #ddd;
-            z-index: 999; pointer-events: none; /* 🚫 USER CANNOT CLICK TABS */
+        /* LEFT SIDE: QUESTIONS */
+        .left-panel {
+            flex: 3; /* 75% width */
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #ddd;
         }
-        .sub-tab {
-            flex: 1; text-align: center; padding: 12px; font-size: 0.9rem;
-            font-weight: 700; color: #999; border-right: 1px solid #eee;
-            position: relative;
+
+        /* RIGHT SIDE: PROFILE & PALETTE (The Sidebar) */
+        .right-panel {
+            flex: 1; /* 25% width */
+            background: white;
+            display: flex; flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+            max-width: 250px;
+            min-width: 200px;
         }
-        .sub-tab.active { color: var(--af-blue); background: var(--active); border-bottom: 4px solid var(--af-blue); }
-        .sub-tab.completed { color: green; background: #e8f5e9; }
-        .sub-tab.completed::after { content: '✓'; display: block; font-size: 10px; }
 
-        /* CONTENT */
-        .container { max-width: 900px; margin: 130px auto 20px; padding: 15px; }
-        .q-section { display: none; } 
-        .q-section.active-sec { display: block; animation: fadeIn 0.5s; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .question-card {
-            background: white; padding: 15px; margin-bottom: 15px;
-            border: 1px solid #dcdcdc; border-radius: 8px; border-left: 5px solid var(--af-blue);
+        /* PROFILE SECTION (Photo) */
+        .profile-box {
+            text-align: center; width: 100%;
+            border-bottom: 2px solid #f1f1f1; padding-bottom: 20px; margin-bottom: 20px;
         }
-        .q-badge { background: var(--af-blue); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-right: 5px; }
-        
-        .options label {
-            display: flex; align-items: center; padding: 12px;
-            border: 1px solid #eee; margin-top: 8px; cursor: pointer;
-            border-radius: 6px; transition: 0.2s;
+        .candidate-img {
+            width: 100px; height: 100px;
+            border-radius: 8px; /* Square with round corners like exams */
+            border: 3px solid var(--af-blue);
+            object-fit: cover; margin-bottom: 10px;
         }
-        .options label:hover { background: #f0f4ff; border-color: var(--af-blue); }
-        .options input { margin-right: 12px; transform: scale(1.2); }
+        .candidate-name { font-weight: bold; color: var(--text-dark); display: block; }
+        .candidate-id { font-size: 0.8rem; color: #777; }
 
-        /* FOOTER */
-        .cbt-footer {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: white; padding: 12px; border-top: 1px solid #ccc;
-            display: flex; justify-content: space-between; gap: 10px; z-index: 1000; box-sizing: border-box;
+        /* TIMER BOX */
+        .timer-display {
+            background: #2c3e50; color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem; font-weight: bold;
+            padding: 10px 20px; border-radius: 5px;
+            margin-bottom: 20px; border: 2px solid #555;
         }
-        .btn { padding: 12px 20px; border: none; font-weight: bold; border-radius: 6px; cursor: pointer; text-transform: uppercase; font-size: 0.9rem; flex: 1; }
-        .btn-next { background: #2e7d32; color: white; } /* Green */
-        .btn-clear { background: #cfd8dc; color: #37474f; }
 
-        /* LOGIN OVERLAY */
-        #login-view { 
+        /* TABS (Strict) */
+        .tabs-container { display: flex; gap: 5px; margin-bottom: 20px; pointer-events: none; }
+        .tab { 
+            padding: 8px 15px; font-size: 0.8rem; font-weight: bold; 
+            border: 1px solid #ccc; background: #f9f9f9; color: #aaa; border-radius: 4px;
+        }
+        .tab.active { background: var(--af-blue); color: white; border-color: var(--af-blue); }
+
+        /* QUESTIONS STYLE */
+        .question-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .q-badge { background: var(--af-blue); color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; margin-right: 10px; }
+        .options label { display: flex; align-items: center; padding: 12px; border: 1px solid #eee; margin-top: 10px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .options label:hover { background: #e3f2fd; }
+        .options input { margin-right: 15px; transform: scale(1.2); }
+
+        /* FOOTER ACTIONS */
+        .footer-bar {
+            margin-top: auto; width: 100%; display: flex; gap: 10px;
+        }
+        .btn { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; flex: 1; }
+        .btn-green { background: #2e7d32; color: white; }
+        .btn-gray { background: #cfd8dc; color: #333; }
+
+        /* MOBILE RESPONSIVE (Adjustments) */
+        @media (max-width: 768px) {
+            .main-wrapper { flex-direction: column; height: auto; overflow: visible; padding-bottom: 80px; }
+            .left-panel { order: 2; width: 100%; border: none; padding: 10px; box-sizing: border-box; }
+            .right-panel { 
+                order: 1; width: 100%; max-width: none; flex-direction: row; 
+                justify-content: space-between; padding: 10px; min-height: auto;
+            }
+            .profile-box { border: none; margin: 0; padding: 0; text-align: left; display: flex; align-items: center; gap: 10px; width: auto; }
+            .candidate-img { width: 50px; height: 50px; margin: 0; }
+            .timer-display { margin: 0; font-size: 1.2rem; padding: 5px 10px; }
+            .footer-bar { position: fixed; bottom: 0; left: 0; padding: 10px; background: white; border-top: 1px solid #ddd; z-index: 200; }
+        }
+
+        /* LOGIN SCREEN */
+        #login-overlay { 
             position: fixed; top:0; left:0; width:100%; height:100%; 
-            background: linear-gradient(135deg, #001f4d, #00308F); 
-            z-index: 2000; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; color: white; text-align: center;
+            background: linear-gradient(135deg, #0d1b42, #1a237e); 
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
         }
     </style>
 </head>
 <body>
 
-<div id="login-view">
-    <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px); width: 85%; max-width: 400px; border: 1px solid rgba(255,255,255,0.2);">
-        <h1 style="margin:0; font-family:'Roboto', sans-serif; letter-spacing:2px;">RIVENTO <span style="color:var(--rivento-gold)">ACADEMY</span></h1>
-        <p style="opacity:0.8; margin-bottom: 30px;">Air Force X Group (Technical)</p>
-        
-        <div style="text-align: left; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 25px; font-size: 0.9rem;">
-            <div style="margin-bottom: 5px;">🔒 <strong>Security Protocol:</strong></div>
-            <div>1. Sectional Timing (20 Min each)</div>
-            <div>2. Cannot switch sections freely</div>
-            <div>3. Physics -> Math -> English</div>
-        </div>
-
-        <button onclick="signInWithGoogle()" style="width:100%; padding:15px; background:white; color:var(--af-blue); border:none; border-radius:50px; font-weight:bold; cursor:pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
-            <i class="fab fa-google"></i> Start Secure Exam
+<div id="login-overlay">
+    <div style="background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 350px; width: 90%;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" width="50" style="margin-bottom:20px;">
+        <h2 style="margin:0; color:#0d1b42;">Rivento Academy</h2>
+        <p>Air Force X Group Mock Test</p>
+        <button onclick="signInWithGoogle()" style="background:#1a237e; color:white; border:none; padding:12px 30px; border-radius:30px; font-weight:bold; cursor:pointer; margin-top:10px;">
+            Login with Google
         </button>
     </div>
 </div>
 
-<div id="exam-view" style="display:none;">
-    
-    <div class="cbt-header">
-        <div class="brand-name">RIVENTO <span style="color:var(--rivento-gold)">ACADEMY</span></div>
-        <div style="display:flex; align-items:center; gap:15px;">
-            <div id="user-display" style="font-size:0.8rem; text-align:right;">Cadet<br><span id="current-subject" style="color:#aaa; font-size:0.7rem;">PHYSICS</span></div>
-            <div class="timer-box" id="timer">20:00</div>
-        </div>
-    </div>
-
-    <div class="subject-bar">
-        <div id="tab-0" class="sub-tab active">PHYSICS</div>
-        <div id="tab-1" class="sub-tab">MATHEMATICS</div>
-        <div id="tab-2" class="sub-tab">ENGLISH</div>
-    </div>
-
-    <div class="container">
-        <form id="quizForm">
-            
-            <div id="sec-0" class="q-section active-sec">
-                <div class="question-card">
-                    <p><span class="q-badge">Q1</span> Unit of Electric Flux?</p>
-                    <div class="options">
-                        <label><input type="radio" name="p1" value="a"> V/m</label>
-                        <label><input type="radio" name="p1" value="b"> N-m²/C</label> <label><input type="radio" name="p1" value="c"> Volt</label>
-                        <label><input type="radio" name="p1" value="d"> Newton</label>
-                    </div>
-                </div>
-                </div>
-
-            <div id="sec-1" class="q-section">
-                <div class="question-card">
-                    <p><span class="q-badge">Q1</span> Integration of log(x)?</p>
-                    <div class="options">
-                        <label><input type="radio" name="m1" value="a"> x logx - x + C</label> <label><input type="radio" name="m1" value="b"> 1/x</label>
-                        <label><input type="radio" name="m1" value="c"> x logx + C</label>
-                        <label><input type="radio" name="m1" value="d"> None</label>
-                    </div>
-                </div>
-                </div>
-
-            <div id="sec-2" class="q-section">
-                <div class="question-card">
-                    <p><span class="q-badge">Q1</span> Antonym of 'OPTIMISTIC'?</p>
-                    <div class="options">
-                        <label><input type="radio" name="e1" value="a"> Happy</label>
-                        <label><input type="radio" name="e1" value="b"> Hopeful</label>
-                        <label><input type="radio" name="e1" value="c"> Pessimistic</label> <label><input type="radio" name="e1" value="d"> Sad</label>
-                    </div>
-                </div>
-                </div>
-
-        </form>
-    </div>
-
-    <div class="cbt-footer">
-        <button type="button" class="btn btn-clear" onclick="clearCurrentSection()">Clear Selection</button>
-        <button type="button" class="btn btn-next" id="action-btn" onclick="nextSection()">Save & Next Section</button>
-    </div>
+<div class="cbt-header">
+    <div class="brand">REVENTO</div>
+    <div class="exam-name">Group X (Technical)</div>
 </div>
 
-<div id="result-view" style="display:none; padding:40px; text-align:center;">
-    <h1 style="color:var(--af-blue); border-bottom: 2px solid var(--rivento-gold); display:inline-block;">RIVENTO RESULT</h1>
-    <br>
-    <div style="background:white; padding:30px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.1); display:inline-block; margin-top:20px; width:100%; max-width:500px;">
-        <p>Total Score</p>
-        <div style="font-size:3.5rem; font-weight:900; color:var(--af-blue);" id="final-score">0.0</div>
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:20px;">
-            <div style="background:#e8f5e9; padding:10px; border-radius:8px;">Correct<br><strong style="color:green" id="r-correct">0</strong></div>
-            <div style="background:#ffebee; padding:10px; border-radius:8px;">Wrong<br><strong style="color:red" id="r-wrong">0</strong></div>
-            <div style="background:#f5f5f5; padding:10px; border-radius:8px;">Skipped<br><strong style="color:gray" id="r-skip">0</strong></div>
-        </div>
-    </div>
+<div class="main-wrapper" id="exam-ui" style="display:none;">
     
-    <h3 style="margin-top:40px;">All India Rank</h3>
-    <table id="leaderboard" style="width:100%; border-collapse:collapse; background:white;"></table>
+    <div class="left-panel">
+        
+        <div class="tabs-container">
+            <div id="tab-0" class="tab active">PHYSICS</div>
+            <div id="tab-1" class="tab">MATHS</div>
+            <div id="tab-2" class="tab">ENGLISH</div>
+        </div>
+
+        <form id="quizForm">
+            <div id="sec-0" style="display:block;">
+                <h3 style="color:var(--af-blue); border-bottom:1px solid #ddd; padding-bottom:10px;">Physics Question</h3>
+                <div class="question-card">
+                    <p><span class="q-badge">Q1</span> Which is a vector quantity?</p>
+                    <div class="options">
+                        <label><input type="radio" name="p1" value="a"> Speed</label>
+                        <label><input type="radio" name="p1" value="b"> Velocity</label> <label><input type="radio" name="p1" value="c"> Mass</label>
+                        <label><input type="radio" name="p1" value="d"> Time</label>
+                    </div>
+                </div>
+                </div>
+
+            <div id="sec-1" style="display:none;">
+                <h3 style="color:var(--af-blue); border-bottom:1px solid #ddd; padding-bottom:10px;">Mathematics Question</h3>
+                <div class="question-card">
+                    <p><span class="q-badge">Q1</span> Derivative of sin(x)?</p>
+                    <div class="options">
+                        <label><input type="radio" name="m1" value="a"> cos(x)</label> <label><input type="radio" name="m1" value="b"> -cos(x)</label>
+                        <label><input type="radio" name="m1" value="c"> tan(x)</label>
+                        <label><input type="radio" name="m1" value="d"> sec²(x)</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-2" style="display:none;">
+                <h3 style="color:var(--af-blue); border-bottom:1px solid #ddd; padding-bottom:10px;">English Question</h3>
+                <div class="question-card">
+                    <p><span class="q-badge">Q1</span> Plural of 'Ox'?</p>
+                    <div class="options">
+                        <label><input type="radio" name="e1" value="a"> Oxes</label>
+                        <label><input type="radio" name="e1" value="b"> Oxen</label> <label><input type="radio" name="e1" value="c"> Oxies</label>
+                        <label><input type="radio" name="e1" value="d"> None</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <br><br><br> </div>
+
+    <div class="right-panel">
+        
+        <div class="profile-box">
+            <img id="user-photo" class="candidate-img" src="" alt="Candidate">
+            <span id="user-name" class="candidate-name">Loading...</span>
+            <span class="candidate-id">ID: AF-2026-X</span>
+        </div>
+
+        <div class="timer-display" id="timer">20:00</div>
+
+        <div class="footer-bar">
+            <button class="btn btn-gray" onclick="document.getElementById('quizForm').reset()">Clear</button>
+            <button class="btn btn-green" id="next-btn" onclick="nextSection()">Save & Next</button>
+        </div>
+
+    </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-  // 🔴 1. FIREBASE KEYS
+  
+  // 👇 YOUR FIREBASE CONFIG 👇
   const firebaseConfig = {
-    apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+     apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
   authDomain: "revento-academy.firebaseapp.com",
   databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
   projectId: "revento-academy",
@@ -203,145 +219,65 @@
   measurementId: "G-4L8YC6J095"
   };
 
-  // 🔴 2. CONFIGURATION
-  const SECTION_TIME_MIN = 20; // 20 Minutes per section
-  
-  // Answer Key
-  const KEY = {
-      // Physics
-      p1: 'b',
-      // Math
-      m1: 'a',
-      // English
-      e1: 'c'
-  };
-
-  // --- DO NOT TOUCH BELOW ---
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
-  
-  let currentUser = null;
-  let currentSecIdx = 0; // 0=Phy, 1=Math, 2=Eng
+
+  let currentSec = 0;
   let timerInt;
-  let timeLeft = SECTION_TIME_MIN * 60;
-  const sections = ['PHYSICS', 'MATHEMATICS', 'ENGLISH'];
+  let time = 20 * 60; // 20 Minutes
 
-  window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e=>alert(e));
+  window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e => alert(e));
 
-  onAuthStateChanged(auth, async (user) => {
-      if(user){
-          currentUser = user;
-          const snap = await getDoc(doc(db, "rivento_af_x", user.uid));
-          document.getElementById('login-view').style.display='none';
-          if(snap.exists()) showFinalResult(snap.data());
-          else startSection(0);
+  onAuthStateChanged(auth, (user) => {
+      if(user) {
+          document.getElementById('login-overlay').style.display = 'none';
+          document.getElementById('exam-ui').style.display = 'flex'; // Show main layout
+          
+          // Set Photo and Name in Sidebar
+          document.getElementById('user-name').innerText = user.displayName;
+          document.getElementById('user-photo').src = user.photoURL;
+
+          startTimer();
       }
   });
 
-  function startSection(idx) {
-      currentSecIdx = idx;
-      document.getElementById('exam-view').style.display='block';
-      
-      // Update UI
-      document.getElementById('current-subject').innerText = sections[idx];
-      document.getElementById('action-btn').innerText = (idx === 2) ? "FINAL SUBMIT" : "SAVE & NEXT SECTION";
-      
-      // Handle Tabs UI
-      for(let i=0; i<3; i++){
-          let tab = document.getElementById(`tab-${i}`);
-          let sec = document.getElementById(`sec-${i}`);
-          
-          sec.classList.remove('active-sec');
-          tab.classList.remove('active');
-          
-          if(i < idx) tab.classList.add('completed'); // Done
-          if(i === idx) { tab.classList.add('active'); sec.classList.add('active-sec'); }
-      }
-
-      // Start Timer
-      timeLeft = SECTION_TIME_MIN * 60;
-      updateTimerDisplay();
+  function startTimer() {
+      time = 20 * 60;
       clearInterval(timerInt);
       timerInt = setInterval(() => {
-          timeLeft--;
-          updateTimerDisplay();
-          if(timeLeft <= 0) {
-              nextSection(true); // Auto Submit Time Up
-          }
+          time--;
+          let m = Math.floor(time/60).toString().padStart(2,'0');
+          let s = (time%60).toString().padStart(2,'0');
+          document.getElementById('timer').innerText = `${m}:${s}`;
+          if(time <= 0) nextSection(true);
       }, 1000);
   }
 
-  function updateTimerDisplay(){
-      let m = Math.floor(timeLeft/60).toString().padStart(2,'0');
-      let s = (timeLeft%60).toString().padStart(2,'0');
-      document.getElementById('timer').innerText = `${m}:${s}`;
-      if(timeLeft < 60) document.getElementById('timer').style.color = 'red';
-      else document.getElementById('timer').style.color = '#00ff00';
-  }
-
-  window.clearCurrentSection = () => {
-      // Logic to clear only visible radio buttons could be added, 
-      // but form.reset() clears all. Ideally, specific logic per section:
-      const activeDiv = document.querySelector('.active-sec');
-      const inputs = activeDiv.querySelectorAll('input[type="radio"]');
-      inputs.forEach(i => i.checked = false);
-  };
-
-  window.nextSection = (auto=false) => {
-      if(!auto && !confirm(`Finish ${sections[currentSecIdx]} and move to next? You cannot come back.`)) return;
+  window.nextSection = (auto = false) => {
+      if(!auto && !confirm("Move to next section? Cannot go back.")) return;
       
-      if(currentSecIdx < 2) {
-          // Move to next
-          startSection(currentSecIdx + 1);
+      if(currentSec < 2) {
+          // Hide current
+          document.getElementById(`sec-${currentSec}`).style.display = 'none';
+          document.getElementById(`tab-${currentSec}`).classList.remove('active');
+          document.getElementById(`tab-${currentSec}`).style.background = '#e8f5e9'; // Mark done
+          
+          currentSec++;
+          
+          // Show next
+          document.getElementById(`sec-${currentSec}`).style.display = 'block';
+          document.getElementById(`tab-${currentSec}`).classList.add('active');
+          
+          if(currentSec === 2) document.getElementById('next-btn').innerText = "Submit Exam";
+          
+          startTimer(); // Reset timer for new section
       } else {
-          // Final Submit
-          calculateAndSave();
+          alert("Exam Submitted Successfully! (This is a demo)");
+          location.reload();
       }
-  };
-
-  async function calculateAndSave() {
-      clearInterval(timerInt);
-      document.getElementById('exam-view').style.display='none';
-      
-      let score=0, correct=0, wrong=0, skip=0;
-      const form = document.forms['quizForm'];
-      
-      for(let q in KEY){
-          let val = form[q]?.value;
-          if(!val) skip++;
-          else if(val === KEY[q]) { score+=1; correct++; }
-          else { score-=0.25; wrong++; }
-      }
-      
-      const data = { 
-          name: currentUser.displayName, 
-          score, correct, wrong, skip, 
-          timestamp: new Date() 
-      };
-      
-      await setDoc(doc(db, "rivento_af_x", currentUser.uid), data);
-      showFinalResult(data);
-  }
-
-  async function showFinalResult(data){
-      document.getElementById('result-view').style.display='block';
-      document.getElementById('final-score').innerText = data.score;
-      document.getElementById('r-correct').innerText = data.correct;
-      document.getElementById('r-wrong').innerText = data.wrong;
-      document.getElementById('r-skip').innerText = data.skip;
-      
-      // Leaderboard
-      const q = query(collection(db, "rivento_af_x"), orderBy("score", "desc"), limit(10));
-      const snap = await getDocs(q);
-      let html = `<tr><th style="padding:10px; background:#eee;">Rank</th><th style="padding:10px; background:#eee;">Name</th><th style="padding:10px; background:#eee;">Score</th></tr>`;
-      let r=1;
-      snap.forEach(d=>{
-          html+=`<tr><td style="padding:10px; border-bottom:1px solid #ddd;">#${r++}</td><td style="padding:10px; border-bottom:1px solid #ddd;">${d.data().name}</td><td style="padding:10px; border-bottom:1px solid #ddd;">${d.data().score}</td></tr>`;
-      });
-      document.getElementById('leaderboard').innerHTML = html;
   }
 </script>
+
 </body>
 </html>
