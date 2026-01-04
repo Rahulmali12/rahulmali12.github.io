@@ -3,278 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maths Important MCQs - Academy Special</title>
+    <title>Class 10 Math Important MCQs | Academy Special</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Hind:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0f172a; /* Dark Navy */
-            --accent: #2563eb;  /* Bright Blue */
-            --success: #10b981;
-            --bg: #f8fafc;
-            --text: #334155;
+            --primary: #1e293b;
+            --accent: #2563eb;
+            --gold: #fbbf24;
+            --bg: #f1f5f9;
         }
 
         body {
             font-family: 'Poppins', 'Hind', sans-serif;
             background-color: var(--bg);
-            color: var(--text);
             margin: 0;
             padding: 0;
+            color: #334155;
         }
 
-        /* Hero Section */
         .header-banner {
-            background: linear-gradient(135deg, var(--primary) 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
             color: white;
-            padding: 50px 20px;
+            padding: 40px 20px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-bottom: 5px solid var(--gold);
         }
 
         .academy-name {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 700;
             margin: 0;
-            letter-spacing: 1px;
+            color: var(--gold);
             text-transform: uppercase;
-            color: #fbbf24; /* Golden color for Name */
         }
 
-        .sub-title {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-top: 10px;
-        }
-
-        /* Container */
         .main-content {
             max-width: 900px;
-            margin: -30px auto 50px;
+            margin: 20px auto;
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
-        .info-bar {
+        .info-header {
             display: flex;
             justify-content: space-between;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 20px;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
             margin-bottom: 30px;
+            border-left: 5px solid var(--accent);
             font-weight: 600;
-            color: var(--accent);
         }
 
-        /* Question Styling */
         .q-card {
             border: 1px solid #e2e8f0;
+            padding: 20px;
+            margin-bottom: 20px;
             border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            position: relative;
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
 
         .q-card:hover {
             border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.08);
+            background: #fdfdfd;
         }
 
-        .q-num {
-            background: var(--accent);
-            color: white;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 0.8rem;
-            margin-bottom: 15px;
-        }
-
-        .tag {
-            float: right;
-            background: #eff6ff;
-            color: var(--accent);
+        .q-tag {
+            background: #dbeafe;
+            color: #1e40af;
             padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 700;
         }
 
-        .question-text {
-            font-size: 1.15rem;
+        .q-text {
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin: 15px 0;
             color: #1e293b;
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 10px;
         }
 
-        .option {
-            border: 1.5px solid #cbd5e1;
-            padding: 12px 15px;
+        .opt {
+            padding: 10px;
+            border: 1px solid #cbd5e1;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
         }
 
-        .option:hover {
-            background: #f1f5f9;
-            border-color: #94a3b8;
-        }
-
-        /* Floating Action Buttons */
         .controls {
-            position: sticky;
+            position: fixed;
             bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            justify-content: center;
             gap: 15px;
-            z-index: 100;
         }
 
         .btn {
             padding: 12px 25px;
-            border-radius: 50px;
+            border-radius: 30px;
             border: none;
-            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: 0.3s;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .btn-ans { background: var(--primary); color: white; }
-        .btn-print { background: var(--success); color: white; }
+        .btn-print { background: #10b981; color: white; }
 
-        /* Answer Table */
-        #answerTable {
+        #answer-key {
             display: none;
-            margin-top: 40px;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fafc;
             border-radius: 10px;
-            overflow: hidden;
         }
 
-        th { background: var(--primary); color: white; padding: 15px; }
-        td { padding: 12px; border: 1px solid #e2e8f0; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        td, th { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background: var(--primary); color: white; }
 
         @media print {
-            .controls, .btn { display: none !important; }
-            .main-content { margin-top: 0; box-shadow: none; border: none; }
-            #answerTable { display: block !important; page-break-before: always; }
+            .controls { display: none; }
+            #answer-key { display: block !important; page-break-before: always; }
         }
 
         @media (max-width: 600px) {
             .options-grid { grid-template-columns: 1fr; }
-            .academy-name { font-size: 1.8rem; }
+            .academy-name { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header-banner">
-        <h1 class="academy-name">REVENTO ACADEMY</h1>
-        <p class="sub-title">कक्षा 10 गणित: टॉप 20 महत्वपूर्ण प्रश्न (PYQs)</p>
+<div class="header-banner">
+    <h1 class="academy-name">आपकी एकेडमी का नाम यहाँ लिखें</h1>
+    <p>Class 10 Maths | 20 Most Important PYQs (2025-26)</p>
+</div>
+
+<div class="main-content">
+    <div class="info-header">
+        <span>विषय: गणित</span>
+        <span>समय: 1 घंटा</span>
+        <span>अंक: 20</span>
     </div>
 
-    <div class="main-content">
-        <div class="info-bar">
-            <span>विषय: गणित (Maths)</span>
-            <span>पूर्णांक: 20 अंक</span>
-            <span>समय: 45 मिनट</span>
-        </div>
+    <div class="q-card"><span class="q-tag">Real Numbers</span><div class="q-text">1. यदि HCF(12, x) = 12 और गुणनफल 6336 है, तो LCM क्या होगा?</div><div class="options-grid"><div class="opt">(a) 1200</div><div class="opt">(b) 528</div><div class="opt">(c) 500</div><div class="opt">(d) 428</div></div></div>
 
-        <div class="q-card">
-            <span class="tag">Chapter 1</span>
-            <div class="q-num">1</div>
-            <div class="question-text">यदि दो संख्याओं का HCF 12 है और उनका गुणनफल 6336 है, तो उनका LCM होगा:</div>
-            <div class="options-grid">
-                <div class="option">(a) 1200</div>
-                <div class="option">(b) 528</div>
-                <div class="option">(c) 500</div>
-                <div class="option">(d) 428</div>
-            </div>
-        </div>
+    <div class="q-card"><span class="q-tag">Real Numbers</span><div class="q-text">2. 14587/1250 का दशमलव प्रसार कितने स्थानों बाद समाप्त होगा?</div><div class="options-grid"><div class="opt">(a) 1</div><div class="opt">(b) 2</div><div class="opt">(c) 3</div><div class="opt">(d) 4</div></div></div>
 
-        <div class="q-card">
-            <span class="tag">Chapter 1</span>
-            <div class="q-num">2</div>
-            <div class="question-text">परिमेय संख्या 14587/1250 का दशमलव प्रसार कितने स्थानों बाद समाप्त होगा?</div>
-            <div class="options-grid">
-                <div class="option">(a) 1</div>
-                <div class="option">(b) 2</div>
-                <div class="option">(c) 3</div>
-                <div class="option">(d) 4</div>
-            </div>
-        </div>
+    <div class="q-card"><span class="q-tag">Polynomials</span><div class="q-text">3. यदि &alpha;, &beta; बहुपद x² - 4x + 1 के शून्यक हैं, तो &alpha; + &beta; - &alpha;&beta; का मान है:</div><div class="options-grid"><div class="opt">(a) 3</div><div class="opt">(b) 5</div><div class="opt">(c) -3</div><div class="opt">(d) -5</div></div></div>
 
-        <div class="q-card">
-            <span class="tag">Polynomials</span>
-            <div class="q-num">3</div>
-            <div class="question-text">यदि &alpha; और &beta; बहुपद x<sup>2</sup> - 4x + 1 के शून्यक हैं, तो &alpha; + &beta; - &alpha;&beta; का मान है:</div>
-            <div class="options-grid">
-                <div class="option">(a) 3</div>
-                <div class="option">(b) 5</div>
-                <div class="option">(c) -3</div>
-                <div class="option">(d) -5</div>
-            </div>
-        </div>
+    <div class="q-card"><span class="q-tag">Linear Equations</span><div class="q-text">4. 3x - y + 8 = 0 और 6x - ky = -16 संपाती रेखाएं हैं, तो k = ?</div><div class="options-grid"><div class="opt">(a) 1/2</div><div class="opt">(b) -1/2</div><div class="opt">(c) 2</div><div class="opt">(d) -2</div></div></div>
 
-        <p style="text-align: center; color: #64748b;">... इसी तरह सभी 20 प्रश्न यहाँ दिखेंगे ...</p>
-        
-        <div class="q-card" style="border-style: dashed;">
-            <div class="question-text" style="text-align: center;">[ यहाँ बाकी के प्रश्न (4-20) आएंगे ]</div>
-        </div>
+    <div class="q-card"><span class="q-tag">Linear Equations</span><div class="q-text">5. रेखाएं x = 4 और y = 3 एक दूसरे को कहाँ प्रतिच्छेद करेंगी?</div><div class="options-grid"><div class="opt">(a) (3, 4)</div><div class="opt">(b) (4, 3)</div><div class="opt">(c) (0, 0)</div><div class="opt">(d) समांतर होंगी</div></div></div>
 
-        <div id="answerTable">
-            <h2 style="text-align: center; color: var(--primary);">Final Answer Key</h2>
-            <table>
-                <tr><th>Q.No</th><th>Ans</th><th>Q.No</th><th>Ans</th></tr>
-                <tr><td>1</td><td>(b)</td><td>11</td><td>(c)</td></tr>
-                <tr><td>2</td><td>(d)</td><td>12</td><td>(a)</td></tr>
-                <tr><td>3</td><td>(a)</td><td>13</td><td>(b)</td></tr>
-                <tr><td>4</td><td>(c)</td><td>14</td><td>(c)</td></tr>
-                <tr><td>5</td><td>(d)</td><td>15</td><td>(a)</td></tr>
-                <tr><td>6</td><td>(a)</td><td>16</td><td>(b)</td></tr>
-                <tr><td>7</td><td>(b)</td><td>17</td><td>(a)</td></tr>
-                <tr><td>8</td><td>(c)</td><td>18</td><td>(b)</td></tr>
-                <tr><td>9</td><td>(c)</td><td>19</td><td>(b)</td></tr>
-                <tr><td>10</td><td>(c)</td><td>20</td><td>(c)</td></tr>
-            </table>
-        </div>
+    <div class="q-card"><span class="q-tag">Quadratic Equations</span><div class="q-text">6. x² + 4x + k = 0 के मूल वास्तविक और भिन्न हैं, तो:</div><div class="options-grid"><div class="opt">(a) k < 4</div><div class="opt">(b) k > 4</div><div class="opt">(c) k = 4</div><div class="opt">(d) k ≤ 4</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Arithmetic Progression</span><div class="q-text">7. AP: -5, -2.5, 0, 2.5... का 11वां पद है:</div><div class="options-grid"><div class="opt">(a) -20</div><div class="opt">(b) 20</div><div class="opt">(c) 25</div><div class="opt">(d) 30</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Triangles</span><div class="q-text">8. यदि ΔABC ~ ΔDEF और 2AB = DE, BC = 8cm है, तो EF = ?</div><div class="options-grid"><div class="opt">(a) 4cm</div><div class="opt">(b) 12cm</div><div class="opt">(c) 16cm</div><div class="opt">(d) 8cm</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Triangles</span><div class="q-text">9. ΔABC में AB = 6√3, AC = 12, BC = 6 है। कोण B का मान है:</div><div class="options-grid"><div class="opt">(a) 45°</div><div class="opt">(b) 60°</div><div class="opt">(c) 90°</div><div class="opt">(d) 120°</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Coordinate Geometry</span><div class="q-text">10. बिंदु (-6, 8) की मूल बिंदु से दूरी क्या है?</div><div class="options-grid"><div class="opt">(a) 6</div><div class="opt">(b) 8</div><div class="opt">(c) 10</div><div class="opt">(d) 14</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Coordinate Geometry</span><div class="q-text">11. यदि (1, 2), (0, 0) और (a, b) संरेख हैं, तो संबंध है:</div><div class="options-grid"><div class="opt">(a) a = b</div><div class="opt">(b) a = 2b</div><div class="opt">(c) 2a = b</div><div class="opt">(d) b = -a</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Trigonometry</span><div class="q-text">12. यदि tan A = 4/3 है, तो cos A का मान होगा:</div><div class="options-grid"><div class="opt">(a) 3/5</div><div class="opt">(b) 4/5</div><div class="opt">(c) 1</div><div class="opt">(d) 5/3</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Trigonometry</span><div class="q-text">13. (sin 30° + cos 30°) - (sin 60° + cos 60°) का मान है:</div><div class="options-grid"><div class="opt">(a) 1</div><div class="opt">(b) 0</div><div class="opt">(c) -1</div><div class="opt">(d) √3</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Height & Distance</span><div class="q-text">14. 15m लंबी सीढ़ी दीवार के साथ 60° का कोण बनाती है। दीवार की ऊँचाई है:</div><div class="options-grid"><div class="opt">(a) 15√3 m</div><div class="opt">(b) 15 m</div><div class="opt">(c) 7.5 m</div><div class="opt">(d) 10 m</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Circles</span><div class="q-text">15. केंद्र से 25cm दूर बिंदु Q से स्पर्श रेखा की लंबाई 24cm है। त्रिज्या है:</div><div class="options-grid"><div class="opt">(a) 7cm</div><div class="opt">(b) 12cm</div><div class="opt">(c) 15cm</div><div class="opt">(d) 5cm</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Areas of Circles</span><div class="q-text">16. त्रिज्या 6cm और कोण 60° वाले त्रिज्यखंड का क्षेत्रफल है:</div><div class="options-grid"><div class="opt">(a) 120/7</div><div class="opt">(b) 132/7</div><div class="opt">(c) 154/7</div><div class="opt">(d) 144/7</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Surface Area</span><div class="q-text">17. दो अर्धगोलों (त्रिज्या r) को आधार से जोड़ने पर बने ठोस का CSA है:</div><div class="options-grid"><div class="opt">(a) 4&pi;r²</div><div class="opt">(b) 3&pi;r²</div><div class="opt">(c) 2&pi;r²</div><div class="opt">(d) 6&pi;r²</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Statistics</span><div class="q-text">18. बहुलक (Mode) का सूत्र क्या है?</div><div class="options-grid"><div class="opt">(a) 3 Median - 2 Mean</div><div class="opt">(b) 2 Median - 3 Mean</div><div class="opt">(c) 3 Mean - 2 Median</div><div class="opt">(d) Mean + Mode</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Statistics</span><div class="q-text">19. माध्यक वर्ग और बहुलक वर्ग की निचली सीमाओं का योग (N=66 के लिए) होगा:</div><div class="options-grid"><div class="opt">(a) 15</div><div class="opt">(b) 25</div><div class="opt">(c) 30</div><div class="opt">(d) 10</div></div></div>
+
+    <div class="q-card"><span class="q-tag">Probability</span><div class="q-text">20. एक पासे को फेंकने पर अभाज्य संख्या (Prime No.) आने की प्रायिकता है:</div><div class="options-grid"><div class="opt">(a) 1/6</div><div class="opt">(b) 1/3</div><div class="opt">(c) 1/2</div><div class="opt">(d) 2/3</div></div></div>
+
+    <div id="answer-key">
+        <h2 style="text-align: center;">Answer Key (हल)</h2>
+        <table>
+            <tr><th>Q</th><th>Ans</th><th>Q</th><th>Ans</th></tr>
+            <tr><td>1</td><td>(b)</td><td>11</td><td>(c)</td></tr>
+            <tr><td>2</td><td>(d)</td><td>12</td><td>(a)</td></tr>
+            <tr><td>3</td><td>(a)</td><td>13</td><td>(b)</td></tr>
+            <tr><td>4</td><td>(c)</td><td>14</td><td>(c)</td></tr>
+            <tr><td>5</td><td>(b)</td><td>15</td><td>(a)</td></tr>
+            <tr><td>6</td><td>(a)</td><td>16</td><td>(b)</td></tr>
+            <tr><td>7</td><td>(b)</td><td>17</td><td>(a)</td></tr>
+            <tr><td>8</td><td>(c)</td><td>18</td><td>(b)</td></tr>
+            <tr><td>9</td><td>(c)</td><td>19</td><td>(b)</td></tr>
+            <tr><td>10</td><td>(c)</td><td>20</td><td>(c)</td></tr>
+        </table>
     </div>
+</div>
 
-    <div class="controls">
-        <button class="btn btn-ans" onclick="showAnswers()">Show Answers</button>
-        <button class="btn btn-print" onclick="window.print()">Download PDF</button>
-    </div>
+<div class="controls">
+    <button class="btn btn-ans" onclick="document.getElementById('answer-key').style.display='block'">Show Answers</button>
+    <button class="btn btn-print" onclick="window.print()">Print / Save PDF</button>
+</div>
 
-    <script>
-        function showAnswers() {
-            const table = document.getElementById('answerTable');
-            table.style.display = table.style.display === 'block' ? 'none' : 'block';
-            if(table.style.display === 'block') {
-                table.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    </script>
 </body>
 </html>
