@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RBSE Class 10 Maths MCQ Quiz</title>
+
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial;background:linear-gradient(135deg,#a1c4fd,#c2e9fb);padding:20px}
+.container{max-width:950px;margin:auto;background:#fff;padding:20px;border-radius:14px;box-shadow:0 10px 25px rgba(0,0,0,.2)}
+h1{text-align:center;color:#2c3e50}
+.timer{text-align:center;font-size:20px;font-weight:bold}
+.chapter{font-weight:bold;margin-top:20px;color:#2c3e50}
+.question-box{background:#f5f7ff;padding:15px;border-radius:12px;margin:12px 0;border:1px solid #dde3ff}
+.options label{display:block;padding:5px;border-radius:6px;cursor:pointer}
+.options label:hover{background:#eef}
+.correct{background:#d7ffd9 !important}
+.wrong{background:#ffd6d6 !important}
+.btn{padding:10px 20px;border:none;background:#2c3e50;color:#fff;border-radius:8px;margin:5px;cursor:pointer}
+#result{text-align:center;font-size:22px;font-weight:bold;margin-top:8px}
+.badge{text-align:center;font-size:25px;margin-top:6px}
+.progress{background:#ddd;border-radius:10px;margin-bottom:15px}
+.bar{height:10px;background:#2c3e50;width:0%;transition:.4s}
+.nav{text-align:center}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>RBSE Class 10 Maths — Practice MCQ (60)</h1>
+
+<div class="timer" id="timer">Time: 0 sec</div>
+
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<div id="quiz"></div>
+
+<div class="nav">
+<button class="btn" onclick="prevQ()">⬅ Previous</button>
+<button class="btn" onclick="nextQ()">Next ➡</button>
+<button class="btn" onclick="submitQuiz()">Submit</button>
+<button class="btn" onclick="window.print()">Download PDF</button>
+</div>
+
+<div id="result"></div>
+<div class="badge" id="badge"></div>
+
+<script>
+let time=0;
+setInterval(()=>{time++;document.getElementById("timer").innerText="Time: "+time+" sec";},1000);
+
+let qIndex=0;
+
+let questions=[
+
+/* ========= CH 1 REAL NUMBERS (10) ========= */
+{c:"Real Numbers",q:"1. यदि a=12 और b=18 तो HCF क्या होगा?",o:["2","3","6","9"],a:2},
+{c:"Real Numbers",q:"2. 2 और 5 का LCM?",o:["5","10","15","20"],a:1},
+{c:"Real Numbers",q:"3. किसी संख्या को 0 से गुणा करने पर परिणाम?",o:["0","1","अनंत","उसी संख्या"],a:0},
+{c:"Real Numbers",q:"4. अभाज्य संख्याएँ शुरू होती हैं?",o:["0","1","2","3"],a:2},
+{c:"Real Numbers",q:"5. 3 का वर्ग?",o:["6","8","9","12"],a:2},
+{c:"Real Numbers",q:"6. यदि 2a=10 तो a=?",o:["2","3","4","5"],a:3},
+{c:"Real Numbers",q:"7. 1 का व्युत्क्रम?",o:["0","1","2","−1"],a:1},
+{c:"Real Numbers",q:"8. 4 और 6 का HCF?",o:["1","2","4","6"],a:1},
+{c:"Real Numbers",q:"9. प्राकृतिक संख्याएँ शुरू?",o:["0","1","2","3"],a:1},
+{c:"Real Numbers",q:"10. विषम संख्या कौन-सी?",o:["6","8","10","9"],a:3},
+
+/* ========= POLYNOMIALS (10) ========= */
+{c:"Polynomials",q:"11. 2x+3 एक ___ है",o:["रेखीय बहुपद","द्विघात","त्रिघात","कुछ नहीं"],a:0},
+{c:"Polynomials",q:"12. x² एक ___ है",o:["रेखीय","द्विघात","त्रिघात","नियतांक"],a:1},
+{c:"Polynomials",q:"13. बहुपद की डिग्री?",o:["घात","आधार","मान","शून्य"],a:0},
+{c:"Polynomials",q:"14. 5 एक ___ है",o:["चर","नियतांक","बहुपद","फैक्टर"],a:1},
+{c:"Polynomials",q:"15. 3x में गुणांक?",o:["3","x","0","1"],a:0},
+{c:"Polynomials",q:"16. शून्य बहुपद का मान?",o:["0","1","2","कुछ नहीं"],a:0},
+{c:"Polynomials",q:"17. 2x² में डिग्री?",o:["0","1","2","3"],a:2},
+{c:"Polynomials",q:"18. यदि x=1 तो 2x+1=?",o:["1","2","3","4"],a:2},
+{c:"Polynomials",q:"19. x³ किस प्रकार?",o:["रेखीय","द्विघात","त्रिघात","नियतांक"],a:2},
+{c:"Polynomials",q:"20. बहुपद होता है?",o:["बीजगणितीय रूप","ज्यामिति","त्रिकोणमिति","कुछ नहीं"],a:0},
+
+/* ========= PAIR OF LINEAR EQUATIONS (10) ========= */
+{c:"Linear Eq",q:"21. ax+by=c को कहते हैं",o:["द्विघात","रेखीय","त्रिघात","None"],a:1},
+{c:"Linear Eq",q:"22. 2x=8 तो x=?",o:["2","3","4","6"],a:2},
+{c:"Linear Eq",q:"23. हल का अर्थ?",o:["मान","घात","आकृति","None"],a:0},
+{c:"Linear Eq",q:"24. दो रेखाएँ मिलती हैं तो?",o:["समानांतर","लंबवत","कटती हैं","None"],a:2},
+{c:"Linear Eq",q:"25. y=3 रेखा?",o:["क्षैतिज","ऊर्ध्वाधर","वक्र","None"],a:0},
+{c:"Linear Eq",q:"26. x=2 रेखा?",o:["क्षैतिज","ऊर्ध्वाधर","वक्र","None"],a:1},
+{c:"Linear Eq",q:"27. समाधान का युग्म?",o:["(x,y)","x+y","xy","None"],a:0},
+{c:"Linear Eq",q:"28. 3x=0 तो x=?",o:["0","1","3","अनंत"],a:0},
+{c:"Linear Eq",q:"29. y-अक्ष पर बिंदु?",o:["(0,y)","(x,0)","(x,y)","None"],a:0},
+{c:"Linear Eq",q:"30. मूल बिंदु?",o:["(1,1)","(0,0)","(2,2)","None"],a:1},
+
+/* ========= TRIANGLES (10) ========= */
+{c:"Triangles",q:"31. त्रिभुज के कोणों का योग?",o:["90°","120°","180°","360°"],a:2},
+{c:"Triangles",q:"32. समभुज त्रिभुज में सभी भुजाएँ?",o:["अलग","बराबर","दो बराबर","None"],a:1},
+{c:"Triangles",q:"33. समकोण कितना?",o:["30°","45°","60°","90°"],a:3},
+{c:"Triangles",q:"34. कर्ण किस त्रिभुज में?",o:["समभुज","समद्विबाहु","समकोण","None"],a:2},
+{c:"Triangles",q:"35. पाइथागोरस प्रमेय?",o:["a+b=c","a²+b²=c²","ab=c","None"],a:1},
+{c:"Triangles",q:"36. तीक्ष्ण कोण < ?",o:["30°","45°","60°","90°"],a:3},
+{c:"Triangles",q:"37. स्थूल कोण >",o:["60°","90°","120°","180°"],a:1},
+{c:"Triangles",q:"38. परिवृत्त किसका?",o:["त्रिभुज","वृत्त","रेखा","None"],a:0},
+{c:"Triangles",q:"39. ऊँचाई होती है?",o:["लंबवत","समानांतर","वक्र","None"],a:0},
+{c:"Triangles",q:"40. आधार × ऊँचाई /2 = ?",o:["परिमाप","क्षेत्रफल","त्रिज्या","None"],a:1},
+
+/* ========= TRIGONOMETRY (10) ========= */
+{c:"Trigonometry",q:"41. sin90°=?",o:["0","1","1/2","√2"],a:1},
+{c:"Trigonometry",q:"42. cos0°=?",o:["0","1","1/2","None"],a:1},
+{c:"Trigonometry",q:"43. tanθ=?",o:["sin/cos","cos/sin","1/sin","None"],a:0},
+{c:"Trigonometry",q:"44. sin0°=?",o:["0","1","1/2","None"],a:0},
+{c:"Trigonometry",q:"45. cos90°=?",o:["0","1","2","None"],a:0},
+{c:"Trigonometry",q:"46. sin²θ+cos²θ=?",o:["0","1","2","None"],a:1},
+{c:"Trigonometry",q:"47. tan45°=?",o:["0","1","2","None"],a:1},
+{c:"Trigonometry",q:"48. sin30°=?",o:["1/2","√3/2","1","0"],a:0},
+{c:"Trigonometry",q:"49. cos60°=?",o:["1","1/2","√3/2","0"],a:1},
+{c:"Trigonometry",q:"50. tan0°=?",o:["0","1","2","None"],a:0},
+
+/* ========= STATISTICS & PROBABILITY (10) ========= */
+{c:"Statistics",q:"51. Mean का सूत्र?",o:["Σx/n","x+n","x-n","None"],a:0},
+{c:"Statistics",q:"52. Mode क्या?",o:["सबसे बड़ा","बार-बार आने वाला","सबसे छोटा","None"],a:1},
+{c:"Statistics",q:"53. Median?",o:["मध्य मान","सबसे बड़ा","सबसे छोटा","None"],a:0},
+{c:"Statistics",q:"54. Probability का मान?",o:["<0",">1","0 से 1","None"],a:2},
+{c:"Statistics",q:"55. पाई चार्ट किसका?",o:["रेखाचित्र","वृत्त","त्रिभुज","None"],a:1},
+{c:"Statistics",q:"56. डेटा का अर्थ?",o:["सूचना","संख्या","परिणाम","None"],a:0},
+{c:"Statistics",q:"57. Frequency?",o:["बार-बार आना","मान","योग","None"],a:0},
+{c:"Statistics",q:"58. यदि घटना असंभव हो तो P=?",o:["0","1","2","None"],a:0},
+{c:"Statistics",q:"59. निश्चित घटना की Probability?",o:["0","1","1/2","None"],a:1},
+{c:"Statistics",q:"60. Mean हमेशा?",o:["एक-सा","बदलता","0","None"],a:0},
+];
+
+function showQ(){
+let q=questions[qIndex];
+let html=`<div class='chapter'>${q.c}</div>
+<div class='question-box'>
+<div class='question'>${q.q}</div>
+<div class='options'>`;
+q.o.forEach((o,i)=>{
+html+=`<label><input type='radio' name='q${qIndex}' value='${i}'> ${o}</label>`;
+});
+html+=`</div></div>`;
+document.getElementById("quiz").innerHTML=html;
+document.getElementById("bar").style.width=((qIndex+1)/questions.length*100)+"%";
+}
+showQ();
+
+function nextQ(){if(qIndex<questions.length-1)qIndex++;showQ();}
+function prevQ(){if(qIndex>0)qIndex--;showQ();}
+
+function submitQuiz(){
+let score=0;
+questions.forEach((q,i)=>{
+let r=document.getElementsByName("q"+i);
+r.forEach(x=>{if(x.checked&&x.value==q.a)score++;});
+});
+let p=Math.round(score/questions.length*100);
+let badge=p>=80?"🥇 Gold":p>=60?"🥈 Silver":"🥉 Bronze";
+document.getElementById("result").innerText=`Score: ${score}/60 (${p}%)`;
+document.getElementById("badge").innerText=badge;
+}
+</script>
+
+</div>
+</body>
+</html>
