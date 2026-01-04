@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Air Force X Group - CBT Live</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- AIR FORCE THEME (CBT BLUE) --- */
+        :root { 
+            --af-blue: #00308F; /* Air Force Blue */
+            --af-light: #e3f2fd;
+            --text-dark: #333;
+            --selected: #4caf50;
+        }
+        
+        body { font-family: 'Roboto', sans-serif; background: #f1f1f1; margin: 0; padding-bottom: 70px; user-select: none; }
+
+        /* 1. TOP HEADER (Fixed) */
+        .cbt-header {
+            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+            background: var(--af-blue); color: white;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 15px; box-sizing: border-box; z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .exam-title { font-weight: 700; font-size: 1.1rem; text-transform: uppercase; }
+        .timer-box { background: black; color: #00ff00; padding: 5px 10px; border-radius: 4px; font-family: monospace; font-size: 1.2rem; border: 1px solid #555; }
+
+        /* 2. SUBJECT TABS (Navigation) */
+        .subject-bar {
+            position: fixed; top: 60px; left: 0; width: 100%;
+            background: white; display: flex;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 999;
+        }
+        .sub-tab {
+            flex: 1; text-align: center; padding: 12px;
+            font-weight: 600; color: #666; cursor: pointer;
+            border-bottom: 3px solid transparent; transition: 0.3s;
+        }
+        .sub-tab.active { color: var(--af-blue); border-bottom: 3px solid var(--af-blue); background: var(--af-light); }
+
+        /* 3. MAIN AREA */
+        .container { max-width: 900px; margin: 120px auto 20px; padding: 10px; }
+
+        /* Questions */
+        .q-section { display: none; } /* Hide all sections initially */
+        .q-section.active-sec { display: block; } /* Show only active */
+
+        .question-card {
+            background: white; padding: 15px; margin-bottom: 15px;
+            border: 1px solid #ddd; border-radius: 5px;
+        }
+        .q-num { background: var(--af-blue); color: white; padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; margin-right: 8px; }
+        
+        .options label {
+            display: flex; align-items: center; padding: 10px;
+            border: 1px solid #eee; margin-top: 5px; cursor: pointer;
+            border-radius: 4px; transition: 0.2s;
+        }
+        .options label:hover { background: #f9f9f9; }
+        .options input { margin-right: 10px; }
+
+        /* Footer */
+        .cbt-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: white; padding: 10px; border-top: 1px solid #ccc;
+            display: flex; justify-content: space-between; gap: 10px; z-index: 1000;
+        }
+        .btn { padding: 10px 20px; border: none; font-weight: bold; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
+        .btn-submit { background: #28a745; color: white; }
+        .btn-clear { background: #ffc107; color: black; }
+
+        /* Login Screen */
+        #login-view { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: linear-gradient(135deg, #0d47a1, #1976d2); 
+            z-index: 2000; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; color: white; text-align: center;
+        }
+        .glass-panel { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px); width: 90%; max-width: 400px; }
+        
+    </style>
+</head>
+<body>
+
+<div id="login-view">
+    <div class="glass-panel">
+        <i class="fas fa-jet-fighter fa-4x" style="margin-bottom: 20px;"></i>
+        <h2>INDIAN AIR FORCE</h2>
+        <h3>Group X (Technical) Mock</h3>
+        <p>Physics | Math | English</p>
+        <hr style="opacity:0.3; margin: 20px 0;">
+        <ul style="text-align: left; font-size: 0.9rem; line-height: 1.6;">
+            <li><i class="fas fa-check"></i> <strong>Time:</strong> 60 Minutes</li>
+            <li><i class="fas fa-check"></i> <strong>Marks:</strong> +1 for Correct</li>
+            <li><i class="fas fa-check"></i> <strong>Negative:</strong> -0.25 Wrong</li>
+        </ul>
+        <button onclick="signInWithGoogle()" style="margin-top:20px; padding:12px 25px; background:white; color:#0d47a1; border:none; border-radius:30px; font-weight:bold; cursor:pointer;">
+            <i class="fab fa-google"></i> Login to Begin
+        </button>
+    </div>
+</div>
+
+<div id="exam-view" style="display:none;">
+    
+    <div class="cbt-header">
+        <div class="exam-title"><i class="fas fa-plane"></i> STAR EXAM 01</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div id="user-display" style="font-size:0.8rem;">Cadet</div>
+            <div class="timer-box" id="timer">60:00</div>
+        </div>
+    </div>
+
+    <div class="subject-bar">
+        <div class="sub-tab active" onclick="switchTab('physics')">PHYSICS (25)</div>
+        <div class="sub-tab" onclick="switchTab('math')">MATH (25)</div>
+        <div class="sub-tab" onclick="switchTab('english')">ENGLISH (20)</div>
+    </div>
+
+    <div class="container">
+        <form id="quizForm">
+            
+            <div id="physics-sec" class="q-section active-sec">
+                <h3 style="color:var(--af-blue); border-bottom:2px solid #ddd; padding-bottom:5px;">Physics Section</h3>
+                
+                <div class="question-card">
+                    <p><span class="q-num">Q1</span> Dimensional formula of Viscosity?</p>
+                    <div class="options">
+                        <label><input type="radio" name="p1" value="a"> [ML-1T-1]</label> <label><input type="radio" name="p1" value="b"> [MLT-2]</label>
+                        <label><input type="radio" name="p1" value="c"> [M0L0T0]</label>
+                        <label><input type="radio" name="p1" value="d"> [ML2T-2]</label>
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <p><span class="q-num">Q2</span> Escape velocity depends on?</p>
+                    <div class="options">
+                        <label><input type="radio" name="p2" value="a"> Mass of body</label>
+                        <label><input type="radio" name="p2" value="b"> Radius of planet</label> <label><input type="radio" name="p2" value="c"> Color of planet</label>
+                        <label><input type="radio" name="p2" value="d"> None</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="math-sec" class="q-section">
+                <h3 style="color:var(--af-blue); border-bottom:2px solid #ddd; padding-bottom:5px;">Mathematics Section</h3>
+                
+                <div class="question-card">
+                    <p><span class="q-num">Q1</span> Value of log(1)?</p>
+                    <div class="options">
+                        <label><input type="radio" name="m1" value="a"> 1</label>
+                        <label><input type="radio" name="m1" value="b"> 0</label> <label><input type="radio" name="m1" value="c"> Infinity</label>
+                        <label><input type="radio" name="m1" value="d"> e</label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="english-sec" class="q-section">
+                <h3 style="color:var(--af-blue); border-bottom:2px solid #ddd; padding-bottom:5px;">English Section</h3>
+                
+                <div class="question-card">
+                    <p><span class="q-num">Q1</span> Synonym of 'ABANDON'?</p>
+                    <div class="options">
+                        <label><input type="radio" name="e1" value="a"> Keep</label>
+                        <label><input type="radio" name="e1" value="b"> Join</label>
+                        <label><input type="radio" name="e1" value="c"> Forsake</label> <label><input type="radio" name="e1" value="d"> Love</label>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="cbt-footer">
+        <button class="btn btn-clear" onclick="document.getElementById('quizForm').reset()">Clear Response</button>
+        <button class="btn btn-submit" onclick="submitExam()">Submit Test</button>
+    </div>
+</div>
+
+<div id="result-view" style="display:none; text-align:center; padding:50px;">
+    <h1 style="color:var(--af-blue)">RESULT DECLARED</h1>
+    <div style="font-size:3rem; font-weight:bold; margin:20px 0;" id="final-score">0.0</div>
+    <p>Total Marks</p>
+    <table id="leaderboard" style="width:100%; margin-top:30px; border-collapse:collapse;">
+        </table>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // 🔴 1. FIREBASE CONFIG (अपनी Key यहाँ डालें)
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  // 🔴 2. ANSWER KEY (तीन अलग सेक्शन के लिए नाम अलग रखें)
+  // Physics: p1, p2... Math: m1, m2... English: e1, e2...
+  const ANSWER_KEY = {
+      // Physics
+      p1: 'a', p2: 'b',
+      // Math
+      m1: 'b',
+      // English
+      e1: 'c'
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+  let currentUser = null, timerInt;
+
+  // TAB SWITCHING LOGIC
+  window.switchTab = (tabName) => {
+      // Buttons Highlight
+      document.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Sections Show/Hide
+      document.querySelectorAll('.q-section').forEach(el => el.classList.remove('active-sec'));
+      document.getElementById(tabName+'-sec').classList.add('active-sec');
+      
+      window.scrollTo(0,0); // Scroll to top
+  };
+
+  window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e=>alert(e));
+
+  onAuthStateChanged(auth, async (user) => {
+      if(user){
+          currentUser = user;
+          const snap = await getDoc(doc(db, "airforce_x_01", user.uid));
+          document.getElementById('login-view').style.display='none';
+          if(snap.exists()) showResult(snap.data());
+          else startExam(user);
+      }
+  });
+
+  function startExam(user) {
+      document.getElementById('exam-view').style.display='block';
+      document.getElementById('user-display').innerText = user.displayName;
+      
+      let t = 60 * 60; // 60 Minutes
+      timerInt = setInterval(() => {
+          t--;
+          let m = Math.floor(t/60).toString().padStart(2,'0');
+          let s = (t%60).toString().padStart(2,'0');
+          document.getElementById('timer').innerText = `${m}:${s}`;
+          if(t<=0) { clearInterval(timerInt); submitExam(true); }
+      }, 1000);
+  }
+
+  window.submitExam = async (auto=false) => {
+      if(!auto && !confirm("Final Submit Air Force Test?")) return;
+      clearInterval(timerInt);
+      
+      let score = 0;
+      let form = document.forms['quizForm'];
+      
+      for(let q in ANSWER_KEY){
+          let val = form[q]?.value;
+          if(val === ANSWER_KEY[q]) score += 1; // +1 Marks
+          else if(val) score -= 0.25; // -0.25 Negative
+      }
+      
+      const data = { name: currentUser.displayName, score: score, timestamp: new Date() };
+      await setDoc(doc(db, "airforce_x_01", currentUser.uid), data);
+      showResult(data);
+  };
+
+  async function showResult(data){
+      document.getElementById('exam-view').style.display='none';
+      document.getElementById('result-view').style.display='block';
+      document.getElementById('final-score').innerText = data.score;
+      
+      const q = query(collection(db, "airforce_x_01"), orderBy("score", "desc"), limit(10));
+      const snap = await getDocs(q);
+      let h = `<tr><th style="background:#00308F; color:white; padding:10px;">Rank</th><th style="background:#00308F; color:white; padding:10px;">Name</th><th style="background:#00308F; color:white; padding:10px;">Score</th></tr>`;
+      let r = 1;
+      snap.forEach(d=>{
+         h+=`<tr><td style="padding:10px; border:1px solid #ddd;">#${r++}</td><td style="padding:10px; border:1px solid #ddd;">${d.data().name}</td><td style="padding:10px; border:1px solid #ddd;">${d.data().score}</td></tr>`;
+      });
+      document.getElementById('leaderboard').innerHTML = h;
+  }
+</script>
+</body>
+</html>
