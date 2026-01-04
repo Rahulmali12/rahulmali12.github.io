@@ -3,334 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NDA Math Brahmastra - Mock Test & Notes</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Rivento Academy - NDA Math Live Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root {
-            --primary: #1a237e; /* Navy Blue for Defense */
-            --accent: #ff9800; /* Orange for Highlights */
-            --light: #f5f6fa;
-            --dark: #2c3e50;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        /* --- CSS Styles (Design) --- */
+        :root { --primary: #1a237e; --accent: #ff6d00; --bg: #f4f6f8; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
         
-        body { background-color: var(--light); color: var(--dark); }
-
-        /* --- Header --- */
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .logo { font-size: 1.5rem; font-weight: bold; }
-        .logo span { color: var(--accent); }
-
-        .auth-btn {
-            background: white;
-            color: var(--dark);
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.3s;
-        }
-        .auth-btn:hover { background: var(--accent); color: white; }
-
-        /* --- Hero Section --- */
-        .hero {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(rgba(26, 35, 126, 0.9), rgba(26, 35, 126, 0.8)), url('https://upload.wikimedia.org/wikipedia/commons/8/8d/Khadakwasla_Dam_Pune.jpg');
-            background-size: cover;
-            color: white;
-            margin-bottom: 20px;
-        }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .hero p { font-size: 1.1rem; opacity: 0.9; }
-
-        /* --- Tabs Navigation --- */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .tab-btn {
-            padding: 10px 25px;
-            border: 2px solid var(--primary);
-            background: transparent;
-            color: var(--primary);
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .tab-btn.active, .tab-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* --- Content Sections --- */
-        .section { display: none; padding: 20px 5%; max-width: 1200px; margin: 0 auto; }
-        .section.active { display: block; }
-
-        h2.sec-title { border-left: 5px solid var(--accent); padding-left: 10px; margin-bottom: 20px; color: var(--primary); }
-
-        /* --- Mock Test Style --- */
-        .quiz-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
-        }
-        .options label {
-            display: block;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-top: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .options input { margin-right: 10px; }
-        .options label:hover { background: #e3f2fd; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         
-        .submit-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
+        header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        .logo { color: var(--primary); font-size: 1.8rem; font-weight: bold; }
+        
+        /* Login Section */
+        #login-section { text-align: center; padding: 40px 0; }
+        .google-btn {
+            background: #4285F4; color: white; border: none; padding: 12px 24px;
+            font-size: 16px; border-radius: 5px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
         }
+        .google-btn:hover { background: #357ae8; }
 
-        /* --- PDF & Classes Grid --- */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .resource-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        .resource-card:hover { transform: translateY(-5px); }
-        .card-img { height: 150px; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #777; }
-        .card-body { padding: 15px; }
-        .card-btn {
-            display: block;
-            text-align: center;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            padding: 8px;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
+        /* Quiz Section */
+        #quiz-section { display: none; }
+        .question-card { background: #f9f9f9; padding: 15px; margin-bottom: 15px; border-radius: 8px; border-left: 4px solid var(--primary); }
+        .options label { display: block; padding: 8px; cursor: pointer; }
+        .options label:hover { background: #eee; }
 
-        /* --- Leaderboard --- */
-        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: var(--primary); color: white; }
-        tr:nth-child(even) { background: #f2f2f2; }
-        .rank-1 { color: gold; font-weight: bold; }
-        .rank-2 { color: silver; font-weight: bold; }
-        .rank-3 { color: #cd7f32; font-weight: bold; }
+        /* Leaderboard Section */
+        #leaderboard-section { display: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: var(--primary); color: white; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; }
+        .rank-1 { background: #fff9c4; font-weight: bold; } /* Gold */
+        .rank-2 { background: #f5f5f5; font-weight: bold; } /* Silver */
+        .rank-3 { background: #ffe0b2; font-weight: bold; } /* Bronze */
 
+        .alert { padding: 10px; background: #ffebee; color: #c62828; border-radius: 5px; margin-bottom: 15px; display: none; }
+        .user-info { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 20px; }
+        .user-img { width: 40px; height: 40px; border-radius: 50%; }
     </style>
 </head>
 <body>
 
+<div class="container">
     <header>
-        <div class="logo">NDA <span>WARRIORS</span></div>
-        <button class="auth-btn" onclick="googleLogin()">
-            <i class="fab fa-google"></i> Google Login
-        </button>
+        <div class="logo">RIVENTO <span style="color:var(--accent)">ACADEMY</span></div>
+        <p>NDA Math - Vector & 3D (Live Test)</p>
     </header>
 
-    <div class="hero">
-        <h1>NDA Math Mission 2026</h1>
-        <p>Mock Tests | PYQ PDFs | Short Tricks</p>
+    <div id="login-section">
+        <h3>Login to Start Test</h3>
+        <p>Security Check: One Attempt Per ID Allowed</p>
+        <br>
+        <button class="google-btn" onclick="signInWithGoogle()">
+            <i class="fab fa-google"></i> Sign in with Google
+        </button>
     </div>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="showSection('mock')">🔥 Mock Test</button>
-        <button class="tab-btn" onclick="showSection('leaderboard')">🏆 Leaderboard</button>
-        <button class="tab-btn" onclick="showSection('pdfs')">📚 PDF Notes</button>
-        <button class="tab-btn" onclick="showSection('classes')">🎥 Video Classes</button>
+    <div id="loading" style="display:none; text-align:center;">
+        <i class="fas fa-spinner fa-spin fa-2x"></i>
+        <p>Checking your status...</p>
     </div>
 
-    <div id="mock" class="section active">
-        <h2 class="sec-title">Live Math Mock Test (Vector & Algebra)</h2>
-        
+    <div id="quiz-section">
+        <div class="user-info">
+            <img id="user-pic" src="" class="user-img">
+            <div>
+                <strong id="user-name">Student</strong><br>
+                <small>Attempt #1</small>
+            </div>
+        </div>
+
         <form id="quizForm">
-            <div class="quiz-card">
-                <h3>Q1. If |a| = 3, |b| = 4 and |a × b| = 10, then what is |a.b|²?</h3>
+            <div class="question-card">
+                <p><strong>Q1.</strong> If vector <b>a</b> and <b>b</b> are perpendicular, then <b>a.b</b> is?</p>
                 <div class="options">
-                    <label><input type="radio" name="q1" value="a"> 22</label>
-                    <label><input type="radio" name="q1" value="b"> 44</label>
-                    <label><input type="radio" name="q1" value="c"> 144</label>
-                    <label><input type="radio" name="q1" value="d"> 12</label>
+                    <label><input type="radio" name="q1" value="0"> 0</label>
+                    <label><input type="radio" name="q1" value="1"> 1</label>
+                    <label><input type="radio" name="q1" value="-1"> -1</label>
+                    <label><input type="radio" name="q1" value="inf"> Infinity</label>
                 </div>
             </div>
 
-            <div class="quiz-card">
-                <h3>Q2. What is the value of i^2025?</h3>
+            <div class="question-card">
+                <p><strong>Q2.</strong> What is the projection of vector i+j on k?</p>
                 <div class="options">
-                    <label><input type="radio" name="q2" value="a"> 1</label>
-                    <label><input type="radio" name="q2" value="b"> -1</label>
-                    <label><input type="radio" name="q2" value="c"> i</label>
-                    <label><input type="radio" name="q2" value="d"> -i</label>
+                    <label><input type="radio" name="q2" value="1"> 1</label>
+                    <label><input type="radio" name="q2" value="0"> 0</label>
+                    <label><input type="radio" name="q2" value="root2"> √2</label>
+                    <label><input type="radio" name="q2" value="half"> 1/2</label>
                 </div>
             </div>
-
-            <button type="button" class="submit-btn" onclick="calculateScore()">Submit Test</button>
+            <button type="button" class="google-btn" style="background:var(--primary); width:100%" onclick="submitQuiz()">Submit Test & See Rank</button>
         </form>
-        <div id="result" style="margin-top: 20px; font-weight: bold; font-size: 1.2rem; text-align: center;"></div>
     </div>
 
-    <div id="leaderboard" class="section">
-        <h2 class="sec-title">Top Rankers (This Week)</h2>
-        <p style="margin-bottom: 10px; color: #666;">Login to see your name here!</p>
+    <div id="leaderboard-section">
+        <div id="already-msg" class="alert">
+            <i class="fas fa-exclamation-circle"></i> You have already taken this test!
+        </div>
+        
+        <div style="text-align:center;">
+            <h2>🏆 Top 20 Commanders</h2>
+            <p>Live Leaderboard</p>
+            <h3>Your Score: <span id="my-score" style="color:var(--accent)">-</span>/2</h3>
+        </div>
+
         <table>
             <thead>
                 <tr>
                     <th>Rank</th>
-                    <th>Name</th>
+                    <th>Cadet Name</th>
                     <th>Score</th>
                 </tr>
             </thead>
             <tbody id="leaderboard-body">
-                <tr>
-                    <td class="rank-1"><i class="fas fa-trophy"></i> 1</td>
-                    <td>Rahul Singh</td>
-                    <td>120/120</td>
-                </tr>
-                <tr>
-                    <td class="rank-2">2</td>
-                    <td>Amit Kumar</td>
-                    <td>115/120</td>
-                </tr>
-                <tr>
-                    <td class="rank-3">3</td>
-                    <td>Priya Sharma</td>
-                    <td>110/120</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Rohit Verma</td>
-                    <td>98/120</td>
-                </tr>
-            </tbody>
+                </tbody>
         </table>
     </div>
+</div>
 
-    <div id="pdfs" class="section">
-        <h2 class="sec-title">Important PDFs & Formula Sheets</h2>
-        <div class="grid-container">
-            <div class="resource-card">
-                <div class="card-img" style="background: #ffebee; color: #d32f2f;">
-                    <i class="fas fa-file-pdf"></i>
-                </div>
-                <div class="card-body">
-                    <h3>Trigonometry Shortcuts</h3>
-                    <p>Best short tricks for NDA exam.</p>
-                    <a href="#" class="card-btn">Download PDF</a>
-                </div>
-            </div>
-            <div class="resource-card">
-                <div class="card-img" style="background: #e3f2fd; color: #1976d2;">
-                    <i class="fas fa-file-pdf"></i>
-                </div>
-                <div class="card-body">
-                    <h3>Vector Calculus PYQs</h3>
-                    <p>Last 10 years solved papers.</p>
-                    <a href="#" class="card-btn">Download PDF</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<script type="module">
+  // Import functions
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    <div id="classes" class="section">
-        <h2 class="sec-title">Premium Video Classes</h2>
-        <div class="grid-container">
-            <div class="resource-card">
-                <div class="card-img" style="background: #000;">
-                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/placeholder" frameborder="0" allowfullscreen></iframe>
-                </div>
-                <div class="card-body">
-                    <h3>Matrices & Determinants</h3>
-                    <p>One shot full revision.</p>
-                    <a href="#" class="card-btn">Watch Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
+  // TODO: PASTE YOUR FIREBASE CONFIG HERE 👇
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
 
-    <footer style="text-align: center; padding: 20px; background: var(--dark); color: white; margin-top: 40px;">
-        <p>&copy; 2026 Rivento Academy | NDA Prep</p>
-    </footer>
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
 
-    <script>
-        // Tab Switching Logic
-        function showSection(id) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
+  let currentUser = null;
 
-        // Mock Test Logic (Simple JS)
-        function calculateScore() {
-            let score = 0;
-            let total = 2; // Total questions currently in code
-            
-            // Answers Key (Correct options)
-            let answers = {
-                q1: 'b', // 44 is correct for given values (just placeholder logic)
-                q2: 'c'  // i is correct for i^2025
-            };
+  // --- LOGIN FUNCTION ---
+  window.signInWithGoogle = () => {
+      signInWithPopup(auth, provider)
+          .then((result) => {
+              // User signed in
+          }).catch((error) => {
+              console.error(error);
+              alert("Login Failed");
+          });
+  };
 
-            let form = document.forms['quizForm'];
-            
-            // Check Q1
-            if(form.q1.value == answers.q1) score++;
-            // Check Q2
-            if(form.q2.value == answers.q2) score++;
+  // --- CHECK USER STATUS (Main Security Logic) ---
+  onAuthStateChanged(auth, async (user) => {
+      if (user) {
+          currentUser = user;
+          document.getElementById('login-section').style.display = 'none';
+          document.getElementById('loading').style.display = 'block';
 
-            let resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `You Scored: ${score} / ${total} <br> <span style="color:green">Keep practicing!</span>`;
-            
-            // Here you would send 'score' to Firebase Database
-            console.log("Score to save:", score);
-        }
+          // Check if user already took test in Firestore Database
+          const docRef = doc(db, "nda_math_scores", user.uid);
+          const docSnap = await getDoc(docRef);
 
-        // Google Login Placeholder
-        function googleLogin() {
-            alert("इस फीचर के लिए Firebase Setup की जरूरत है। (To be connected to Backend)");
-            // Here Firebase Auth code will go
-        }
-    </script>
+          document.getElementById('loading').style.display = 'none';
+
+          if (docSnap.exists()) {
+              // Already Attempted -> Show Leaderboard directly
+              showLeaderboard(docSnap.data().score);
+              document.getElementById('already-msg').style.display = 'block';
+          } else {
+              // New User -> Show Quiz
+              document.getElementById('user-name').innerText = user.displayName;
+              document.getElementById('user-pic').src = user.photoURL;
+              document.getElementById('quiz-section').style.display = 'block';
+          }
+      }
+  });
+
+  // --- SUBMIT QUIZ ---
+  window.submitQuiz = async () => {
+      if(!currentUser) return;
+
+      let score = 0;
+      let form = document.forms['quizForm'];
+      
+      // Calculate Score Logic (Manual for now)
+      if(form.q1.value === '0') score++;
+      if(form.q2.value === '0') score++; // Example answers
+
+      // Security: Save to Firebase so they can't submit again
+      try {
+          await setDoc(doc(db, "nda_math_scores", currentUser.uid), {
+              name: currentUser.displayName,
+              score: score,
+              timestamp: new Date()
+          });
+          
+          showLeaderboard(score);
+      } catch (e) {
+          alert("Error saving score: " + e.message);
+      }
+  };
+
+  // --- SHOW LEADERBOARD ---
+  async function showLeaderboard(myScore) {
+      document.getElementById('quiz-section').style.display = 'none';
+      document.getElementById('leaderboard-section').style.display = 'block';
+      document.getElementById('my-score').innerText = myScore;
+
+      // Fetch Top 20 from Database
+      const q = query(collection(db, "nda_math_scores"), orderBy("score", "desc"), limit(20));
+      const querySnapshot = await getDocs(q);
+      
+      let tbody = document.getElementById('leaderboard-body');
+      tbody.innerHTML = "";
+      
+      let rank = 1;
+      querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          let rowClass = rank === 1 ? 'rank-1' : (rank === 2 ? 'rank-2' : (rank === 3 ? 'rank-3' : ''));
+          
+          let row = `<tr class="${rowClass}">
+              <td>#${rank}</td>
+              <td>${data.name} ${data.name === currentUser.displayName ? '(You)' : ''}</td>
+              <td>${data.score}</td>
+          </tr>`;
+          tbody.innerHTML += row;
+          rank++;
+      });
+  }
+</script>
+
 </body>
 </html>
