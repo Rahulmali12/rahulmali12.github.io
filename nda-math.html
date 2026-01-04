@@ -2,386 +2,277 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NDA Math - Pro Exam Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rivento Academy - NDA Math Live Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        :root {
-            --header-h: 60px;
-            --primary: #2980b9;
-            --success: #27ae60;
-            --danger: #c0392b;
-            --warning: #f39c12;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-        }
-
-        * { box-sizing: border-box; }
-        body { font-family: 'Roboto', sans-serif; margin: 0; background: #f4f6f9; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-
-        /* --- LOGIN SCREEN --- */
-        #login-screen, #result-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; z-index: 1000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
-        }
-        .btn-google { background: #4285F4; color: white; padding: 12px 25px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        :root { --primary: #1a237e; --accent: #ff6d00; --bg: #f4f6f8; }
         
-        /* --- EXAM INTERFACE --- */
-        #exam-interface { display: none; height: 100vh; flex-direction: column; }
-
-        /* Header */
-        header {
-            height: var(--header-h); background: white; border-bottom: 1px solid #ddd;
-            display: flex; justify-content: space-between; align-items: center; padding: 0 20px;
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--bg); 
+            margin: 0; 
+            padding: 0; 
+            padding-bottom: 100px; /* जगह छोड़ी ताकि कंटेंट बटन के पीछे न छुपे */
         }
-        .timer-box { font-size: 1.2rem; font-weight: bold; color: var(--danger); background: #fdeaea; padding: 5px 15px; border-radius: 5px; }
-
-        /* Main Layout */
-        .main-container { display: flex; flex: 1; overflow: hidden; }
-
-        /* Question Area (Left) */
-        .question-area { flex: 3; padding: 20px; overflow-y: auto; position: relative; }
-        .q-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; color: #666; }
-        .q-text { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.6; }
         
-        .option-item {
-            display: flex; align-items: center; padding: 12px; margin-bottom: 10px;
-            border: 1px solid #ccc; border-radius: 5px; cursor: pointer; transition: 0.2s;
+        .container { 
+            max-width: 800px; 
+            margin: 20px auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
         }
-        .option-item:hover { background: #f0f8ff; border-color: var(--primary); }
-        .option-item.selected { background: #e1f0fa; border-color: var(--primary); font-weight: 500; }
-        .radio-circle { width: 18px; height: 18px; border: 2px solid #999; border-radius: 50%; margin-right: 15px; display: flex; align-items: center; justify-content: center; }
-        .option-item.selected .radio-circle { border-color: var(--primary); }
-        .option-item.selected .radio-circle::after { content: ''; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; }
-
-        /* Sidebar (Right) */
-        .sidebar { flex: 1; background: white; border-left: 1px solid #ddd; display: flex; flex-direction: column; min-width: 250px; }
-        .profile-sec { padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
-        .profile-sec img { width: 40px; height: 40px; border-radius: 50%; }
         
-        .palette-grid { padding: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; overflow-y: auto; flex: 1; align-content: start; }
-        .p-btn {
-            height: 35px; width: 35px; border-radius: 50%; border: 1px solid #ccc;
-            background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem;
+        header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 15px; }
+        .logo { color: var(--primary); font-size: 1.5rem; font-weight: bold; }
+        
+        /* Login Section */
+        #login-section { text-align: center; padding: 40px 0; }
+        .google-btn {
+            background: #4285F4; color: white; border: none; padding: 12px 24px;
+            font-size: 16px; border-radius: 5px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
         }
-        /* Palette Colors */
-        .p-btn.answered { background: var(--success); color: white; border-color: var(--success); }
-        .p-btn.not-answered { background: var(--danger); color: white; border-color: var(--danger); }
-        .p-btn.review { background: var(--primary); color: white; border-color: var(--primary); }
-        .p-btn.current { border: 2px solid var(--dark); }
 
-        /* Footer Actions */
-        .exam-footer {
-            height: 60px; background: white; border-top: 1px solid #ddd; padding: 0 20px;
-            display: flex; align-items: center; justify-content: space-between;
+        /* Quiz Section */
+        #quiz-section { display: none; }
+        .question-card { background: #f9f9f9; padding: 15px; margin-bottom: 15px; border-radius: 8px; border-left: 5px solid var(--primary); }
+        .options label { display: flex; align-items: center; padding: 10px; cursor: pointer; background: white; margin-top: 5px; border-radius: 5px; border: 1px solid #eee; }
+        .options input { margin-right: 10px; transform: scale(1.2); }
+        .options label:hover { background: #e3f2fd; }
+
+        /* --- MOBILE FIXED BOTTOM BAR (यह नया फीचर है) --- */
+        .fixed-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            z-index: 1000;
+            box-sizing: border-box;
         }
-        .btn { padding: 8px 20px; border-radius: 4px; border: none; cursor: pointer; font-weight: 500; font-size: 14px; }
-        .btn-save { background: var(--success); color: white; }
-        .btn-clear { background: #fff; border: 1px solid #ccc; }
-        .btn-review { background: var(--primary); color: white; }
-        .btn-submit { background: var(--danger); color: white; }
 
-        /* Mobile Adjustments */
-        @media(max-width: 768px) {
-            .main-container { flex-direction: column; }
-            .sidebar { height: 150px; order: -1; border-left: none; border-bottom: 1px solid #ddd; }
-            .palette-grid { padding: 5px; }
+        .btn-action {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            flex: 1; /* दोनों बटन बराबर जगह लेंगे */
+        }
+
+        .btn-clear { background: #eceff1; color: #37474f; }
+        .btn-submit { background: var(--primary); color: white; }
+        .btn-submit:active { background: #0d47a1; }
+
+        /* Leaderboard Styling */
+        #leaderboard-section { display: none; padding-bottom: 20px;}
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
+        th { background: var(--primary); color: white; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; }
+        
+        /* Mobile specific adjustments */
+        @media (max-width: 600px) {
+            .container { margin: 0; border-radius: 0; min-height: 100vh; }
         }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
-        <h1 style="color:var(--primary); margin-bottom:10px;">NDA MATH BRAHMASTRA</h1>
-        <p style="margin-bottom:30px; color:#666;">Advanced Online Testing Platform</p>
-        <button class="btn-google" onclick="signIn()">
-            <i class="fab fa-google"></i> Login with Google to Start
+<div class="container">
+    <header>
+        <div class="logo">RIVENTO <span style="color:var(--accent)">ACADEMY</span></div>
+        <p style="font-size: 0.9rem; color: #666;">NDA Math - Vector & 3D (Live Test)</p>
+    </header>
+
+    <div id="login-section">
+        <h3>Login to Start Test</h3>
+        <p>सुरक्षा जाँच: एक आईडी से केवल एक प्रयास।</p>
+        <br>
+        <button class="google-btn" onclick="signInWithGoogle()">
+            <i class="fab fa-google"></i> Google Login
         </button>
     </div>
 
-    <div id="exam-interface">
-        <header>
-            <div style="font-weight:bold;">NDA Mock Test #01</div>
-            <div class="timer-box">
-                <i class="fas fa-clock"></i> <span id="timer">00:00</span>
-            </div>
-        </header>
+    <div id="loading" style="display:none; text-align:center; padding: 50px;">
+        <i class="fas fa-spinner fa-spin fa-2x" style="color:var(--primary)"></i>
+        <p>Loading Profile...</p>
+    </div>
 
-        <div class="main-container">
-            <div class="question-area">
-                <div class="q-header">
-                    <span>Question No. <span id="q-num">1</span></span>
-                    <span style="color: var(--success);">+2.5 Marks</span>
-                    <span style="color: var(--danger); margin-left:10px;">-0.83 Marks</span>
-                </div>
-                
-                <div id="question-content">
-                    </div>
-
-            </div>
-
-            <div class="sidebar">
-                <div class="profile-sec">
-                    <img id="user-img" src="" alt="User">
-                    <div>
-                        <div id="user-name" style="font-weight:600; font-size:0.9rem;">Student</div>
-                        <small style="color:green;">Online</small>
-                    </div>
-                </div>
-                <div style="padding:10px; font-weight:bold; background:#eee; font-size:0.85rem;">Question Palette</div>
-                <div class="palette-grid" id="palette-box">
-                    </div>
-                <button class="btn btn-submit" style="width:90%; margin:10px auto;" onclick="submitExam()">SUBMIT TEST</button>
-            </div>
-        </div>
-
-        <div class="exam-footer">
+    <div id="quiz-section">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px; background:#e8eaf6; padding:10px; border-radius:8px;">
+            <img id="user-pic" src="" style="width:40px; height:40px; border-radius:50%;">
             <div>
-                <button class="btn btn-clear" onclick="clearResponse()">Clear Response</button>
-                <button class="btn btn-review" onclick="markForReview()">Mark for Review</button>
+                <strong id="user-name" style="font-size:0.9rem;">Student</strong><br>
+                <small style="color:green;">● Live Attempt</small>
             </div>
-            <button class="btn btn-save" onclick="saveAndNext()">Save & Next</button>
+        </div>
+
+        <form id="quizForm">
+            <div class="question-card">
+                <p><strong>Q1.</strong> If vector <b>a</b> and <b>b</b> are perpendicular, then <b>a.b</b> is?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="0"> 0</label>
+                    <label><input type="radio" name="q1" value="1"> 1</label>
+                    <label><input type="radio" name="q1" value="-1"> -1</label>
+                    <label><input type="radio" name="q1" value="inf"> Infinity</label>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p><strong>Q2.</strong> What is the projection of vector i+j on k?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="1"> 1</label>
+                    <label><input type="radio" name="q2" value="0"> 0</label>
+                    <label><input type="radio" name="q2" value="root2"> √2</label>
+                    <label><input type="radio" name="q2" value="half"> 1/2</label>
+                </div>
+            </div>
+
+             <div class="question-card">
+                <p><strong>Q3.</strong> Value of i^4 is?</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="1"> 1</label>
+                    <label><input type="radio" name="q3" value="-1"> -1</label>
+                    <label><input type="radio" name="q3" value="i"> i</label>
+                    <label><input type="radio" name="q3" value="-i"> -i</label>
+                </div>
+            </div>
+            
+            <p style="text-align:center; color:#888; margin-top:20px; margin-bottom: 50px;">--- End of Questions ---</p>
+        </form>
+
+        <div class="fixed-footer">
+            <button type="button" class="btn-action btn-clear" onclick="clearSelection()">Clear</button>
+            <button type="button" class="btn-action btn-submit" onclick="submitQuiz()">Submit Test</button>
         </div>
     </div>
 
-    <div id="result-screen" style="display:none;">
-        <h2 style="color:var(--dark);">Test Submitted Successfully!</h2>
-        <div style="width: 300px; height: 300px; margin: 20px auto;">
-            <canvas id="scoreChart"></canvas>
+    <div id="leaderboard-section">
+        <div style="text-align:center; background:#fff3e0; padding:15px; border-radius:8px; margin-bottom:20px;">
+            <h2 style="margin:0; color:#ef6c00;">🏆 Result</h2>
+            <p>Your Score: <span id="my-score" style="font-weight:bold; font-size:1.5rem;">-</span></p>
         </div>
-        <h3 id="final-score">Score: 0 / 0</h3>
-        <p>Rank updated on Leaderboard.</p>
-        <button class="btn btn-clear" onclick="location.reload()">Back to Home</button>
+        <h3>Top Rankers</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                </tbody>
+        </table>
     </div>
+</div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // --- CONFIGURATION ---
-    const firebaseConfig = {
-        apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
-        authDomain: "revento-academy.firebaseapp.com",
-        projectId: "revento-academy",
-        storageBucket: "revento-academy.firebasestorage.app",
-        messagingSenderId: "384071300366",
-        appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
-        measurementId: "G-4L8YC6J095"
-    };
+  // 👇 यहाँ अपनी KEY डालना मत भूलना
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-    let currentUser = null;
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+  let currentUser = null;
 
-    // --- QUESTION DATABASE (Add your NDA Questions Here) ---
-    // Note: Use \\( ... \\) for inline math if using MathJax
-    const questions = [
-        {
-            id: 1,
-            text: "If |a| = 3, |b| = 4 and |a × b| = 10, then what is |a.b|²?",
-            options: ["22", "44", "12", "144"],
-            correct: 1 // Index 0,1,2,3 (So 1 means '44')
-        },
-        {
-            id: 2,
-            text: "What is the value of i^2025?",
-            options: ["1", "-1", "i", "-i"],
-            correct: 2 // 'i'
-        },
-        {
-            id: 3,
-            text: "The projection of vector i+j on k is:",
-            options: ["1", "0", "√2", "1/2"],
-            correct: 1 // '0'
-        },
-        // Add more questions easily here...
-    ];
+  window.signInWithGoogle = () => {
+      signInWithPopup(auth, provider).catch((error) => alert("Login Error: " + error.message));
+  };
 
-    // --- EXAM STATE ---
-    let currentQIndex = 0;
-    let userResponses = new Array(questions.length).fill(null); // Stores selected index
-    let questionStatus = new Array(questions.length).fill('not-visited'); // not-visited, visited, answered, review
-    let timeLeft = 15 * 60; // 15 Minutes in seconds
-    let timerInterval;
+  onAuthStateChanged(auth, async (user) => {
+      if (user) {
+          currentUser = user;
+          document.getElementById('login-section').style.display = 'none';
+          document.getElementById('loading').style.display = 'block';
 
-    // --- LOGIN ---
-    window.signIn = () => {
-        signInWithPopup(auth, provider).then(async (result) => {
-            currentUser = result.user;
-            
-            // Check if already attempted
-            const docSnap = await getDoc(doc(db, "nda_scores", currentUser.uid));
-            if(docSnap.exists()){
-                alert("You have already attempted this test! Showing Leaderboard is disabled in this demo to focus on new exam UI.");
-                // In real version, redirect to leaderboard
-            }
-            
-            startExam();
-        }).catch((error) => alert(error.message));
-    }
+          const docRef = doc(db, "nda_math_scores", user.uid);
+          const docSnap = await getDoc(docRef);
 
-    // --- EXAM LOGIC ---
-    function startExam() {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('exam-interface').style.display = 'flex';
-        
-        // Set User Info
-        document.getElementById('user-name').innerText = currentUser.displayName;
-        document.getElementById('user-img').src = currentUser.photoURL;
+          document.getElementById('loading').style.display = 'none';
 
-        // Init Palette
-        renderPalette();
-        loadQuestion(0);
-        startTimer();
-    }
+          if (docSnap.exists()) {
+              showLeaderboard(docSnap.data().score);
+          } else {
+              document.getElementById('user-name').innerText = user.displayName;
+              document.getElementById('user-pic').src = user.photoURL;
+              document.getElementById('quiz-section').style.display = 'block';
+          }
+      }
+  });
 
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            let m = Math.floor(timeLeft / 60);
-            let s = timeLeft % 60;
-            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-            
-            if(timeLeft <= 0) {
-                clearInterval(timerInterval);
-                submitExam();
-            }
-        }, 1000);
-        
-        // Anti-Cheat (Visibility API)
-        document.addEventListener("visibilitychange", () => {
-            if (document.hidden) {
-                alert("WARNING: Tab switching is not allowed!");
-            }
-        });
-    }
+  window.clearSelection = () => {
+      document.getElementById("quizForm").reset();
+  };
 
-    function renderPalette() {
-        const pBox = document.getElementById('palette-box');
-        pBox.innerHTML = '';
-        questions.forEach((q, idx) => {
-            let btn = document.createElement('div');
-            btn.className = `p-btn ${questionStatus[idx]}`;
-            if(idx === currentQIndex) btn.classList.add('current');
-            btn.innerText = idx + 1;
-            btn.onclick = () => loadQuestion(idx);
-            pBox.appendChild(btn);
-        });
-    }
+  window.submitQuiz = async () => {
+      if(!currentUser) return;
+      if(!confirm("Are you sure you want to submit?")) return;
 
-    window.loadQuestion = (index) => {
-        currentQIndex = index;
-        if(questionStatus[index] === 'not-visited') questionStatus[index] = 'not-answered';
-        
-        const q = questions[index];
-        document.getElementById('q-num').innerText = index + 1;
-        
-        let html = `<div class="q-text">${q.text}</div>`;
-        q.options.forEach((opt, optIdx) => {
-            let isSelected = userResponses[index] === optIdx ? 'selected' : '';
-            html += `
-            <div class="option-item ${isSelected}" onclick="selectOption(${optIdx})">
-                <div class="radio-circle"></div>
-                <span>${opt}</span>
-            </div>`;
-        });
-        
-        document.getElementById('question-content').innerHTML = html;
-        renderPalette();
-    }
+      let score = 0;
+      let form = document.forms['quizForm'];
+      
+      // ANSWER KEY (Demo)
+      if(form.q1.value === '0') score++;
+      if(form.q2.value === '0') score++;
+      if(form.q3.value === '1') score++;
 
-    window.selectOption = (optIdx) => {
-        userResponses[currentQIndex] = optIdx;
-        loadQuestion(currentQIndex); // Re-render to show selection
-    }
+      // Hide buttons immediately
+      document.querySelector('.fixed-footer').style.display = 'none';
 
-    window.saveAndNext = () => {
-        if(userResponses[currentQIndex] !== null) {
-            questionStatus[currentQIndex] = 'answered';
-        } else {
-            questionStatus[currentQIndex] = 'not-answered';
-        }
-        
-        if(currentQIndex < questions.length - 1) {
-            loadQuestion(currentQIndex + 1);
-        } else {
-            renderPalette(); // Just update palette
-        }
-    }
+      try {
+          await setDoc(doc(db, "nda_math_scores", currentUser.uid), {
+              name: currentUser.displayName,
+              score: score,
+              timestamp: new Date()
+          });
+          showLeaderboard(score);
+      } catch (e) {
+          alert("Error: " + e.message);
+      }
+  };
 
-    window.clearResponse = () => {
-        userResponses[currentQIndex] = null;
-        questionStatus[currentQIndex] = 'not-answered';
-        loadQuestion(currentQIndex);
-    }
+  async function showLeaderboard(myScore) {
+      document.getElementById('quiz-section').style.display = 'none';
+      document.getElementById('leaderboard-section').style.display = 'block';
+      document.getElementById('my-score').innerText = myScore;
 
-    window.markForReview = () => {
-        questionStatus[currentQIndex] = 'review';
-        if(currentQIndex < questions.length - 1) loadQuestion(currentQIndex + 1);
-        else renderPalette();
-    }
-
-    // --- SUBMISSION & RESULTS ---
-    window.submitExam = async () => {
-        if(!confirm("Are you sure you want to submit?")) return;
-        
-        clearInterval(timerInterval);
-        
-        // Calculate Marks
-        let correct = 0;
-        let wrong = 0;
-        let unattempted = 0;
-        
-        questions.forEach((q, idx) => {
-            if(userResponses[idx] === null) {
-                unattempted++;
-            } else if(userResponses[idx] === q.correct) {
-                correct++;
-            } else {
-                wrong++;
-            }
-        });
-
-        // NDA Formula: (Correct * 2.5) - (Wrong * 0.83)
-        let totalScore = (correct * 2.5) - (wrong * 0.83);
-        totalScore = totalScore.toFixed(2); // Round to 2 decimals
-
-        // Save to Firebase
-        try {
-            await setDoc(doc(db, "nda_scores", currentUser.uid), {
-                name: currentUser.displayName,
-                score: Number(totalScore),
-                photo: currentUser.photoURL,
-                timestamp: new Date()
-            });
-        } catch(e) { console.error(e); }
-
-        // Show Results
-        document.getElementById('exam-interface').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'flex';
-        document.getElementById('final-score').innerText = `Your Score: ${totalScore}`;
-
-        // Render Chart
-        const ctx = document.getElementById('scoreChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Correct', 'Wrong', 'Skipped'],
-                datasets: [{
-                    data: [correct, wrong, unattempted],
-                    backgroundColor: ['#27ae60', '#c0392b', '#bdc3c7']
-                }]
-            }
-        });
-    }
-
+      const q = query(collection(db, "nda_math_scores"), orderBy("score", "desc"), limit(20));
+      const querySnapshot = await getDocs(q);
+      
+      let tbody = document.getElementById('leaderboard-body');
+      tbody.innerHTML = "";
+      let rank = 1;
+      querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          let style = rank === 1 ? 'background:#fff9c4; font-weight:bold;' : '';
+          tbody.innerHTML += `<tr style="${style}"><td>#${rank}</td><td>${data.name}</td><td>${data.score}</td></tr>`;
+          rank++;
+      });
+  }
 </script>
+
 </body>
 </html>
