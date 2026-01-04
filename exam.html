@@ -13,18 +13,11 @@
     
     <style>
         /* --- PROFESSIONAL DESIGN --- */
-        body { font-family: 'Poppins', sans-serif; background: #f3f4f6; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
+        body { font-family: 'Poppins', sans-serif; background: #f3f4f6; margin: 0; display: flex; flex-direction: column; min-height: 100vh; user-select: none; }
         .hidden { display: none !important; }
 
-        /* Footer Design */
-        footer {
-            margin-top: auto; /* Push to bottom */
-            background: #1f2937;
-            color: #9ca3af;
-            text-align: center;
-            padding: 15px;
-            font-size: 14px;
-        }
+        /* Footer */
+        footer { margin-top: auto; background: #1f2937; color: #9ca3af; text-align: center; padding: 15px; font-size: 14px; }
 
         /* Card Design */
         .glass-card {
@@ -33,7 +26,7 @@
             max-width: 600px; text-align: center;
         }
 
-        /* Dashboard Buttons */
+        /* Dashboard */
         .grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 20px; }
         .btn-card {
             background: white; padding: 20px; border-radius: 10px; cursor: pointer;
@@ -41,17 +34,22 @@
         }
         .btn-card:hover { border-color: #4f46e5; transform: translateY(-5px); }
         
-        /* Exam UI */
+        /* Exam Interface (CBT Mode) */
         #exam-interface { display: flex; flex-direction: column; height: 100vh; background: white; }
         .top-bar { padding: 10px 20px; background: #1f2937; color: white; display: flex; justify-content: space-between; align-items: center; }
         .content-area { flex: 1; display: flex; overflow: hidden; }
         .question-box { flex: 3; padding: 30px; overflow-y: auto; }
-        .sidebar { width: 250px; background: #f3f4f6; border-left: 1px solid #ccc; padding: 10px; overflow-y: auto; }
+        .sidebar { width: 280px; background: #f3f4f6; border-left: 1px solid #ccc; padding: 10px; overflow-y: auto; }
         
         /* Palette Buttons */
-        .palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-        .p-btn { width: 35px; height: 35px; border: 1px solid #ccc; background: white; cursor: pointer; border-radius: 5px; }
-        .ans { background: #10b981; color: white; border: none; } /* Green for Answered */
+        .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+        .p-btn { width: 35px; height: 35px; border: 1px solid #ccc; background: white; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .ans { background: #10b981; color: white; border: none; } /* Green */
+        .not-ans { background: #ef4444; color: white; border: none; } /* Red */
+        
+        /* Result Table */
+        .result-table { width: 100%; margin-top: 15px; border-collapse: collapse; }
+        .result-table td { padding: 8px; border-bottom: 1px solid #eee; text-align: left; }
         
         /* Mobile */
         @media(max-width: 768px) {
@@ -65,7 +63,7 @@
     <div id="login-screen" style="height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column;">
         <div class="glass-card">
             <h1 style="color: #4f46e5;">Revento Academy</h1>
-            <p>Welcome to the Future of Exams</p>
+            <p>Airforce X | Class 10 | Class 12</p>
             <button onclick="googleLogin()" style="padding: 12px 30px; background: #db4437; color: white; border: none; border-radius: 50px; font-size: 16px; cursor: pointer;">
                 Login with Google
             </button>
@@ -80,7 +78,7 @@
         </div>
         
         <div class="container" style="max-width: 800px; margin: 0 auto;">
-            <h2 style="text-align: center; margin-top: 30px;">Select Category</h2>
+            <h2 style="text-align: center; margin-top: 30px;">Select Exam Category</h2>
             <div class="grid-menu">
                 <div class="btn-card" onclick="showSubjects('class10')">
                     <div style="font-size: 30px;">🏫</div>
@@ -92,10 +90,10 @@
                     <h3>Class 12th</h3>
                     <p>Physics, Chemistry</p>
                 </div>
-                <div class="btn-card" onclick="startExam('airforce_x')" style="background: #f0f9ff; border-color: #0ea5e9;">
+                <div class="btn-card" onclick="startExam('airforce_x')" style="background: #eff6ff; border-color: #0ea5e9;">
                     <div style="font-size: 30px;">✈️</div>
-                    <h3>Airforce X</h3>
-                    <p>Real Mock Test</p>
+                    <h3>Airforce X Group</h3>
+                    <p style="color:red; font-size:12px;">(Negative Marking: -0.25)</p>
                 </div>
                 <div class="btn-card" onclick="alert('PDF Notes Section Coming Soon!')">
                     <div style="font-size: 30px;">📚</div>
@@ -104,10 +102,7 @@
                 </div>
             </div>
         </div>
-
-        <footer>
-            © 2024 Revento Academy | Developed by <b>Rahul Mali</b>
-        </footer>
+        <footer>© 2024 Revento Academy | Developed by <b>Rahul Mali</b></footer>
     </div>
 
     <div id="subject-screen" class="hidden glass-card">
@@ -118,29 +113,44 @@
 
     <div id="exam-interface" class="hidden">
         <div class="top-bar">
-            <span>Online Exam</span>
+            <span>Online Exam (CBT Mode)</span>
             <span id="timer" style="background: red; padding: 5px; border-radius: 5px;">20:00</span>
-            <button onclick="submitTest()" style="background: #ef4444; color: white; border: none; padding: 5px 15px;">Finish</button>
+            <button onclick="submitTest()" style="background: #ef4444; color: white; border: none; padding: 5px 15px; cursor: pointer; font-weight: bold;">SUBMIT EXAM</button>
         </div>
         <div class="content-area">
             <div class="question-box">
                 <h2 id="q-text">Question...</h2>
                 <div id="options-box"></div>
                 <br>
-                <button onclick="saveAndNext()" style="background: #4f46e5; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Save & Next</button>
+                <div style="display:flex; gap:10px;">
+                    <button onclick="saveAndNext()" style="background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Save & Next</button>
+                    <button onclick="clearRes()" style="background: #ef4444; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Clear</button>
+                </div>
             </div>
             <div class="sidebar">
-                <p>Palette:</p>
+                <p><b>Question Palette:</b></p>
                 <div id="palette-box" class="palette"></div>
+                <div style="margin-top:20px; font-size:12px;">
+                    <span style="display:inline-block; width:10px; height:10px; background:#10b981;"></span> Answered<br>
+                    <span style="display:inline-block; width:10px; height:10px; background:white; border:1px solid #ccc;"></span> Not Visited
+                </div>
             </div>
         </div>
     </div>
 
     <div id="result-screen" class="hidden glass-card">
         <h1>🏆 Exam Result</h1>
-        <h2>Score: <span id="final-score" style="color: green; font-size: 40px;">0</span></h2>
-        <p>Excellent work!</p>
-        <button onclick="location.reload()" style="padding: 10px 20px; background: #4f46e5; color: white; border: none; border-radius: 5px;">Go Home</button>
+        <h2 style="font-size: 40px; color: #4f46e5;"><span id="final-score">0</span> Marks</h2>
+        
+        <table class="result-table">
+            <tr><td>✅ Total Questions:</td><td><b id="r-total">0</b></td></tr>
+            <tr><td>🎯 Attempted:</td><td><b id="r-att">0</b></td></tr>
+            <tr><td>🟢 Correct:</td><td><b id="r-corr" style="color:green">0</b></td></tr>
+            <tr><td>🔴 Wrong:</td><td><b id="r-wrong" style="color:red">0</b></td></tr>
+            <tr><td>📉 Negative Marks:</td><td><b id="r-neg" style="color:red">0</b></td></tr>
+        </table>
+        
+        <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #4f46e5; color: white; border: none; border-radius: 5px;">Go Home</button>
     </div>
 
     <script>
@@ -159,7 +169,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 2. DATA
+        // 2. DATA (More Questions Added)
         const allQuestions = {
             'c10_math': [
                 { q: "HCF of 96 and 404?", opt: ["4", "12", "8", "2"], ans: 0 },
@@ -170,9 +180,24 @@
                 { q: "Ohm's Law?", opt: ["V=IR", "I=VR", "R=VI", "None"], ans: 0 }
             ],
             'airforce_x': [
+                // PHYSICS
                 { q: "Dimension of Force?", opt: ["MLT-2", "MLT-1", "ML2T-2", "M0L0T0"], ans: 0 },
+                { q: "Value of g at center of Earth?", opt: ["9.8", "Infinite", "Zero", "10"], ans: 2 },
+                { q: "Unit of Power?", opt: ["Joule", "Watt", "Newton", "Pascal"], ans: 1 },
+                { q: "Sound travels fastest in?", opt: ["Air", "Water", "Steel", "Vacuum"], ans: 2 },
+                { q: "Light year is unit of?", opt: ["Time", "Distance", "Light", "Mass"], ans: 1 },
+                // MATHS
+                { q: "Integration of sin(x)?", opt: ["cos(x)", "-cos(x)", "sin(x)", "tan(x)"], ans: 1 },
+                { q: "Value of log(1)?", opt: ["0", "1", "10", "Infinite"], ans: 0 },
+                { q: "Derivative of x^2?", opt: ["x", "2x", "2", "x^3"], ans: 1 },
+                { q: "If A is square matrix, then (A')' = ?", opt: ["A", "-A", "A'", "I"], ans: 0 },
+                { q: "Sin(90) = ?", opt: ["0", "1", "1/2", "Undefined"], ans: 1 },
+                // GK/Reasoning
                 { q: "Capital of India?", opt: ["Delhi", "Mumbai", "Goa", "Pune"], ans: 0 },
-                { q: "Value of g?", opt: ["9.8", "10.2", "8.9", "0"], ans: 0 }
+                { q: "First CDS of India?", opt: ["Gen Bipin Rawat", "Gen Maneckshaw", "Gen Sundarji", "None"], ans: 0 },
+                { q: "Air Force Day is on?", opt: ["8 Oct", "15 Jan", "4 Dec", "26 Jan"], ans: 0 },
+                { q: "Currency of Japan?", opt: ["Yen", "Dollar", "Rupee", "Euro"], ans: 0 },
+                { q: "Full form of ISRO?", opt: ["Indian Space Research Org", "Intl Space Org", "Indian Solar Org", "None"], ans: 0 }
             ]
         };
 
@@ -206,11 +231,11 @@
             // Check Attempt (Safe Mode)
             try {
                 const doc = await db.collection('results').doc(user.uid + "_" + sid).get();
-                if(doc.exists) { alert("Test Already Taken! Score: " + doc.data().score); return; }
+                if(doc.exists) { alert("Test Already Taken! Your Score: " + doc.data().score); return; }
             } catch(e) { console.log("DB check skipped"); }
 
             currentQ = 0; responses = {};
-            for(let i=0; i<questions.length; i++) responses[i] = -1;
+            for(let i=0; i<questions.length; i++) responses[i] = -1; // -1 means Not Attempted
 
             document.getElementById('dashboard').classList.add('hidden');
             document.getElementById('subject-screen').classList.add('hidden');
@@ -225,7 +250,9 @@
             let html = '';
             questions[idx].opt.forEach((o, i) => {
                 let check = responses[idx] === i ? 'checked' : '';
-                html += `<div style="margin:10px 0;"><input type="radio" name="opt" value="${i}" ${check}> ${o}</div>`;
+                html += `<div style="margin:10px 0; padding:10px; border:1px solid #eee; border-radius:5px;">
+                            <input type="radio" name="opt" value="${i}" ${check}> ${o}
+                         </div>`;
             });
             document.getElementById('options-box').innerHTML = html;
         }
@@ -236,6 +263,12 @@
             updatePalette();
             if(currentQ < questions.length - 1) loadQ(currentQ + 1);
         }
+        
+        function clearRes() {
+            responses[currentQ] = -1;
+            loadQ(currentQ);
+            updatePalette();
+        }
 
         function genPalette() {
             let html = '';
@@ -244,32 +277,63 @@
         }
 
         function updatePalette() {
-            if(responses[currentQ] !== -1) document.getElementById(`p-${currentQ}`).classList.add('ans');
+            const btn = document.getElementById(`p-${currentQ}`);
+            btn.className = (responses[currentQ] !== -1) ? 'p-btn ans' : 'p-btn';
         }
 
         function startTimer() {
             let t = 20 * 60;
             timerInt = setInterval(() => {
                 let m = Math.floor(t/60), s = t%60;
-                document.getElementById('timer').innerText = `${m}:${s}`;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
                 t--; if(t<0) submitTest();
             }, 1000);
         }
 
+        // --- NEGATIVE MARKING LOGIC ---
         function submitTest() {
+            if(!confirm("Are you sure you want to Submit?")) return;
             clearInterval(timerInt);
-            let score = 0;
-            questions.forEach((q, i) => { if(responses[i] === q.ans) score++; });
             
+            let correct = 0;
+            let wrong = 0;
+            let attempted = 0;
+
+            questions.forEach((q, i) => {
+                if(responses[i] !== -1) { // If attempted
+                    attempted++;
+                    if(responses[i] === q.ans) {
+                        correct++;
+                    } else {
+                        wrong++;
+                    }
+                }
+            });
+
+            // Scoring: Correct = +1, Wrong = -0.25 (Only for Airforce)
+            let score = 0;
+            if(subId === 'airforce_x') {
+                score = (correct * 1) - (wrong * 0.25);
+            } else {
+                score = correct; // Normal marking for 10th/12th
+            }
+            
+            // Save Result
             db.collection('results').doc(user.uid + "_" + subId).set({
                 name: user.displayName, score: score, subject: subId, date: new Date()
-            }).then(() => showResult(score));
+            }).then(() => showResult(score, correct, wrong, attempted));
         }
 
-        function showResult(score) {
+        function showResult(score, correct, wrong, attempted) {
             document.getElementById('exam-interface').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
-            document.getElementById('final-score').innerText = score;
+            
+            document.getElementById('final-score').innerText = score.toFixed(2); // Show 2 decimal places
+            document.getElementById('r-total').innerText = questions.length;
+            document.getElementById('r-att').innerText = attempted;
+            document.getElementById('r-corr').innerText = correct;
+            document.getElementById('r-wrong').innerText = wrong;
+            document.getElementById('r-neg').innerText = (subId === 'airforce_x') ? (wrong * 0.25) : "0";
         }
     </script>
 </body>
