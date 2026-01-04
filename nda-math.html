@@ -3,166 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NDA Math Live Mock Test</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Rivento Academy - Ultimate NDA Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* --- Colors & Theme --- */
         :root { 
-            --primary: #0d1b42; 
-            --gold: #ffc107; 
+            --primary-dark: #0d1b42; /* Deep Navy */
+            --primary-light: #1a237e; 
+            --accent-gold: #ffc107; /* NDA Gold */
             --danger: #d32f2f;
-            --bg: #eef2f5;
+            --bg-grey: #eef2f5;
         }
         
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 0; padding-bottom: 80px; padding-top: 60px; /* Space for fixed bars */ }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--bg-grey); 
+            margin: 0; padding: 0; 
+            padding-bottom: 80px; /* Space for footer buttons */
+        }
 
-        /* --- 1. TIMER BAR (FIXED TOP) --- */
+        /* --- 1. TIMER BAR (Fixed Top) --- */
         #timer-bar {
             position: fixed; top: 0; left: 0; width: 100%;
-            background: var(--primary); color: white;
-            padding: 10px 20px; z-index: 1000;
-            display: none; /* Hidden initially */
+            background: rgba(13, 27, 66, 0.95); /* Semi-transparent Navy */
+            color: white; padding: 10px 15px; z-index: 2000;
+            display: none; /* Hidden until test starts */
             justify-content: space-between; align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
             box-sizing: border-box;
         }
-        .timer-text { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--gold); letter-spacing: 1px; }
-        .timer-label { font-size: 0.8rem; opacity: 0.8; }
+        .timer-clock { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: var(--accent-gold); font-weight: bold; letter-spacing: 1px; }
 
-        /* --- HERO & LOGIN --- */
+        /* --- 2. HERO HEADER (The "Dangerous" Look) --- */
         .hero-header {
-            background: linear-gradient(135deg, rgba(13, 27, 66, 0.95), rgba(26, 35, 126, 0.9)), url('https://upload.wikimedia.org/wikipedia/commons/8/8d/Khadakwasla_Dam_Pune.jpg');
-            background-size: cover; color: white; text-align: center;
-            padding: 40px 20px 60px 20px;
-            border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
-            margin-top: -60px; /* Counteract body padding for login view */
+            /* खड़कवासला / मिलिट्री बैकग्राउंड */
+            background: linear-gradient(135deg, rgba(13, 27, 66, 0.9), rgba(26, 35, 126, 0.8)), url('https://upload.wikimedia.org/wikipedia/commons/8/8d/Khadakwasla_Dam_Pune.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px 80px 20px; /* Big padding */
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 1;
         }
-        .container { max-width: 800px; margin: -40px auto 20px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; width: 90%; }
 
-        /* --- QUESTIONS LIST --- */
+        .brand-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem; font-weight: 800; letter-spacing: 1px; margin: 0;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        .brand-accent { color: var(--accent-gold); }
+        .mission-tagline {
+            font-size: 1.1rem; font-weight: 300; letter-spacing: 2px;
+            color: rgba(255,255,255,0.9); margin-top: 10px; text-transform: uppercase;
+        }
+
+        /* --- 3. MAIN CARD (Overlapping Effect) --- */
+        .container { 
+            max-width: 800px; 
+            margin: -50px auto 20px auto; /* Negative margin for overlap */
+            background: white; 
+            padding: 25px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+            position: relative; 
+            z-index: 10;
+            width: 90%;
+        }
+
+        /* Login Styling */
+        .google-btn {
+            background: #4285F4; color: white; border: none; padding: 15px 30px;
+            font-size: 16px; border-radius: 50px; cursor: pointer; display: inline-flex; align-items: center; gap: 15px;
+            font-weight: 600; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+            margin-top: 20px;
+        }
+
+        /* Question Cards */
         .question-card { 
-            background: white; padding: 15px; margin-bottom: 15px; 
-            border-radius: 10px; border-left: 5px solid var(--primary);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: #f9f9f9; padding: 15px; margin-bottom: 20px; 
+            border-radius: 12px; border-left: 5px solid var(--accent-gold);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        .q-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .q-marks { font-size: 0.75rem; background: #e0e0e0; padding: 2px 6px; border-radius: 4px; color: #555; }
+        .q-info { display: flex; justify-content: space-between; font-size: 0.8rem; color: #666; margin-bottom: 8px; }
+        .q-marks { background: #e3f2fd; color: var(--primary-dark); padding: 2px 8px; border-radius: 4px; font-weight: bold; }
         
-        .options label { display: flex; align-items: center; padding: 10px; border: 1px solid #eee; margin-top: 5px; border-radius: 5px; cursor: pointer; }
-        .options input { margin-right: 10px; transform: scale(1.2); }
-        .options label:hover { background: #f5f5f5; }
+        .options label { display: flex; align-items: center; padding: 12px; cursor: pointer; background: white; margin-top: 8px; border-radius: 8px; border: 1px solid #eee; transition: 0.2s; }
+        .options input { margin-right: 15px; transform: scale(1.3); accent-color: var(--primary-light); }
+        .options label:hover { background: #e8eaf6; border-color: var(--primary-light); }
 
-        /* --- FOOTER BUTTONS --- */
+        /* FIXED BOTTOM BUTTONS */
         .fixed-footer {
             position: fixed; bottom: 0; left: 0; width: 100%; background: white;
-            padding: 10px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            padding: 15px; box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
             display: none; /* Hidden initially */
-            gap: 10px; box-sizing: border-box; z-index: 1000;
+            gap: 10px; z-index: 2000; box-sizing: border-box;
         }
-        .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
-        .btn-submit { background: var(--primary); color: white; }
-        .btn-clear { background: #cfd8dc; color: #333; }
+        .btn-action { padding: 12px; border: none; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; flex: 1; text-transform: uppercase; }
+        .btn-clear { background: #eceff1; color: #37474f; }
+        .btn-submit { background: linear-gradient(45deg, var(--primary-light), var(--primary-dark)); color: white; }
 
-        /* --- LOGIN BTN --- */
-        .google-btn { background: #4285F4; color: white; border: none; padding: 12px 24px; border-radius: 30px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 10px; margin: 20px auto; }
-
-        /* --- LEADERBOARD --- */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { background: var(--primary); color: white; padding: 10px; text-align: left; }
-        td { padding: 10px; border-bottom: 1px solid #ddd; }
-        .score-positive { color: green; font-weight: bold; }
-        .score-negative { color: red; font-weight: bold; }
+        /* Leaderboard */
+        table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 20px; }
+        th { color: var(--primary-dark); padding: 10px; text-align: left; }
+        td { padding: 12px; background: white; border: 1px solid #eee; }
+        .score-val { font-weight: bold; color: var(--primary-dark); }
+        .score-neg { color: var(--danger); }
 
     </style>
 </head>
 <body>
 
     <div id="timer-bar">
-        <div>NDA MATH MOCK 01</div>
-        <div style="text-align: right;">
-            <div class="timer-label">Time Left</div>
-            <div class="timer-text" id="countdown">00:00</div>
-        </div>
+        <div style="font-size:0.9rem;">NDA MATH MOCK</div>
+        <div class="timer-clock"><i class="fas fa-stopwatch"></i> <span id="countdown">00:00</span></div>
     </div>
 
-    <div id="login-view">
-        <div class="hero-header">
-            <h1 style="margin:0; font-family:'Montserrat'">RIVENTO NDA</h1>
-            <p>Mathematics Mock Test Series</p>
-        </div>
-        <div class="container" style="text-align: center;">
-            <h3>Instructions</h3>
-            <ul style="text-align: left; font-size: 0.9rem; color: #444; margin-bottom: 20px;">
-                <li><strong>Total Time:</strong> 15 Minutes (Demo)</li>
-                <li><strong>Correct Answer:</strong> <span style="color:green">+2.5 Marks</span></li>
-                <li><strong>Wrong Answer:</strong> <span style="color:red">-0.83 Marks</span> (Negative Marking)</li>
-                <li><strong>Auto Submit:</strong> When timer hits 00:00.</li>
-            </ul>
+    <div class="hero-header">
+        <h1 class="brand-title">RIVENTO <span class="brand-accent">ACADEMY</span></h1>
+        <p class="mission-tagline"><i class="fas fa-crosshairs"></i> Mission NDA Khadakwasla</p>
+    </div>
+
+    <div class="container">
+        
+        <div id="login-view" style="text-align: center;">
+            <i class="fas fa-user-shield fa-3x" style="color:var(--primary-light); margin-bottom:15px;"></i>
+            <h2 style="color:var(--primary-dark); margin:0;">Secure Online Test</h2>
+            <p style="color:#666;">Vector Algebra & 3D Geometry</p>
+            
+            <div style="background:#fffde7; padding:15px; border-radius:10px; margin:20px 0; text-align:left; font-size:0.9rem;">
+                <strong><i class="fas fa-info-circle"></i> Instructions:</strong>
+                <ul style="margin:5px 0 0 20px; padding:0; color:#444;">
+                    <li>Time: <strong>15 Minutes</strong></li>
+                    <li>Correct: <span style="color:green; font-weight:bold;">+2.5 Marks</span></li>
+                    <li>Wrong: <span style="color:red; font-weight:bold;">-0.83 Marks</span> (Negative)</li>
+                    <li><strong>Note:</strong> Auto-submit when time ends.</li>
+                </ul>
+            </div>
+
             <button class="google-btn" onclick="signInWithGoogle()">
-                <i class="fab fa-google"></i> Login to Start Test
+                <i class="fab fa-google"></i> Login with Google
             </button>
         </div>
-    </div>
 
-    <div id="quiz-view" class="container" style="display: none; margin-top: 20px;">
-        <div style="display: flex; gap: 10px; margin-bottom: 20px; align-items: center;">
-            <img id="user-pic" src="" style="width:40px; height:40px; border-radius:50%;">
-            <div>
-                <strong id="user-name">Cadet</strong>
-                <div style="font-size: 0.8rem; color: green;">● Online</div>
+        <div id="quiz-view" style="display: none;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; padding-bottom:15px; border-bottom:1px solid #eee;">
+                <img id="user-pic" src="" style="width:45px; height:45px; border-radius:50%; border:2px solid var(--accent-gold);">
+                <div>
+                    <strong id="user-name" style="color:var(--primary-dark);">Cadet</strong><br>
+                    <small style="color:green; font-weight:600;">● Attempting Live</small>
+                </div>
             </div>
+
+            <form id="quizForm">
+                <div class="question-card">
+                    <div class="q-info">
+                        <span>Q1. Vector Algebra</span>
+                        <span class="q-marks">+2.5 / -0.83</span>
+                    </div>
+                    <p style="font-weight:600; margin-top:0;">If |a|=3, |b|=4 and |a×b|=10, then what is |a.b|²?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="22"> 22</label>
+                        <label><input type="radio" name="q1" value="44"> 44</label>
+                        <label><input type="radio" name="q1" value="144"> 144</label>
+                        <label><input type="radio" name="q1" value="12"> 12</label>
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <div class="q-info">
+                        <span>Q2. Complex Numbers</span>
+                        <span class="q-marks">+2.5 / -0.83</span>
+                    </div>
+                    <p style="font-weight:600; margin-top:0;">What is the value of i^2025?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="1"> 1</label>
+                        <label><input type="radio" name="q2" value="-1"> -1</label>
+                        <label><input type="radio" name="q2" value="i"> i</label>
+                        <label><input type="radio" name="q2" value="-i"> -i</label>
+                    </div>
+                </div>
+
+                <p style="text-align:center; color:#999; margin:30px 0;">-- End of Paper --</p>
+            </form>
         </div>
 
-        <form id="quizForm">
-            <div class="question-card">
-                <div class="q-header">
-                    <strong>Q1. If |a|=3, |b|=4 and |a×b|=10, then what is |a.b|²?</strong>
-                    <span class="q-marks">+2.5 / -0.83</span>
-                </div>
-                <div class="options">
-                    <label><input type="radio" name="q1" value="22"> 22</label>
-                    <label><input type="radio" name="q1" value="44"> 44</label>
-                    <label><input type="radio" name="q1" value="144"> 144</label>
-                    <label><input type="radio" name="q1" value="12"> 12</label>
-                </div>
+        <div id="result-view" style="display: none; text-align: center;">
+            <i class="fas fa-award fa-4x" style="color:var(--accent-gold); margin-bottom:10px;"></i>
+            <h2 style="color:var(--primary-dark);">Test Submitted!</h2>
+            
+            <div style="font-size:2.5rem; font-weight:800; color:var(--primary-dark); margin:10px 0;">
+                <span id="final-score">0.0</span> <span style="font-size:1rem; color:#666;">/ 5.0</span>
             </div>
 
-            <div class="question-card">
-                <div class="q-header">
-                    <strong>Q2. What is the value of i^2025?</strong>
-                    <span class="q-marks">+2.5 / -0.83</span>
+            <div style="display:flex; justify-content:space-between; background:#f5f5f5; padding:15px; border-radius:10px; margin:20px 0;">
+                <div><strong style="color:green; font-size:1.2rem;" id="correct-count">0</strong><br><small>Correct</small></div>
+                <div style="border-left:1px solid #ddd; border-right:1px solid #ddd; padding:0 15px;">
+                    <strong style="color:red; font-size:1.2rem;" id="wrong-count">0</strong><br><small>Wrong</small>
                 </div>
-                <div class="options">
-                    <label><input type="radio" name="q2" value="1"> 1</label>
-                    <label><input type="radio" name="q2" value="-1"> -1</label>
-                    <label><input type="radio" name="q2" value="i"> i</label>
-                    <label><input type="radio" name="q2" value="-i"> -i</label>
-                </div>
+                <div><strong style="color:#777; font-size:1.2rem;" id="unattempted-count">0</strong><br><small>Skipped</small></div>
             </div>
-             </form>
-    </div>
 
-    <div class="fixed-footer" id="footer-actions">
-        <button class="btn btn-clear" onclick="clearForm()">Clear</button>
-        <button class="btn btn-submit" onclick="submitQuiz()">Submit Test</button>
-    </div>
-
-    <div id="result-view" class="container" style="display: none; text-align: center;">
-        <i class="fas fa-medal fa-3x" style="color: var(--gold); margin-bottom: 10px;"></i>
-        <h2>Result Declared</h2>
-        <h1 id="final-score" style="font-size: 3rem; margin: 10px 0;">0.0</h1>
-        <p>Total Marks</p>
-        
-        <div style="background: #f0f0f0; padding: 10px; border-radius: 8px; display: flex; justify-content: space-around; margin: 20px 0;">
-            <div><strong style="color:green" id="correct-count">0</strong><br><small>Correct</small></div>
-            <div><strong style="color:red" id="wrong-count">0</strong><br><small>Wrong</small></div>
-            <div><strong style="color:gray" id="unattempted-count">0</strong><br><small>Skipped</small></div>
+            <h3 style="text-align:left; color:var(--primary-dark); border-bottom:2px solid var(--accent-gold); display:inline-block;">Top Commanders</h3>
+            <table id="leaderboard-table">
+                </table>
         </div>
 
-        <h3>Leaderboard</h3>
-        <table id="leaderboard-table">
-            </table>
+    </div> <div class="fixed-footer" id="footer-actions">
+        <button class="btn-action btn-clear" onclick="clearForm()">Clear</button>
+        <button class="btn-action btn-submit" onclick="submitQuiz()">Final Submit</button>
     </div>
 
 <script type="module">
@@ -170,16 +225,14 @@
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  // TODO: अपनी Firebase Config यहाँ पेस्ट करें
+  // 👇👇👇 YOUR API KEY HERE 👇👇👇
   const firebaseConfig = {
-    apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
-  authDomain: "revento-academy.firebaseapp.com",
-  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
-  projectId: "revento-academy",
-  storageBucket: "revento-academy.firebasestorage.app",
-  messagingSenderId: "384071300366",
-  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
-  measurementId: "G-4L8YC6J095"
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -189,27 +242,23 @@
   let currentUser = null;
   let timerInterval;
 
-  // --- CONFIGURATION ---
-  const EXAM_DURATION_MINUTES = 15; // Set Duration Here
-  const MARKS_CORRECT = 2.5;
-  const MARKS_WRONG = 0.83;
+  // --- CONFIG ---
+  const EXAM_DURATION = 15; // Minutes
+  const POS_MARKS = 2.5;
+  const NEG_MARKS = 0.83;
 
-  // Login
   window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e => alert(e.message));
 
-  // Auth State
   onAuthStateChanged(auth, async (user) => {
       if (user) {
           currentUser = user;
-          const docSnap = await getDoc(doc(db, "nda_mock_01", user.uid));
+          const docSnap = await getDoc(doc(db, "nda_mock_final", user.uid)); // New DB Collection
           
           document.getElementById('login-view').style.display = 'none';
           
           if (docSnap.exists()) {
-              // Already attempted -> Show Result directly
               showResult(docSnap.data());
           } else {
-              // Start Test
               startTest(user);
           }
       }
@@ -219,123 +268,98 @@
       document.getElementById('quiz-view').style.display = 'block';
       document.getElementById('footer-actions').style.display = 'flex';
       document.getElementById('timer-bar').style.display = 'flex';
+      
       document.getElementById('user-name').innerText = user.displayName;
       document.getElementById('user-pic').src = user.photoURL;
 
-      // Start Timer
-      let duration = EXAM_DURATION_MINUTES * 60;
-      updateTimerDisplay(duration);
-      
+      // Timer Logic
+      let time = EXAM_DURATION * 60;
+      updateTimer(time);
       timerInterval = setInterval(() => {
-          duration--;
-          updateTimerDisplay(duration);
-          if (duration <= 0) {
+          time--;
+          updateTimer(time);
+          if (time <= 0) {
               clearInterval(timerInterval);
-              submitQuiz(true); // Auto submit
+              submitQuiz(true);
           }
       }, 1000);
   }
 
-  function updateTimerDisplay(seconds) {
-      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-      const s = (seconds % 60).toString().padStart(2, '0');
-      const timerEl = document.getElementById('countdown');
-      timerEl.innerText = `${m}:${s}`;
-      
-      // Red alert if less than 1 min
-      if(seconds < 60) timerEl.style.color = '#ff5252'; 
+  function updateTimer(seconds) {
+      let m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      let s = (seconds % 60).toString().padStart(2, '0');
+      let el = document.getElementById('countdown');
+      el.innerText = `${m}:${s}`;
+      if(seconds < 60) el.style.color = '#ff5252';
   }
 
   window.clearForm = () => document.getElementById('quizForm').reset();
 
   window.submitQuiz = async (auto = false) => {
-      if (!auto && !confirm("क्या आप जमा करना चाहते हैं? (Submit?)")) return;
+      if (!auto && !confirm("Confirm Submission? You cannot change answers later.")) return;
       
-      clearInterval(timerInterval); // Stop timer
-      
-      // SCORING LOGIC
-      let score = 0;
-      let correct = 0;
-      let wrong = 0;
-      let unattempted = 0;
+      clearInterval(timerInterval);
+      document.getElementById('footer-actions').style.display = 'none'; // Hide buttons
+
+      // SCORING
+      let score = 0, correct = 0, wrong = 0, skipped = 0;
       const form = document.forms['quizForm'];
+      
+      // ANSWER KEY
+      const key = { q1: '44', q2: 'i' };
 
-      // Correct Answers Key
-      const answers = {
-          q1: '44', // Correct answer for Q1
-          q2: 'i'   // Correct answer for Q2
-      };
-
-      // Loop through answers
-      for (let key in answers) {
-          const userVal = form[key].value;
-          if (userVal === "") {
-              unattempted++;
-          } else if (userVal === answers[key]) {
-              score += MARKS_CORRECT;
-              correct++;
-          } else {
-              score -= MARKS_WRONG;
-              wrong++;
-          }
+      for (let q in key) {
+          let val = form[q].value;
+          if (!val) skipped++;
+          else if (val === key[q]) { score += POS_MARKS; correct++; }
+          else { score -= NEG_MARKS; wrong++; }
       }
 
-      // Round score to 2 decimals
-      score = Math.round(score * 100) / 100;
+      score = parseFloat(score.toFixed(2)); // Round to 2 decimals
 
-      // Save to Database
-      const resultData = {
+      const data = {
           name: currentUser.displayName,
-          score: score,
-          correct: correct,
-          wrong: wrong,
-          unattempted: unattempted,
+          score: score, correct, wrong, skipped,
           timestamp: new Date()
       };
 
       try {
-          await setDoc(doc(db, "nda_mock_01", currentUser.uid), resultData);
-          showResult(resultData);
+          await setDoc(doc(db, "nda_mock_final", currentUser.uid), data);
+          showResult(data);
       } catch (e) {
-          alert("Error saving: " + e.message);
+          alert("Error: " + e.message);
       }
   };
 
   async function showResult(data) {
-      // Hide Quiz UI
       document.getElementById('quiz-view').style.display = 'none';
-      document.getElementById('footer-actions').style.display = 'none';
       document.getElementById('timer-bar').style.display = 'none';
-      
-      // Show Result UI
-      const resView = document.getElementById('result-view');
-      resView.style.display = 'block';
-      
+      document.getElementById('footer-actions').style.display = 'none';
+      document.getElementById('result-view').style.display = 'block';
+
       document.getElementById('final-score').innerText = data.score;
       document.getElementById('correct-count').innerText = data.correct;
       document.getElementById('wrong-count').innerText = data.wrong;
-      document.getElementById('unattempted-count').innerText = data.unattempted;
+      document.getElementById('unattempted-count').innerText = data.skipped;
 
-      // Color code final score
-      document.getElementById('final-score').style.color = data.score >= 0 ? '#1a237e' : 'red';
-
-      // Load Leaderboard
-      const q = query(collection(db, "nda_mock_01"), orderBy("score", "desc"), limit(10));
+      // Leaderboard
+      const q = query(collection(db, "nda_mock_final"), orderBy("score", "desc"), limit(10));
       const snap = await getDocs(q);
-      const table = document.getElementById('leaderboard-table');
-      
-      table.innerHTML = `<tr><th>Rank</th><th>Name</th><th>Marks</th></tr>`;
+      let html = '';
       let rank = 1;
       snap.forEach(doc => {
-          const d = doc.data();
-          table.innerHTML += `
-            <tr>
-                <td>#${rank++}</td>
-                <td>${d.name}</td>
-                <td class="${d.score < 0 ? 'score-negative' : 'score-positive'}">${d.score}</td>
-            </tr>`;
+          let d = doc.data();
+          let medal = rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : `#${rank}`));
+          html += `<tr>
+              <td>${medal}</td>
+              <td>${d.name}</td>
+              <td class="score-val">${d.score}</td>
+          </tr>`;
+          rank++;
       });
+      document.getElementById('leaderboard-table').innerHTML = html;
   }
 </script>
+
 </body>
 </html>
