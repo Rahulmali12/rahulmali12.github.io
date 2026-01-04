@@ -3,113 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revento Academy - Exam Portal</title>
+    <title>Revento Academy | Exam Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
     <style>
-        /* Professional CSS Design */
-        :root { --primary: #2563eb; --airforce-header: #3b82f6; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f3f4f6; margin: 0; }
-        
+        /* --- DESIGN SECTION --- */
+        body { font-family: 'Poppins', sans-serif; background: #f0f2f5; margin: 0; user-select: none; }
         .hidden { display: none !important; }
-        
-        /* Dashboard Cards */
-        .category-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 10px; cursor: pointer; transition: 0.3s; }
-        .category-card:hover { transform: translateY(-5px); border: 2px solid var(--primary); }
 
-        /* Airforce Real Exam UI Design */
-        #quiz-interface.airforce-mode { display: grid; grid-template-columns: 3fr 1fr; height: 100vh; }
-        .question-area { padding: 20px; background: white; overflow-y: auto; }
-        .question-palette { background: #e5e7eb; padding: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; align-content: start; }
-        .palette-btn { width: 35px; height: 35px; border-radius: 50%; border: none; cursor: pointer; font-weight: bold; }
-        
-        /* Colors for Palette */
-        .not-visited { background: white; border: 1px solid #ccc; }
-        .answered { background: #22c55e; color: white; } /* Green */
-        .not-answered { background: #ef4444; color: white; } /* Red */
-        .review { background: #a855f7; color: white; } /* Purple */
+        /* Card Design */
+        .glass-card {
+            background: white; border-radius: 15px; padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 20px auto;
+            max-width: 600px; text-align: center;
+        }
 
-        /* Leaderboard Table */
-        table { width: 100%; border-collapse: collapse; background: white; }
-        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
-        th { background: var(--primary); color: white; }
+        /* Dashboard Buttons */
+        .grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 20px; }
+        .btn-card {
+            background: white; padding: 20px; border-radius: 10px; cursor: pointer;
+            border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s;
+        }
+        .btn-card:hover { border-color: #4f46e5; transform: translateY(-5px); }
+        .btn-card h3 { margin: 5px 0; color: #333; }
+
+        /* Exam UI */
+        #exam-interface { display: flex; flex-direction: column; height: 100vh; background: white; }
+        .top-bar { padding: 10px 20px; background: #1f2937; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .timer { background: #ef4444; padding: 5px 10px; border-radius: 5px; font-weight: bold; }
+        
+        .content-area { flex: 1; display: flex; overflow: hidden; }
+        .question-box { flex: 3; padding: 30px; overflow-y: auto; }
+        .sidebar { width: 250px; background: #f3f4f6; border-left: 1px solid #ccc; padding: 10px; overflow-y: auto; }
+        
+        .palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 10px; }
+        .p-btn { width: 40px; height: 40px; border: none; background: white; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        
+        .ans { background: #10b981; color: white; }
+        .not-ans { background: #ef4444; color: white; }
+        
+        /* Mobile */
+        @media(max-width: 768px) {
+            .content-area { flex-direction: column; }
+            .sidebar { width: 100%; height: 150px; order: -1; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="login-screen" style="text-align:center; padding: 50px;">
-        <h1>Revento Academy Portal</h1>
-        <button onclick="googleLogin()" style="padding: 10px 20px; background: #db4437; color: white; border: none; border-radius: 5px; font-size: 16px;">Login with Google</button>
+    <div id="login-screen" style="height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div class="glass-card">
+            <h1 style="color: #4f46e5;">Revento Academy</h1>
+            <p>Please login to start your exam</p>
+            <button onclick="googleLogin()" style="padding: 12px 30px; background: #db4437; color: white; border: none; border-radius: 50px; font-size: 16px; cursor: pointer;">
+                Login with Google
+            </button>
+        </div>
     </div>
 
     <div id="dashboard" class="hidden">
-        <header style="background: white; padding: 15px; display: flex; justify-content: space-between;">
-            <h3 id="user-name">Welcome</h3>
-            <button onclick="logout()">Logout</button>
-        </header>
-
-        <div style="padding: 20px; display: flex; flex-wrap: wrap; justify-content: center;">
-            <div class="category-card" onclick="startTest('class10_math')">
-                <h3>Class 10 - Maths</h3>
-                <p>Chapter 1 to 5 Test</p>
-            </div>
-            <div class="category-card" onclick="startTest('class12_physics')">
-                <h3>Class 12 - Physics</h3>
-                <p>Full Syllabus Mock</p>
-            </div>
-            <div class="category-card" onclick="startTest('airforce_x', true)">
-                <h3>⚓ Airforce X Group</h3>
-                <p>Full Mock Test (Real UI)</p>
-            </div>
-            <div class="category-card" onclick="showPDFs()">
-                <h3>📚 PDF Section</h3>
-                <p>Notes & Formulas</p>
-            </div>
+        <div style="background: #4f46e5; color: white; padding: 15px; display: flex; justify-content: space-between;">
+            <span id="user-name" style="font-weight: bold;">Student</span>
+            <button onclick="logout()" style="background: none; border: 1px solid white; color: white; border-radius: 20px; cursor: pointer; padding: 2px 10px;">Logout</button>
         </div>
-    </div>
-
-    <div id="quiz-interface" class="hidden">
-        <div class="question-area">
-            <div style="display: flex; justify-content: space-between; border-bottom: 2px solid #ddd; padding-bottom: 10px;">
-                <h3 id="timer">Time Left: 20:00</h3>
-                <button onclick="submitTest()" style="background: green; color: white; padding: 5px 15px; border: none;">SUBMIT TEST</button>
-            </div>
-            <h2 id="q-text">Question goes here...</h2>
-            <div id="options-container">
+        
+        <div class="container" style="max-width: 800px; margin: 0 auto;">
+            <h2 style="text-align: center; margin-top: 30px;">Select Category</h2>
+            <div class="grid-menu">
+                <div class="btn-card" onclick="showSubjects('class10')">
+                    <div style="font-size: 30px;">🏫</div>
+                    <h3>Class 10th</h3>
+                    <p>Maths, Science, English</p>
                 </div>
-            <div style="margin-top: 20px;">
-                <button onclick="prevQ()">Previous</button>
-                <button onclick="nextQ()" style="background: var(--primary); color: white;">Save & Next</button>
+
+                <div class="btn-card" onclick="showSubjects('class12')">
+                    <div style="font-size: 30px;">🎓</div>
+                    <h3>Class 12th</h3>
+                    <p>Physics, Math Mock</p>
+                </div>
+
+                <div class="btn-card" onclick="startExam('airforce_x')" style="border-color: #0ea5e9; background: #f0f9ff;">
+                    <div style="font-size: 30px;">✈️</div>
+                    <h3>Airforce X</h3>
+                    <p>Real CBT Mock Test</p>
+                </div>
+                
+                <div class="btn-card" onclick="alert('PDF Section Coming Soon!')">
+                    <div style="font-size: 30px;">📚</div>
+                    <h3>PDF Notes</h3>
+                    <p>Download Formulas</p>
+                </div>
             </div>
         </div>
-        
-        <div class="question-palette" id="palette-box">
+    </div>
+
+    <div id="subject-screen" class="hidden glass-card">
+        <h3>Select Subject</h3>
+        <div id="sub-list" class="grid-menu"></div>
+        <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px;">Back</button>
+    </div>
+
+    <div id="exam-interface" class="hidden">
+        <div class="top-bar">
+            <span>Revento Exam</span>
+            <span id="timer" class="timer">20:00</span>
+            <button onclick="submitTest()" style="background: #ef4444; color: white; border: none; padding: 5px 15px; border-radius: 3px; cursor: pointer;">SUBMIT</button>
+        </div>
+        <div class="content-area">
+            <div class="question-box">
+                <h2 id="q-text">Question...</h2>
+                <div id="options-box"></div>
+                <br>
+                <button onclick="saveAndNext()" style="background: #4f46e5; color: white; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer;">Save & Next</button>
             </div>
+            <div class="sidebar">
+                <p>Questions:</p>
+                <div id="palette-box" class="palette"></div>
+            </div>
+        </div>
     </div>
 
-    <div id="result-screen" class="hidden" style="padding: 20px;">
-        <h2 align="center">🏆 Live Leaderboard</h2>
-        <h3 align="center">Your Score: <span id="my-score">0</span></h3>
-        <table id="rank-table">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Name</th>
-                    <th>Score</th>
-                </tr>
-            </thead>
-            <tbody id="leaderboard-body">
-                </tbody>
-        </table>
-        <button onclick="location.reload()" style="margin-top: 20px;">Go Back</button>
+    <div id="result-screen" class="hidden glass-card">
+        <h1>🏆 Result</h1>
+        <h2>Your Score: <span id="final-score" style="color: green; font-size: 40px;">0</span></h2>
+        <button onclick="location.reload()" style="padding: 10px 20px; cursor: pointer;">Go Home</button>
     </div>
 
-   <script>
-        // --- 1. FIREBASE CONFIGURATION (Revento Academy) ---
-        // (Yeh HTML wali sahi setting hai)
-        
+    <script>
+        // --- 1. CONFIGURATION ---
         const firebaseConfig = {
             apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
             authDomain: "revento-academy.firebaseapp.com",
@@ -121,115 +147,104 @@
             measurementId: "G-4L8YC6J095"
         };
 
-        // Initialize Firebase (Sabse Important Line)
-        // Dhyan dena: Yahan hum 'firebase.' laga rahe hain
         firebase.initializeApp(firebaseConfig);
-        
-        // Setup Auth and Database
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // --- 2. GLOBAL VARIABLES ---
-        let currentUser = null;
-        let questions = [];
-        let currentQIndex = 0;
-        let userResponses = {};
-        let currentSubId = '';
-        let timerInterval;
-
-        // --- 3. QUESTIONS DATA ---
+        // --- 2. DATA (Questions) ---
         const allQuestions = {
             'c10_math': [
-                { q: "10th Math: Real Numbers में π क्या है?", opt: ["Rational", "Irrational", "Integer", "None"], ans: 1 },
-                { q: "Quadratic Equation की डिग्री क्या होती है?", opt: ["1", "2", "3", "0"], ans: 1 }
+                { q: "HCF of 96 and 404?", opt: ["4", "12", "8", "2"], ans: 0 },
+                { q: "Degree of Quadratic Equation?", opt: ["0", "1", "2", "3"], ans: 2 }
             ],
             'c12_phy': [
-                { q: "12th Phy: Unit of Charge?", opt: ["Ampere", "Coulomb", "Volt", "Watt"], ans: 1 },
-                { q: "Ohm's Law formula?", opt: ["V=IR", "I=VR", "R=VI", "None"], ans: 0 }
+                { q: "Unit of Charge?", opt: ["Ampere", "Coulomb", "Volt", "Watt"], ans: 1 },
+                { q: "Ohm's Law?", opt: ["V=IR", "I=VR", "R=VI", "None"], ans: 0 }
             ],
             'airforce_x': [
-                { q: "AF Physics: Dimension of Force?", opt: ["MLT-2", "MLT-1", "ML2T-2", "M0L0T0"], ans: 0 },
-                { q: "AF Math: Integration of sin(x)?", opt: ["cos(x)", "-cos(x)", "sin(x)", "tan(x)"], ans: 1 },
-                { q: "Capital of India?", opt: ["Delhi", "Mumbai", "Kolkata", "Chennai"], ans: 0 }
+                { q: "Dimension of Force?", opt: ["MLT-2", "MLT-1", "ML2T-2", "M0L0T0"], ans: 0 },
+                { q: "Capital of India?", opt: ["Delhi", "Mumbai", "Goa", "Pune"], ans: 0 },
+                { q: "Value of g?", opt: ["9.8", "10.2", "8.9", "0"], ans: 0 }
             ]
         };
 
-        // --- 4. FUNCTIONS (Login & Logic) ---
-        
-        // Page load hone par check user
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                currentUser = user;
+        let currentQ = 0;
+        let questions = [];
+        let responses = {};
+        let subId = '';
+        let timerInt;
+        let user = null;
+
+        // --- 3. AUTH LOGIC ---
+        auth.onAuthStateChanged(u => {
+            if(u) {
+                user = u;
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('user-name').innerText = "Hi, " + user.displayName;
+                document.getElementById('user-name').innerText = "Hi, " + u.displayName;
             }
         });
 
         function googleLogin() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then((res) => {
-                    currentUser = res.user;
-                    // Screen change handled by onAuthStateChanged above
-                })
-                .catch((error) => {
-                    console.error("Login Error:", error);
-                    alert("Login Failed: " + error.message);
-                });
+            auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+                .catch(e => alert("Login Error: " + e.message));
         }
+        
+        function logout() { auth.signOut().then(() => location.reload()); }
 
+        // --- 4. NAVIGATION LOGIC ---
         function showSubjects(cls) {
+            console.log("Showing subjects for:", cls); // DEBUG
             document.getElementById('dashboard').classList.add('hidden');
             document.getElementById('subject-screen').classList.remove('hidden');
-            const box = document.getElementById('subject-buttons');
+            const list = document.getElementById('sub-list');
             
             if(cls === 'class10') {
-                box.innerHTML = `<button class="btn-select" onclick="startExam('c10_math')">Maths (Chapter 1)</button>`;
+                list.innerHTML = `<div class="btn-card" onclick="startExam('c10_math')">Maths Test 1</div>`;
             } else if(cls === 'class12') {
-                box.innerHTML = `<button class="btn-select" onclick="startExam('c12_phy')">Physics (Full Mock)</button>`;
+                list.innerHTML = `<div class="btn-card" onclick="startExam('c12_phy')">Physics Mock</div>`;
             }
         }
 
-        async function startExam(subId) {
-            currentSubId = subId;
-            // Check One Attempt
+        async function startExam(sid) {
+            console.log("Starting exam:", sid); // DEBUG
+            subId = sid;
+            questions = allQuestions[sid];
+            if(!questions) { alert("Questions not added yet!"); return; }
+
+            // DB Check (Safe Mode - wont crash if DB fails)
             try {
-                const doc = await db.collection('results').doc(currentUser.uid + "_" + subId).get();
+                const doc = await db.collection('results').doc(user.uid + "_" + sid).get();
                 if(doc.exists) {
-                    alert("You have already taken this test!");
-                    showResult(subId);
+                    alert("Already Attempted! Score: " + doc.data().score);
                     return;
                 }
-            } catch (error) {
-                console.log("Checking attempt...", error);
+            } catch(e) {
+                console.log("DB check failed, allowing test anyway...", e);
             }
 
-            questions = allQuestions[subId];
-            if(!questions) { alert("Questions coming soon!"); return; }
-
-            // Reset Logic
-            userResponses = {};
-            for(let i=0; i<questions.length; i++) userResponses[i] = { ans: null, status: 'not-visited' };
+            // Setup Exam
+            currentQ = 0;
+            responses = {};
+            for(let i=0; i<questions.length; i++) responses[i] = -1;
 
             document.getElementById('dashboard').classList.add('hidden');
             document.getElementById('subject-screen').classList.add('hidden');
             document.getElementById('exam-interface').classList.remove('hidden');
-
-            generatePalette();
-            loadQuestion(0);
+            
+            loadQ(0);
+            genPalette();
             startTimer();
         }
 
-        function loadQuestion(idx) {
-            currentQIndex = idx;
+        // --- 5. EXAM ENGINE ---
+        function loadQ(idx) {
+            currentQ = idx;
             document.getElementById('q-text').innerText = `Q${idx+1}: ${questions[idx].q}`;
             let html = '';
-            questions[idx].opt.forEach((opt, i) => {
-                let checked = userResponses[idx].ans === i ? 'checked' : '';
-                html += `<div style="padding:10px; border:1px solid #ddd; margin:5px; border-radius:5px;">
-                            <input type="radio" name="opt" value="${i}" ${checked}> ${opt}
-                         </div>`;
+            questions[idx].opt.forEach((o, i) => {
+                let check = responses[idx] === i ? 'checked' : '';
+                html += `<div style="margin:10px 0;"><input type="radio" name="opt" value="${i}" ${check}> ${o}</div>`;
             });
             document.getElementById('options-box').innerHTML = html;
         }
@@ -237,77 +252,54 @@
         function saveAndNext() {
             const opts = document.getElementsByName('opt');
             for(let o of opts) {
-                if(o.checked) {
-                    userResponses[currentQIndex].ans = parseInt(o.value);
-                    userResponses[currentQIndex].status = 'answered';
-                }
+                if(o.checked) responses[currentQ] = parseInt(o.value);
             }
             updatePalette();
-            if(currentQIndex < questions.length - 1) loadQuestion(currentQIndex + 1);
+            if(currentQ < questions.length - 1) loadQ(currentQ + 1);
         }
 
-        function prevQ() { if(currentQIndex > 0) loadQuestion(currentQIndex - 1); }
-
-        function generatePalette() {
+        function genPalette() {
             let html = '';
-            questions.forEach((_, i) => html += `<button id="pal-${i}" class="palette-btn not-visited" onclick="loadQuestion(${i})">${i+1}</button>`);
+            questions.forEach((_, i) => html += `<button id="p-${i}" class="p-btn" onclick="loadQ(${i})">${i+1}</button>`);
             document.getElementById('palette-box').innerHTML = html;
         }
 
         function updatePalette() {
-            const btn = document.getElementById(`pal-${currentQIndex}`);
-            if(userResponses[currentQIndex].status === 'answered') {
-                btn.className = 'palette-btn answered';
-            } else {
-                btn.className = 'palette-btn not-answered';
-            }
+            const btn = document.getElementById(`p-${currentQ}`);
+            if(responses[currentQ] !== -1) btn.classList.add('ans');
         }
 
         function startTimer() {
             let t = 20 * 60;
-            timerInterval = setInterval(() => {
+            timerInt = setInterval(() => {
                 let m = Math.floor(t/60);
                 let s = t%60;
-                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                document.getElementById('timer').innerText = `${m}:${s}`;
                 t--;
                 if(t<0) submitTest();
             }, 1000);
         }
 
         function submitTest() {
-            clearInterval(timerInterval);
+            clearInterval(timerInt);
             let score = 0;
             questions.forEach((q, i) => {
-                if(userResponses[i].ans === q.ans) score++;
+                if(responses[i] === q.ans) score++;
             });
 
-            db.collection('results').doc(currentUser.uid + "_" + currentSubId).set({
-                name: currentUser.displayName,
+            // Save Result
+            db.collection('results').doc(user.uid + "_" + subId).set({
+                name: user.displayName,
                 score: score,
-                subject: currentSubId,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => showResult(currentSubId));
+                subject: subId,
+                time: new Date()
+            }).then(() => showResult(score));
         }
 
-        function showResult(subId) {
+        function showResult(score) {
             document.getElementById('exam-interface').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
-            document.getElementById('my-score').innerText = "Loading...";
-
-            // Current Score
-            db.collection('results').doc(currentUser.uid + "_" + subId).get().then(doc => {
-                 if(doc.exists) document.getElementById('my-score').innerText = doc.data().score;
-            });
-            
-            // Leaderboard
-            db.collection('results').where('subject', '==', subId).orderBy('score', 'desc').limit(5).get().then(snap => {
-                let html = '';
-                snap.forEach(doc => {
-                    let d = doc.data();
-                    html += `<li><b>${d.name}</b>: ${d.score} Marks</li>`;
-                });
-                document.getElementById('leaderboard-list').innerHTML = html;
-            });
+            document.getElementById('final-score').innerText = score;
         }
     </script>
 </body>
