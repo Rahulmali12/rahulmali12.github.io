@@ -345,7 +345,7 @@
       document.getElementById('unattempted-count').innerText = data.skipped;
 
       // Leaderboard
-      const q = query(collection(db, "nda_mock_final"), orderBy("score", "desc"), limit(10));
+      const q = query(collection(db, "nda_mock_final"), orderBy("score", "desc"), limit(50));
       const snap = await getDocs(q);
       let html = '';
       let rank = 1;
