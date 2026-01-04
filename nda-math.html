@@ -55,7 +55,7 @@
     <div class="container">
         <div id="login-view" style="text-align: center;">
             <h2 style="color:var(--primary-dark)">Secure Online Test</h2>
-            <p>Mathematics: Vector & 3D Geometry</p>
+            <p>Mathematics: Vector Calculus Trigonometry Probability & 3D Geometry</p>
             <div style="background:#fff3e0; padding:15px; border-radius:10px; text-align:left; font-size:0.9rem; margin:20px 0;">
                 <strong>Instructions:</strong><br>
                 • Correct: <span style="color:green">+2.5</span> | Wrong: <span style="color:red">-0.83</span><br>
@@ -803,7 +803,7 @@ const CORRECT_ANSWERS = {
       document.getElementById('result-view').style.display = 'block';
       document.getElementById('final-score').innerText = data.score;
 
-      const q = query(collection(db, "nda_mock_v4"), orderBy("score", "desc"), limit(10));
+      const q = query(collection(db, "nda_mock_v4"), orderBy("score", "desc"), limit(50));
       const snap = await getDocs(q);
       let html = ''; let r = 1;
       snap.forEach(doc => {
