@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 10 Mastermind | Rivento Academy</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS (DESIGN) START --- */
+        
+        /* Global Reset & Fonts */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styling - Gradient Look */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: #ffd700; /* Gold color for 'Academy' */
+        }
+
+        nav button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            margin-left: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        nav button:hover {
+            background: white;
+            color: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Styling */
+        main {
+            flex: 1;
+            padding-bottom: 40px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: white;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            color: #636e72;
+        }
+
+        /* Subject Grid (Dashboard) */
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 0 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 6px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        /* Subject Specific Colors */
+        .math { border-left-color: #e74c3c; }
+        .math h2 { color: #e74c3c; }
+        
+        .science { border-left-color: #2ecc71; }
+        .science h2 { color: #2ecc71; }
+        
+        .sst { border-left-color: #f39c12; }
+        .sst h2 { color: #f39c12; }
+        
+        .english { border-left-color: #3498db; }
+        .english h2 { color: #3498db; }
+
+        .card h2 { font-size: 1.5rem; margin-bottom: 5px; }
+        .card p { color: #666; font-size: 0.95rem; margin-bottom: 20px; }
+
+        .progress-bar {
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: auto;
+        }
+        .fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Detail View (Hidden by default) */
+        .hidden { display: none !important; }
+
+        .subject-view-container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .subject-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 2px solid #333;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .back-btn:hover { background: #333; color: white; }
+
+        /* Tab Switcher */
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: #e0e0e0;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 5px;
+            border-radius: 30px;
+        }
+
+        .toggle-btn {
+            padding: 10px 30px;
+            border: none;
+            background: transparent;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #555;
+            transition: 0.3s;
+        }
+        .toggle-btn.active {
+            background: #764ba2;
+            color: white;
+            box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+        }
+
+        /* Content Box Styling */
+        .content-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Questions Styling */
+        .q-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 20px 0;
+        }
+        .q-item:last-child { border-bottom: none; }
+        
+        .q-num {
+            font-weight: 700;
+            color: #764ba2;
+            font-size: 1.1rem;
+            margin-right: 10px;
+        }
+        
+        .answer-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #2ecc71;
+            border-radius: 4px;
+            display: none; /* Hidden initially */
+            color: #444;
+        }
+
+        .view-ans-btn {
+            margin-top: 10px;
+            padding: 6px 12px;
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        /* Quiz Styling */
+        .quiz-card {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ccc;
+        }
+        .quiz-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .quiz-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 15px;
+            margin: 8px 0;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+        .quiz-option:hover:not(:disabled) {
+            border-color: #764ba2;
+            background: #f9f9ff;
+        }
+        .correct-opt { background: #d4edda !important; border-color: #28a745 !important; color: #155724; }
+        .wrong-opt { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24; }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: auto;
+            color: #888;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+        
+        /* --- CSS END --- */
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Rivento <span>Academy</span> (10th)</div>
+        <nav>
+            <button onclick="goHome()">Home</button>
+            <button>Leaderboard</button>
+            <button>Login</button>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="hero">
+            <h1>कक्षा 10 की संपूर्ण तैयारी 🚀</h1>
+            <p>Subjective नोट्स और Live Quiz के साथ अपनी परफॉरमेंस बढ़ाएं।</p>
+        </section>
+
+        <div class="subject-grid">
+            <div class="card math" onclick="openSubject('Maths')">
+                <h2>Mathematics</h2>
+                <p>त्रिकोणमिति, बीजगणित, सांख्यिकी</p>
+                <div class="progress-bar"><div class="fill" style="width: 40%; background: #e74c3c;"></div></div>
+            </div>
+            <div class="card science" onclick="openSubject('Science')">
+                <h2>Science</h2>
+                <p>भौतिकी, रसायन, जीव विज्ञान</p>
+                <div class="progress-bar"><div class="fill" style="width: 75%; background: #2ecc71;"></div></div>
+            </div>
+            <div class="card sst" onclick="openSubject('SST')">
+                <h2>Social Science</h2>
+                <p>इतिहास, भूगोल, नागरिक शास्त्र</p>
+                <div class="progress-bar"><div class="fill" style="width: 20%; background: #f39c12;"></div></div>
+            </div>
+            <div class="card english" onclick="openSubject('English')">
+                <h2>English</h2>
+                <p>Grammar, First Flight, Footprints</p>
+                <div class="progress-bar"><div class="fill" style="width: 55%; background: #3498db;"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <section id="subject-view" class="hidden subject-view-container">
+        <div class="subject-header">
+            <h1 id="subject-title" style="margin:0; font-size:1.8rem;">Subject Name</h1>
+            <button onclick="goHome()" class="back-btn">← Dashboard</button>
+        </div>
+
+        <div class="toggle-container">
+            <button class="toggle-btn active" onclick="switchTab('subjective')">Subjective / Notes</button>
+            <button class="toggle-btn" onclick="switchTab('quiz')">Live Quiz (MCQ)</button>
+        </div>
+
+        <div id="subjective-content" class="content-box">
+            <h3 style="margin-bottom: 20px;">📌 महत्वपूर्ण प्रश्न (Subjective)</h3>
+            <div id="subjective-list">
+                </div>
+        </div>
+
+        <div id="quiz-content" class="content-box hidden">
+            <h3 style="margin-bottom: 20px;">⏱️ Quick Test Series</h3>
+            <div id="quiz-container">
+                </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Rivento Academy | Designed for Toppers</p>
+    </footer>
+
+    <script>
+        /* --- JAVASCRIPT LOGIC START --- */
+
+        // 1. DATA DATABASE (Content for Website)
+        const db = {
+            'Maths': {
+                subjective: [
+                    { q: "पाइथागोरस प्रमेय (Pythagoras Theorem) क्या है?", a: "किसी समकोण त्रिभुज में, कर्ण का वर्ग शेष दो भुजाओं (लम्ब और आधार) के वर्गों के योग के बराबर होता है। Formula: H² = P² + B²" },
+                    { q: "द्विघात समीकरण का मानक रूप क्या है?", a: "ax² + bx + c = 0, जहाँ a ≠ 0 है।" }
+                ],
+                quiz: [
+                    { q: "sin(90°) का मान क्या है?", opts: ["0", "1", "1/2", "अनंत"], ans: 1 },
+                    { q: "सबसे छोटी अभाज्य संख्या (Prime Number) कौन सी है?", opts: ["0", "1", "2", "3"], ans: 2 }
+                ]
+            },
+            'Science': {
+                subjective: [
+                    { q: "प्रकाश के परावर्तन के नियम लिखिए?", a: "1. आपतित किरण, परावर्तित किरण और अभिलंब तीनों एक ही तल में होते हैं। <br> 2. आपतन कोण (i) सदैव परावर्तन कोण (r) के बराबर होता है।" },
+                    { q: "ऊष्माक्षेपी अभिक्रिया (Exothermic Reaction) क्या है?", a: "वह रासायनिक अभिक्रिया जिसमें उत्पाद के निर्माण के साथ-साथ ऊष्मा भी उत्पन्न होती है।" }
+                ],
+                quiz: [
+                    { q: "मानव नेत्र में वस्तु का प्रतिबिम्ब कहाँ बनता है?", opts: ["कॉर्निया", "परितारिका", "रेटिना", "पुतली"], ans: 2 },
+                    { q: "शुद्ध जल का pH मान कितना होता है?", opts: ["0", "7", "14", "10"], ans: 1 }
+                ]
+            },
+            'SST': {
+                subjective: [
+                    { q: "संसाधन किसे कहते हैं?", a: "हमारे पर्यावरण में उपलब्ध प्रत्येक वस्तु जो हमारी आवश्यकताओं को पूरा करने में प्रयुक्त की जा सकती है, संसाधन कहलाती है।" },
+                    { q: "रोलेट एक्ट (Rowlatt Act) कब पारित हुआ?", a: "रोलेट एक्ट 1919 में पारित हुआ था।" }
+                ],
+                quiz: [
+                    { q: "भारत का लौह पुरुष किसे कहा जाता है?", opts: ["गांधीजी", "नेहरूजी", "सरदार पटेल", "भगत सिंह"], ans: 2 },
+                    { q: "हीराकुंड बांध किस नदी पर बना है?", opts: ["गंगा", "महानदी", "यमुना", "कावेरी"], ans: 1 }
+                ]
+            },
+            'English': {
+                subjective: [
+                    { q: "Who was Lencho?", a: "Lencho was a hard-working farmer who wrote a letter to God asking for 100 pesos because his crops were destroyed." },
+                    { q: "Define a Noun.", a: "A noun is a name of a person, place, animal, or thing." }
+                ],
+                quiz: [
+                    { q: "Lencho wrote a letter to _______.", opts: ["God", "Postmaster", "PM", "Wife"], ans: 0 },
+                    { q: "Which is a verb?", opts: ["Beautiful", "Run", "Slowly", "Table"], ans: 1 }
+                ]
+            }
+        };
+
+        // 2. NAVIGATION FUNCTIONS
+        function openSubject(subject) {
+            // Hide Dashboard, Show Subject View
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById('subject-view').classList.remove('hidden');
+            
+            // Set Title
+            document.getElementById('subject-title').innerText = subject;
+            document.getElementById('subject-title').style.color = getSubjectColor(subject);
+
+            // Load Content
+            loadSubjective(subject);
+            loadQuiz(subject);
+
+            // Reset Tab to Subjective
+            switchTab('subjective');
+            window.scrollTo(0, 0);
+        }
+
+        function goHome() {
+            document.getElementById('subject-view').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function getSubjectColor(sub) {
+            if(sub === 'Maths') return '#e74c3c';
+            if(sub === 'Science') return '#2ecc71';
+            if(sub === 'SST') return '#f39c12';
+            return '#3498db';
+        }
+
+        // 3. TAB SWITCHING
+        function switchTab(tabName) {
+            const btns = document.querySelectorAll('.toggle-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            
+            if(tabName === 'subjective') {
+                document.querySelector('.toggle-btn:nth-child(1)').classList.add('active');
+                document.getElementById('subjective-content').classList.remove('hidden');
+                document.getElementById('quiz-content').classList.add('hidden');
+            } else {
+                document.querySelector('.toggle-btn:nth-child(2)').classList.add('active');
+                document.getElementById('subjective-content').classList.add('hidden');
+                document.getElementById('quiz-content').classList.remove('hidden');
+            }
+        }
+
+        // 4. CONTENT LOADERS
+        function loadSubjective(subject) {
+            const list = document.getElementById('subjective-list');
+            list.innerHTML = ''; // Clear old
+
+            const data = db[subject] ? db[subject].subjective : [];
+            
+            if(data.length === 0) list.innerHTML = "<p>Notes coming soon...</p>";
+
+            data.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'q-item';
+                div.innerHTML = `
+                    <div style="display:flex; align-items:center;">
+                        <span class="q-num">Q${index+1}.</span>
+                        <p style="font-weight:600;">${item.q}</p>
+                    </div>
+                    <button class="view-ans-btn" onclick="toggleAns(this)">उत्तर देखें</button>
+                    <div class="answer-box">${item.a}</div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function toggleAns(btn) {
+            const ansBox = btn.nextElementSibling;
+            if (ansBox.style.display === "block") {
+                ansBox.style.display = "none";
+                btn.innerText = "उत्तर देखें";
+            } else {
+                ansBox.style.display = "block";
+                btn.innerText = "उत्तर छुपाएं";
+            }
+        }
+
+        function loadQuiz(subject) {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            const data = db[subject] ? db[subject].quiz : [];
+
+            if(data.length === 0) container.innerHTML = "<p>Quiz coming soon...</p>";
+
+            data.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'quiz-card';
+                
+                let optionsHTML = '';
+                item.opts.forEach((opt, i) => {
+                    optionsHTML += `<button class="quiz-option" onclick="checkAnswer(this, ${i}, ${item.ans})">${opt}</button>`;
+                });
+
+                card.innerHTML = `
+                    <div class="quiz-question">Q${index+1}: ${item.q}</div>
+                    <div class="options-grid">${optionsHTML}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function checkAnswer(btn, selected, correct) {
+            const parent = btn.parentElement;
+            const allBtns = parent.getElementsByClassName('quiz-option');
+
+            // Disable all clicks
+            for(let b of allBtns) {
+                b.disabled = true;
+                b.style.cursor = 'default';
+                if(allBtns[correct] === b) {
+                    b.classList.add('correct-opt'); // Highlight correct green
+                    b.innerHTML += " ✅";
+                }
+            }
+
+            if(selected !== correct) {
+                btn.classList.add('wrong-opt'); // Highlight wrong red
+                btn.innerHTML += " ❌";
+            }
+        }
+    </script>
+</body>
+</html>
