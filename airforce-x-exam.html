@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Revento Air Force X (Pro)</title>
+    <title>Rivento Air Force X (Leaderboard Edition)</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -17,7 +17,7 @@
         .exam-name { font-size: 0.95rem; opacity: 0.9; text-align: right; line-height: 1.2; display: flex; flex-direction: column; justify-content: center; max-width: 60%; }
         @media (max-width: 480px) { .brand { font-size: 1rem; } .exam-name { font-size: 0.75rem; white-space: normal; } }
 
-        /* Split Screen Layout */
+        /* Layout */
         .main-wrapper { display: flex; margin-top: 60px; height: calc(100vh - 60px); }
         .left-panel { flex: 3; padding: 20px; overflow-y: auto; border-right: 1px solid #ddd; }
         .right-panel { flex: 1; background: white; display: flex; flex-direction: column; align-items: center; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.05); max-width: 250px; min-width: 200px; }
@@ -29,7 +29,7 @@
         
         .timer-display { background: #2c3e50; color: #00ff00; font-family: monospace; font-size: 1.5rem; font-weight: bold; padding: 10px 20px; border-radius: 5px; margin-bottom: 20px; border: 2px solid #555; }
         
-        /* Questions */
+        /* Questions UI */
         .tabs-container { display: flex; gap: 5px; margin-bottom: 20px; position: sticky; top: 0; z-index: 50; background: var(--bg-gray); padding-bottom: 10px; }
         .tab { padding: 8px 15px; font-size: 0.8rem; font-weight: bold; border: 1px solid #ccc; background: #fff; color: #aaa; border-radius: 4px; }
         .tab.active { background: var(--af-blue); color: white; border-color: var(--af-blue); }
@@ -55,7 +55,6 @@
             .btn-green { background: #2e7d32; }
             .btn-gray { background: #cfd8dc; color: #333; }
         }
-        /* PC Footer hidden in right panel, shown in mobile fixed */
         .desktop-footer { width: 100%; display: flex; flex-direction: column; gap: 10px; }
         .desktop-footer button { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; }
         .d-btn-green { background: #2e7d32; }
@@ -63,9 +62,8 @@
         @media (max-width: 768px) { .desktop-footer { display: none; } }
         @media (min-width: 769px) { .footer-bar { display: none; } }
 
-        /* Login & Result Overlay */
-        #login-overlay, #result-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
-        #login-overlay { background: linear-gradient(135deg, #0d1b42, #1a237e); }
+        /* Overlays */
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0d1b42, #1a237e); z-index: 2000; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
@@ -79,7 +77,7 @@
 </div>
 
 <div class="cbt-header">
-    <div class="brand">REVENTO ACADEMY</div>
+    <div class="brand">RIVENTO</div>
     <div class="exam-name">Group X (Technical)</div>
 </div>
 
@@ -90,20 +88,16 @@
             <div id="tab-1" class="tab">MATHS</div>
             <div id="tab-2" class="tab">ENGLISH</div>
         </div>
-
         <form id="quizForm">
             <div id="cont-0" style="display:block;"></div> <div id="cont-1" style="display:none;"></div>  <div id="cont-2" style="display:none;"></div>  </form>
     </div>
-
     <div class="right-panel">
         <div class="profile-box">
             <img id="user-photo" class="candidate-img" src="" alt="Candidate">
             <span id="user-name" class="candidate-name">Student</span>
             <span style="font-size:0.8rem; color:#777;">ID: AF-2026-X</span>
         </div>
-        
         <div class="timer-display" id="timer">20:00</div>
-
         <div class="desktop-footer">
             <button class="d-btn-gray" onclick="document.getElementById('quizForm').reset()">Clear</button>
             <button class="d-btn-green" id="next-btn-pc" onclick="nextSection()">Save & Next</button>
@@ -117,13 +111,14 @@
 </div>
 
 <script type="module">
+    // 👇 यहाँ मैंने IMPORT सही कर दिया है ताकि लीडरबोर्ड चले 👇
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // 🔴🔴 अपनी KEY यहाँ डालें 🔴🔴
+    // 🔴🔴 अपनी FIREBASE KEY यहाँ डालें 🔴🔴
     const firebaseConfig = {
-       apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+         apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
   authDomain: "revento-academy.firebaseapp.com",
   databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
   projectId: "revento-academy",
@@ -132,39 +127,28 @@
   appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
   measurementId: "G-4L8YC6J095"
 };
-    // =========================================================
-    // 🚀 QUESTION BANK (यहाँ सवाल कॉपी पेस्ट करें) 🚀
-    // =========================================================
-    // ans: 'a', 'b', 'c', or 'd'
 
+    // 🚀 QUESTION BANK
     const PHYSICS_QS = [
         { q: "Unit of Force?", a: "Joule", b: "Newton", c: "Watt", d: "Volt", ans: "b" },
-        { q: "Vector Quantity?", a: "Speed", b: "Mass", c: "Velocity", d: "Time", ans: "c" },
-        // 👇 बस इस लाइन को कॉपी करें और नया सवाल डालें 👇
-        { q: "Dimension of Work?", a: "MLT-2", b: "ML2T-2", c: "MLT-1", d: "None", ans: "b" },
+        { q: "Scalar Quantity?", a: "Force", b: "Speed", c: "Velocity", d: "Time", ans: "b" },
     ];
-
     const MATH_QS = [
         { q: "Value of sin(0)?", a: "0", b: "1", c: "-1", d: "Inf", ans: "a" },
         { q: "Derivative of x^2?", a: "x", b: "2x", c: "x^2", d: "0", ans: "b" },
     ];
-
     const ENG_QS = [
         { q: "Synonym of 'FAST'?", a: "Slow", b: "Quick", c: "Lazy", d: "Calm", ans: "b" },
         { q: "Plural of 'Box'?", a: "Boxs", b: "Boxies", c: "Boxes", d: "None", ans: "c" },
     ];
 
-    // =========================================================
-    // 👇 AUTOMATIC SYSTEM (NO TOUCH NEEDED) 👇
-    // =========================================================
-
+    // SYSTEM LOGIC
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
     let currentUser, timerInt, time=1200, currentSec=0;
 
-    // 1. GENERATE HTML FROM QUESTION BANK
     function generateHTML(data, containerID, prefix) {
         let html = "";
         data.forEach((item, i) => {
@@ -182,19 +166,17 @@
         document.getElementById(containerID).innerHTML = html;
     }
 
-    // Load Questions
     generateHTML(PHYSICS_QS, "cont-0", "p");
     generateHTML(MATH_QS, "cont-1", "m");
     generateHTML(ENG_QS, "cont-2", "e");
 
-    // Login
     window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e => alert(e));
 
     onAuthStateChanged(auth, (user) => {
         if(user) {
             currentUser = user;
             document.getElementById('login-overlay').style.display='none';
-            document.getElementById('exam-ui').style.display='flex'; // Show Flex layout
+            document.getElementById('exam-ui').style.display='flex';
             document.getElementById('user-name').innerText = user.displayName;
             document.getElementById('user-photo').src = user.photoURL;
             startTimer();
@@ -202,7 +184,7 @@
     });
 
     function startTimer() {
-        time = 20 * 60; // 20 Min
+        time = 20 * 60; 
         clearInterval(timerInt);
         timerInt = setInterval(() => {
             time--;
@@ -219,12 +201,9 @@
         if(currentSec < 2) {
             document.getElementById(`cont-${currentSec}`).style.display='none';
             document.getElementById(`tab-${currentSec}`).classList.remove('active');
-            
             currentSec++;
-            
             document.getElementById(`cont-${currentSec}`).style.display='block';
             document.getElementById(`tab-${currentSec}`).classList.add('active');
-            
             if(currentSec===2) {
                 document.getElementById('next-btn-pc').innerText = "Submit Exam";
                 document.getElementById('next-btn-mob').innerText = "Submit Exam";
@@ -241,39 +220,42 @@
         const form = document.getElementById('quizForm');
         const formData = new FormData(form);
 
-        // Check Physics
-        PHYSICS_QS.forEach((q, i) => {
-            let val = formData.get(`p${i}`);
-            if(val === q.ans) { score++; correct++; } else if(val) { score-=0.25; wrong++; }
-        });
-        // Check Math
-        MATH_QS.forEach((q, i) => {
-            let val = formData.get(`m${i}`);
-            if(val === q.ans) { score++; correct++; } else if(val) { score-=0.25; wrong++; }
-        });
-        // Check English
-        ENG_QS.forEach((q, i) => {
-            let val = formData.get(`e${i}`);
-            if(val === q.ans) { score++; correct++; } else if(val) { score-=0.25; wrong++; }
-        });
+        PHYSICS_QS.forEach((q, i) => { let val = formData.get(`p${i}`); if(val === q.ans) { score++; correct++; } else if(val) { score-=0.25; wrong++; } });
+        MATH_QS.forEach((q, i) => { let val = formData.get(`m${i}`); if(val === q.ans) { score++; correct++; } else if(val) { score-=0.25; wrong++; } });
+        ENG_QS.forEach((q, i) => { let val = formData.get(`e${i}`); if(val === q.ans) { score++; correct++; } else if(val) { score-=0.25; wrong++; } });
 
-        // Show Result
+        // 👇 RESULT HTML WITH LEADERBOARD 👇
         document.body.innerHTML = `
-            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; font-family:Roboto; text-align:center;">
-                <h1 style="color:#00308F">RESULT DECLARED</h1>
+            <div style="padding:20px; text-align:center; font-family:Roboto; overflow-y:auto; height:100vh;">
+                <h1 style="color:#00308F">RESULT</h1>
                 <div style="font-size:4rem; font-weight:900; color:#00308F;">${score}</div>
-                <p>Total Marks</p>
-                <div style="margin-top:20px;">
-                    <span style="color:green; font-weight:bold; margin-right:15px;">Correct: ${correct}</span>
-                    <span style="color:red; font-weight:bold;">Wrong: ${wrong}</span>
+                <div style="display:flex; justify-content:center; gap:15px; margin:20px 0;">
+                    <div style="background:#e8f5e9; padding:10px;"><strong style="color:green">${correct}</strong> Correct</div>
+                    <div style="background:#ffebee; padding:10px;"><strong style="color:red">${wrong}</strong> Wrong</div>
                 </div>
-                <button onclick="location.reload()" style="margin-top:30px; padding:10px 20px; background:#00308F; color:white; border:none; border-radius:5px; cursor:pointer;">Close</button>
+                <h3>🏆 TOP 10 RANKERS</h3>
+                <table id="lb" style="width:100%; max-width:500px; margin:0 auto; border-collapse:collapse; text-align:left;">
+                    <tr style="background:#00308F; color:white;"><th style="padding:10px;">Rank</th><th>Name</th><th>Score</th></tr>
+                    <tr><td colspan="3" style="padding:10px;">Loading ranks...</td></tr>
+                </table>
+                <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px; background:#333; color:white; border:none; border-radius:5px;">Close</button>
             </div>
         `;
         
-        await setDoc(doc(db, "airforce_results_pro", currentUser.uid), {
+        // Save to Firebase
+        await setDoc(doc(db, "airforce_ranks_final", currentUser.uid), {
             name: currentUser.displayName, score, correct, wrong, timestamp: new Date()
         });
+
+        // 👇 FETCH LEADERBOARD 👇
+        const q = query(collection(db, "airforce_ranks_final"), orderBy("score", "desc"), limit(10));
+        const snap = await getDocs(q);
+        let html = `<tr style="background:#00308F; color:white;"><th style="padding:10px;">Rank</th><th>Name</th><th>Score</th></tr>`;
+        let r = 1;
+        snap.forEach(d => {
+            html += `<tr style="border-bottom:1px solid #ddd;"><td style="padding:10px;">#${r++}</td><td>${d.data().name}</td><td>${d.data().score}</td></tr>`;
+        });
+        document.getElementById('lb').innerHTML = html;
     }
 </script>
 </body>
