@@ -54,58 +54,22 @@
     </div>
 
     <script>
-        let correctOption = "";
-
-        // यह फंक्शन डेटा को लोड करता है
-        async function loadContent() {
-            try {
-                // यहाँ हम आपकी 'data.json' फाइल से डेटा लेंगे
-                const response = await fetch('data.json');
-                const data = await response.json();
-
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-
-                document.getElementById('display-date').innerText = data.date;
-                document.getElementById('display-topic').innerText = data.topic;
-                document.getElementById('display-notes').innerText = data.notes;
-                document.getElementById('display-question').innerText = data.question;
-                correctOption = data.answer;
-
-                const optionsDiv = document.getElementById('options-container');
-                data.options.forEach(opt => {
-                    optionsDiv.innerHTML += `
-                        <label class="option-label">
-                            <input type="radio" name="upsc_quiz" value="${opt[0]}"> ${opt}
-                        </label>
-                    `;
-                });
-            } catch (error) {
-                document.getElementById('loader').innerText = "त्रुटि: डेटा फाइल नहीं मिली। कृपया 'data.json' अपलोड करें।";
-            }
-        }
-
-        function validateAnswer() {
-            const selected = document.querySelector('input[name="upsc_quiz"]:checked');
-            const resultDiv = document.getElementById('result');
-
-            if (!selected) {
-                resultDiv.innerText = "⚠️ कृपया एक विकल्प चुनें!";
-                resultDiv.style.color = "orange";
-                return;
-            }
-
-            if (selected.value === correctOption) {
-                resultDiv.innerText = "बिल्कुल सही! ✅ शानदार तैयारी।";
-                resultDiv.style.color = "green";
-            } else {
-                resultDiv.innerText = "ओह! यह गलत है। ❌ सही उत्तर " + correctOption + " है।";
-                resultDiv.style.color = "red";
-            }
-        }
-
-        // पेज खुलते ही लोड शुरू करें
-        window.onload = loadContent;
-    </script>
+    fetch('data.json').then(r => r.json()).then(data => {
+        const out = document.getElementById('content');
+        out.innerHTML = `<h3>दिनांक: ${data.date}</h3>`;
+        
+        data.articles.forEach((item, index) => {
+            out.innerHTML += `
+                <div class="notes-section">
+                    <h2>${index + 1}. ${item.topic}</h2>
+                    <p>${item.notes}</p>
+                </div>
+                <div class="quiz-section">
+                    <p><b>प्रश्न:</b> ${item.question}</p>
+                    ${item.options.map(o => `<label class="option-label"><input type="radio" name="q${index}" value="${o[0]}"> ${o}</label>`).join('')}
+                </div><br>`;
+        });
+    });
+</script>
 </body>
 </html>
