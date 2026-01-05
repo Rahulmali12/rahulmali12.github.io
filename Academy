@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revento Academy | Secure Exam Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Teko:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-blue: #0d47a1;
+            --brand-orange: #ff6d00;
+            --warning-red: #d32f2f;
+            --bg-gray: #f4f6f8;
+        }
+
+        * { box-sizing: border-box; user-select: none; /* Text Copy Disable */ }
+        
+        body { 
+            margin: 0; font-family: 'Roboto', sans-serif; 
+            background: var(--bg-gray); height: 100vh; overflow: hidden; 
+            display: flex; flex-direction: column;
+        }
+
+        /* 1. SCROLLING MOTIVATION BAR */
+        .marquee-strip {
+            background: #212121; color: #fff; padding: 8px 0;
+            font-family: 'Noto Sans Devanagari', sans-serif; font-size: 0.9rem;
+            border-bottom: 2px solid var(--brand-orange);
+        }
+
+        /* 2. HEADER */
+        .header {
+            background: white; height: 65px; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 10;
+        }
+        .logo-text { font-family: 'Teko', sans-serif; font-size: 1.8rem; color: var(--brand-blue); margin-left: 10px;}
+        .profile-box { display: flex; align-items: center; gap: 10px; background: #e3f2fd; padding: 5px 15px; border-radius: 20px; border: 1px solid var(--brand-blue);}
+        .profile-pic { width: 35px; height: 35px; border-radius: 50%; background: gray; background-size: cover;}
+
+        /* 3. EXAM AREA */
+        .exam-layout { display: flex; height: 100%; }
+        
+        .q-section { flex: 1; padding: 40px; overflow-y: auto; background: white; margin: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        
+        .q-header { display: flex; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+        .q-text { font-size: 1.3rem; font-weight: 500; margin-bottom: 25px; line-height: 1.6; color: #333; }
+        
+        .opt-label { display: block; padding: 15px; border: 1px solid #ddd; margin-bottom: 10px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .opt-label:hover { background: #e3f2fd; border-color: var(--brand-blue); }
+        .opt-label input { margin-right: 15px; transform: scale(1.2); }
+
+        /* SIDEBAR */
+        .sidebar { width: 280px; background: white; margin: 15px 15px 15px 0; border-radius: 8px; display: flex; flex-direction: column; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .timer-box { background: #263238; color: #00e676; padding: 10px; text-align: center; font-size: 1.5rem; font-family: 'Teko'; border-radius: 5px; margin-bottom: 20px;}
+        
+        .palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; overflow-y: auto; flex: 1; }
+        .p-box { height: 35px; background: #f5f5f5; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; border-radius: 4px; }
+        .p-box.done { background: #4caf50; color: white; border: none; }
+        .p-box.active { border: 2px solid var(--brand-blue); }
+
+        .btn-submit { background: var(--brand-blue); color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 1rem;}
+
+        /* OVERLAYS */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;}
+        
+        .warning-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,0,0,0.9); 
+            z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="cheat-warning" class="warning-modal">
+        <h1 style="font-size: 4rem;">⚠️ WARNING!</h1>
+        <h2>फुल स्क्रीन मोड से बाहर जाना मना है!</h2>
+        <p>अगर आपने दोबारा ऐसा किया तो पेपर अपने आप सबमिट हो जाएगा।</p>
+        <button onclick="resumeFullScreen()" style="padding: 15px 30px; font-size: 1.2rem; cursor: pointer;">RESUME EXAM</button>
+    </div>
+
+    <div id="start-overlay" class="overlay">
+        <div style="width: 600px; padding: 40px; border: 1px solid #eee; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <img src="https://cdn-icons-png.flaticon.com/512/2997/2997274.png" width="80" style="margin-bottom: 10px;">
+            <h1 style="color: var(--brand-blue); margin: 0; font-family: 'Teko'; font-size: 3rem;">REVENTO ACADEMY</h1>
+            <p style="color: #666;">RBSE Class 10th - Live Mock Test Series</p>
+            
+            <div style="background: #fff3e0; padding: 15px; text-align: left; border-left: 5px solid var(--brand-orange); margin: 20px 0;">
+                <strong>🛑 नियम (Rules):</strong>
+                <ul style="margin: 5px 0 0 20px;">
+                    <li>यह टेस्ट <strong>फुल स्क्रीन</strong> में चलेगा।</li>
+                    <li>विंडो बदलने या बंद करने पर टेस्ट <strong>Cancel</strong> हो जाएगा।</li>
+                    <li>आप 1 दिन में केवल <strong>2 बार</strong> ही टेस्ट दे सकते हैं।</li>
+                </ul>
+            </div>
+
+            <div id="attempt-msg" style="margin-bottom: 20px; font-weight: bold;"></div>
+            
+            <button id="start-btn" onclick="goFullScreen()" style="background: var(--brand-blue); color: white; border: none; padding: 15px 40px; font-size: 1.2rem; border-radius: 5px; cursor: pointer;">
+                START TEST NOW 🚀
+            </button>
+        </div>
+    </div>
+
+    <div class="marquee-strip">
+        <marquee behavior="scroll" direction="left" scrollamount="6">
+            🔥 "सपने वो नहीं जो हम सोते हुए देखते हैं, सपने वो हैं जो हमें सोने नहीं देते।" - APJ Abdul Kalam | 🚀 RBSE Topper बनने की तैयारी आज से शुरू! | 📢 Result will be declared immediately.
+        </marquee>
+    </div>
+
+    <div class="header">
+        <div style="display: flex; align-items: center;">
+            <img src="https://cdn-icons-png.flaticon.com/512/2997/2997274.png" width="40">
+            <span class="logo-text">REVENTO ACADEMY</span>
+        </div>
+        <div class="profile-box">
+            <div class="profile-pic" style="background-image: url('https://avatars.githubusercontent.com/u/155385636?v=4');"></div>
+            <div>
+                <div style="font-weight: bold; font-size: 0.9rem;">Rahul Mali</div>
+                <div style="font-size: 0.7rem; color: var(--brand-blue);">Admin / Candidate</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="exam-layout">
+        <div class="q-section">
+            <div class="q-header">
+                <span>Q.No: <span id="q-num" style="font-weight: bold; font-size: 1.2rem;">1</span></span>
+                <span id="subject-tag" style="background: #e0f2f1; color: #00695c; padding: 2px 8px; border-radius: 4px;">MATHS</span>
+            </div>
+            <div class="q-text" id="question-text">Question Loading...</div>
+            <div id="options-area"></div>
+        </div>
+
+        <div class="sidebar">
+            <div class="timer-box" id="timer">03:15:00</div>
+            <div style="margin-bottom: 10px; font-size: 0.9rem; color: #666;">Question Palette:</div>
+            <div class="palette" id="palette-grid"></div>
+            <button class="btn-submit" onclick="submitExam()">SUBMIT EXAM</button>
+        </div>
+    </div>
+
+    <script>
+        // ===========================================
+        // 🔒 SECURITY & ATTEMPT LOGIC
+        // ===========================================
+        
+        const MAX_ATTEMPTS = 2; // एक दिन में 2 टेस्ट
+        const TODAY_KEY = "exam_attempts_" + new Date().toDateString(); // आज की तारीख की चाबी
+
+        function checkAttempts() {
+            let attempts = localStorage.getItem(TODAY_KEY) || 0;
+            attempts = parseInt(attempts);
+
+            const msgBox = document.getElementById('attempt-msg');
+            const btn = document.getElementById('start-btn');
+
+            if(attempts >= MAX_ATTEMPTS) {
+                // कोटा खत्म
+                msgBox.innerHTML = `<span style="color:red">⛔ आज की लिमिट (2/2) पूरी हो गई है। कृपया कल प्रयास करें।</span>`;
+                btn.disabled = true;
+                btn.style.background = "#ccc";
+                btn.innerText = "Locked for Today";
+            } else {
+                // कोटा बाकी है
+                msgBox.innerHTML = `<span style="color:green">✅ आज के प्रयास शेष: ${MAX_ATTEMPTS - attempts} / ${MAX_ATTEMPTS}</span>`;
+            }
+        }
+
+        // फुल स्क्रीन में जाने का फंक्शन
+        function goFullScreen() {
+            // Attempt बढ़ाओ
+            let attempts = localStorage.getItem(TODAY_KEY) || 0;
+            localStorage.setItem(TODAY_KEY, parseInt(attempts) + 1);
+
+            // UI हटाओ
+            document.getElementById('start-overlay').style.display = 'none';
+
+            // Fullscreen Request
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            }
+
+            // परीक्षा शुरू करें
+            startTimer(195 * 60);
+            loadQuestion(0);
+            
+            // सुरक्षा चालू करें
+            enableSecurity();
+        }
+
+        // ===========================================
+        // 🚨 CHEATING DETECTION SYSTEM
+        // ===========================================
+        
+        let warningCount = 0;
+
+        function enableSecurity() {
+            // 1. अगर फुल स्क्रीन से बाहर निकला
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement) {
+                    triggerWarning();
+                }
+            });
+
+            // 2. अगर टैब बदला (Tab Switch)
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    triggerWarning();
+                }
+            });
+        }
+
+        function triggerWarning() {
+            warningCount++;
+            if(warningCount > 2) {
+                alert("आपने 3 बार नियम तोड़ा है। परीक्षा सबमिट की जा रही है।");
+                submitExam();
+            } else {
+                document.getElementById('cheat-warning').style.display = 'flex';
+            }
+        }
+
+        function resumeFullScreen() {
+            document.getElementById('cheat-warning').style.display = 'none';
+            document.documentElement.requestFullscreen().catch(e => console.log("User rejected"));
+        }
+
+
+        // ===========================================
+        // 📝 QUESTION DATA (यहाँ अपने प्रश्न डालें)
+        // ===========================================
+        const questions = [
+            { id: 1, sub: "Maths", q: "समान्तर श्रेणी 5, 8, 11... का 12वां पद क्या होगा?", opts: ["35", "38", "41", "37"], ans: 1 },
+            { id: 2, sub: "Science", q: "मानव शरीर में यूरिया का निर्माण कहाँ होता है?", opts: ["हृदय", "वृक्क", "यकृत (Liver)", "आमाशय"], ans: 2 },
+            { id: 3, sub: "Hindi", q: "‘नेताजी का चश्मा’ पाठ के लेखक कौन हैं?", opts: ["स्वयं प्रकाश", "रामवृक्ष बेनीपुरी", "यशपाल", "मनु भंडारी"], ans: 0 },
+            { id: 4, sub: "Sanskrit", q: "‘विद्यया अमृतमश्नुते’ - यह पंक्ति किस उपनिषद से है?", opts: ["कठोपनिषद", "ईशावास्योपनिषद", "मुण्डकोपनिषद", "प्रश्नोपनिषद"], ans: 1 },
+            { id: 5, sub: "S.St", q: "भारत में 'प्रोजेक्ट टाइगर' की शुरुआत किस वर्ष हुई?", opts: ["1971", "1972", "1973", "1974"], ans: 2 }
+        ];
+
+        let currentIdx = 0;
+        let userAns = new Array(questions.length).fill(null);
+
+        function loadQuestion(idx) {
+            currentIdx = idx;
+            const data = questions[idx];
+            
+            document.getElementById('q-num').innerText = idx + 1;
+            document.getElementById('subject-tag').innerText = data.sub;
+            document.getElementById('question-text').innerText = data.q;
+            
+            const area = document.getElementById('options-area');
+            area.innerHTML = "";
+            
+            data.opts.forEach((opt, i) => {
+                const checked = userAns[idx] === i ? 'checked' : '';
+                area.innerHTML += `
+                    <label class="opt-label">
+                        <input type="radio" name="opt" onclick="saveAnswer(${i})" ${checked}>
+                        ${String.fromCharCode(65+i)}. ${opt}
+                    </label>
+                `;
+            });
+            
+            updatePalette();
+        }
+
+        function saveAnswer(optIdx) {
+            userAns[currentIdx] = optIdx;
+            updatePalette();
+        }
+
+        function updatePalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = "";
+            questions.forEach((q, i) => {
+                const statusClass = userAns[i] !== null ? 'done' : '';
+                const activeClass = i === currentIdx ? 'active' : '';
+                grid.innerHTML += `<div class="p-box ${statusClass} ${activeClass}" onclick="loadQuestion(${i})">${i+1}</div>`;
+            });
+        }
+
+        function startTimer(duration) {
+            let t = duration;
+            setInterval(() => {
+                let h = Math.floor(t/3600);
+                let m = Math.floor((t%3600)/60);
+                let s = t%60;
+                document.getElementById('timer').innerText = 
+                    `${h<10?'0'+h:h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+                if(t <= 0) submitExam();
+                t--;
+            }, 1000);
+        }
+
+        function submitExam() {
+            // बाहर निकलने के लिए लॉक खोलें
+            document.removeEventListener('fullscreenchange', triggerWarning); 
+            if(document.exitFullscreen) document.exitFullscreen();
+            
+            let score = 0;
+            userAns.forEach((a, i) => { if(a === questions[i].ans) score++; });
+            alert(`परीक्षा समाप्त!\nआपका स्कोर: ${score} / ${questions.length}\nप्रतिशत: ${(score/questions.length)*100}%`);
+            location.reload();
+        }
+
+        // Initialize
+        checkAttempts();
+        updatePalette();
+
+    </script>
+</body>
+</html>
