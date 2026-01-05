@@ -12,16 +12,49 @@
         
         body { font-family: 'Roboto', sans-serif; background: var(--bg-gray); margin: 0; padding: 0; user-select: none; height: 100vh; overflow: hidden; }
 
-        /* --- 1. HEADER --- */
-        .cbt-header {
-            height: 60px; background: var(--af-blue); color: white;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
-        }
-        .brand { font-weight: 900; letter-spacing: 1px; font-size: 1.2rem; }
-        .exam-name { font-size: 0.9rem; opacity: 0.9; }
+      /* --- 1. HEADER (FIXED FOR MOBILE & PC) --- */
+.cbt-header {
+    height: 60px;
+    background: var(--af-blue);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    box-sizing: border-box; /* यह जरुरी है ताकि साइड से कटे नहीं */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
 
+.brand {
+    font-weight: 900;
+    letter-spacing: 1px;
+    font-size: 1.2rem;
+    flex-shrink: 0; /* लोगो कभी दबेगा नहीं */
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.exam-name {
+    font-size: 0.95rem; 
+    opacity: 0.9;
+    text-align: right;
+    line-height: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 60%; /* नाम लोगो के ऊपर नहीं चढ़ेगा */
+}
+
+/* मोबाइल के लिए स्पेशल सेटिंग */
+@media (max-width: 480px) {
+    .brand { font-size: 1rem; }
+    .exam-name { font-size: 0.75rem; white-space: normal; }
+}
         /* --- 2. MAIN LAYOUT (Split Screen) --- */
         .main-wrapper {
             display: flex;
@@ -131,7 +164,7 @@
 </div>
 
 <div class="cbt-header">
-    <div class="brand">REVENTO</div>
+    <div class="brand">REVENTO ACADEMY</div>
     <div class="exam-name">Group X (Technical)</div>
 </div>
 
