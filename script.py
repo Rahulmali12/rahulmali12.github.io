@@ -3,32 +3,28 @@ import json
 import datetime
 import google.generativeai as genai
 
-# Yahan apni API Key dalein (GitHub Secrets ka use karna behtar hai)
-genai.configure(api_key="AIzaSyDJQIOJK7P_-nUWqoF6cuKdUEPNINQGL3M")
+# Security: GitHub Secrets से API Key उठाएगा
+api_key = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=api_key)
 
-def generate_20_questions():
-    model = genai.GenerativeModel('gemini-pro')
+def generate_content():
+    model = genai.GenerativeModel('gemini-1.5-flash')
     
-    # AI ko instruction
     prompt = """
-    Aaj ki taaza khabron (Defense, International, Economy, Awards) ke adhaar par 
-    UPSC NDA pattern ke 20 mahatvapurn Current Affairs sawal aur notes taiyar karein.
-    Response sirf is JSON format mein dein:
-    {
-      "date": "Date here",
-      "articles": [
-        {"topic": "...", "notes": "...", "question": "...", "options": ["A..", "B..", "C..", "D.."], "answer": "A/B/C/D"},
-        ... total 20 items
-      ]
-    }
-    Language: Hindi Mix (Hinglish/Hindi).
+    Create 20 high-quality UPSC NDA level Current Affairs questions for today.
+    For each, provide: 1. Topic 2. Short Study Notes (2-3 lines) 3. MCQ Question 4. 4 Options 5. Correct Option Letter.
+    Language: Hindi. 
+    Format: Strict JSON only.
+    Structure: {"date": "...", "articles": [{"topic": "...", "notes": "...", "question": "...", "options": ["A..", "B..", "C..", "D.."], "answer": "A"}]}
     """
     
     response = model.generate_content(prompt)
-    data = json.loads(response.text)
+    # JSON साफ करना (कभी-कभी AI markdown लगा देता है)
+    raw_text = response.text.replace("```json", "").replace("```", "").strip()
+    data = json.loads(raw_text)
     
     with open('data.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_full_ascii=False, indent=4)
 
 if __name__ == "__main__":
-    generate_20_questions()
+    generate_content()
