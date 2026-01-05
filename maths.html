@@ -3,78 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REVENTO MATHS |  NDA PREP</title>
+    <title>REVENTO MATHS | NDA AI-PRACTICE</title>
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <style>
         :root {
-            --navy: #020b1c;
-            --gold: #FFD700;
-            --neon-blue: #00f3ff;
-            --card: rgba(10, 25, 60, 0.9);
+            --navy: #020b1c;       /* Deep Navy Blue */
+            --gold: #FFD700;       /* Gold/Yellow */
+            --neon-blue: #00f3ff;  /* Neon Blue */
+            --card-bg: rgba(10, 25, 60, 0.9); /* Blue Glass Effect */
+            --text-main: #ffffff;
+            --accent-green: #00e676; /* For correct answers/solutions */
         }
 
         body {
             background-color: var(--navy);
-            color: white;
+            color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
             margin: 0;
-            background-image: radial-gradient(circle at center, #0a1942 0%, #020b1c 100%);
+            padding: 0;
+            overflow-x: hidden;
+            /* Grid Background */
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
+        /* --- TICKER (Running Headline) --- */
         .ticker-wrap {
             width: 100%;
             background: var(--gold);
             color: #000;
+            overflow: hidden;
             height: 35px;
             position: fixed;
             top: 0;
+            z-index: 100;
             display: flex;
             align-items: center;
-            font-family: 'Black Ops One', cursive;
-            z-index: 100;
-            border-bottom: 2px solid #000;
+            border-bottom: 3px solid #000;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         .ticker {
             display: inline-block;
             white-space: nowrap;
-            animation: scroll 20s linear infinite;
+            padding-right: 100%; /* Ensures it scrolls off-screen */
+            animation: ticker-scroll 25s linear infinite;
+            font-family: 'Black Ops One', cursive; /* Army Stencil Font */
+            font-size: 1.1rem;
+            text-transform: uppercase;
         }
 
-        @keyframes scroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+        @keyframes ticker-scroll {
+            0% { transform: translate3d(100%, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
         }
 
+        /* --- HEADER --- */
         header {
-            margin-top: 80px;
+            margin-top: 80px; /* Space for ticker */
             text-align: center;
+            padding-bottom: 20px;
         }
 
         h1 {
             font-family: 'Black Ops One', cursive;
-            color: var(--gold);
-            font-size: 3rem;
-            text-shadow: 3px 3px 0 #000;
+            font-size: 3.5rem; /* Big Title */
+            color: var(--gold); /* Yellow Text */
+            text-shadow: 
+                4px 4px 0px #000, /* Black Shadow for 3D effect */
+                0 0 20px rgba(255, 215, 0, 0.5); /* Glow */
             margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
+        .sub-head {
+            color: var(--neon-blue);
+            letter-spacing: 4px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: -10px;
+        }
+
+        /* --- CONTAINER & CARD --- */
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 20px auto;
             padding: 20px;
         }
 
         .math-card {
-            background: var(--card);
-            border: 2px solid #1e3a8a;
-            border-left: 6px solid var(--gold);
+            background: var(--card-bg);
+            border: 1px solid #1e3a8a; /* Dark Blue Border */
+            border-left: 5px solid var(--gold); /* Yellow Accent */
+            margin-bottom: 30px;
             padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            position: relative;
+            display: none; /* Initially hidden */
         }
 
         .q-header {
@@ -84,115 +117,203 @@
             margin-bottom: 15px;
             border-bottom: 1px dashed #333;
             padding-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .math-text {
-            font-size: 1.3rem;
-            line-height: 1.6;
+            font-size: 1.25rem;
+            line-height: 1.8;
             margin-bottom: 20px;
+            color: var(--text-main);
         }
 
+        /* MathJax specific styling */
+        .MathJax {
+            font-size: 1.1em !important;
+            color: var(--neon-blue) !important;
+        }
+
+        /* --- BUTTONS --- */
         .generate-btn {
-            background: linear-gradient(180deg, var(--gold), #ccac00);
-            color: #000;
+            background: linear-gradient(180deg, var(--gold), #e6c200);
             border: none;
+            color: #000;
             padding: 15px 30px;
-            font-weight: 900;
             font-size: 1.1rem;
+            font-weight: 900;
             cursor: pointer;
             width: 100%;
             border-radius: 5px;
             text-transform: uppercase;
-            box-shadow: 0 5px 0 #806b00;
+            box-shadow: 0 5px 0 #b39700; /* 3D effect */
+            transition: all 0.1s ease-in-out;
         }
 
-        .generate-btn:active { transform: translateY(3px); box-shadow: none; }
+        .generate-btn:active {
+            transform: translateY(3px);
+            box-shadow: none;
+        }
 
         .solution-btn {
             background: transparent;
             border: 1px solid var(--neon-blue);
             color: var(--neon-blue);
             margin-top: 15px;
-            padding: 10px;
+            padding: 12px 20px;
             width: 100%;
             cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.2s ease-in-out;
         }
 
+        .solution-btn:hover {
+            background: rgba(0, 243, 255, 0.1);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+        }
+
+        /* --- SOLUTION BOX --- */
         .solution-box {
-            display: none;
-            background: rgba(0,0,0,0.4);
-            margin-top: 15px;
-            padding: 15px;
+            display: none; /* Initially hidden */
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 50, 0, 0.4); /* Dark Greenish transparent */
+            border: 1px solid var(--accent-green);
             border-radius: 5px;
-            border: 1px solid #0f0;
-            color: #afffaf;
+            color: #d4edda;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: var(--neon-blue);
+            font-size: 1.3rem;
+            margin-top: 30px;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .ticker { font-size: 0.9rem; }
+            .generate-btn { font-size: 1rem; padding: 12px 20px; }
+            .math-text { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="ticker-wrap">
-    <div class="ticker">
-        ★ MATHS SPECIAL OPS ★ TARGET: 120 QUESTIONS • 300 MARKS • CALCULATION SPEED: ACTIVE • JAI HIND •
-    </div>
-</div>
-
-<header>
-    <h1>REVENTO MATHS</h1>
-    <p style="letter-spacing: 3px; color: var(--neon-blue);">UPSC NDA AI-PRACTICE WING</p>
-</header>
-
-<div class="container">
-    <button class="generate-btn" onclick="generateMathQuestion()">GENERATE NEW MISSION (QUESTION)</button>
-    <br><br>
-    
-    <div class="math-card" id="math-card" style="display:none;">
-        <div class="q-header">MISSION OBJECTIVE:</div>
-        <div id="question-area" class="math-text">
-            [ AI Is Calculating... ]
+    <div class="ticker-wrap">
+        <div class="ticker">
+            ★ REVENTO ACADEMY MATHS OPS ★ NDA MISSION 2026 • AI CALCULATIONS ACTIVE • MASTER MATHS • JAI HIND ★
         </div>
-        
-        <button class="solution-btn" onclick="toggleSolution()">DECLASSIFY SOLUTION</button>
-        <div id="solution-box" class="solution-box"></div>
     </div>
-</div>
+
+    <header>
+        <h1>REVENTO MATHS</h1>
+        <div class="sub-head">UPSC NDA AI-PRACTICE WING</div>
+    </header>
+
+    <div class="container">
+        <button class="generate-btn" onclick="generateMathQuestion()">GENERATE NEW MISSION (QUESTION)</button>
+        
+        <div id="loading-message" class="loading-text" style="display:none;">
+            🌀 AI is calculating complex equations...
+        </div>
+
+        <div class="math-card" id="math-card">
+            <div class="q-header">MISSION OBJECTIVE:</div>
+            <div id="question-area" class="math-text">
+                </div>
+            
+            <button class="solution-btn" onclick="toggleSolution()">DECLASSIFY SOLUTION</button>
+            <div id="solution-box" class="solution-box">
+                </div>
+        </div>
+    </div>
 
 <script>
-    const GEMINI_API_KEY = "AIzaSyDJQIOJK7P_-nUWqoF6cuKdUEPNINQGL3M"; 
+    // ============================================
+    // 👇 यहाँ अपनी Perplexity API Key डालें 👇
+    // ============================================
+    const PPLX_KEY = "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"; 
+    // ============================================
 
     async function generateMathQuestion() {
         const card = document.getElementById('math-card');
         const qArea = document.getElementById('question-area');
         const sBox = document.getElementById('solution-box');
+        const loadingMessage = document.getElementById('loading-message');
         
         card.style.display = 'block';
-        sBox.style.display = 'none';
-        qArea.innerHTML = "🌀 AI is crafting a UPSC Level Question...";
+        sBox.style.display = 'none'; // Hide solution initially
+        qArea.innerHTML = ""; // Clear previous question
+        sBox.innerHTML = ""; // Clear previous solution
+        loadingMessage.style.display = 'block'; // Show loading
 
-        const prompt = "Create 1 hard UPSC NDA level Mathematics question from topics like Calculus, Vectors, or Matrices. Provide 4 options (a,b,c,d). Also provide a detailed step-by-step solution. Format: Question, then Options, then Solution. Use LaTeX for math symbols.";
+        const url = "https://api.perplexity.ai/chat/completions";
+        
+        const prompt = `Act as an expert UPSC NDA Mathematics paper setter.
+        Generate 1 challenging MCQ question for the NDA exam.
+        The question should cover topics like Calculus (e.g., Integration, Differentiation), Algebra (e.g., Matrices, Determinants, Quadratic Equations), or Trigonometry.
+        Provide 4 options (A, B, C, D).
+        After the question and options, provide a detailed step-by-step mathematical solution to the question.
+        Use LaTeX syntax for all mathematical expressions (e.g., \\(\\int x^2 dx\\), \\(\\sin^2\\theta\\)).
+        Format your response EXACTLY like this:
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+        **QUESTION:**
+        [Your challenging math question with LaTeX]
+        (A) [Option A with LaTeX]
+        (B) [Option B with LaTeX]
+        (C) [Option C with LaTeX]
+        (D) [Option D with LaTeX]
+
+        **SOLUTION:**
+        [Detailed step-by-step mathematical solution with LaTeX]`;
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                headers: {
+                    'accept': 'application/json',
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${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}`
+                },
+                body: JSON.stringify({
+                    model: "sonar-pro", // Using Perplexity's advanced model
+                    messages: [
+                        {role: "system", content: "You are a highly skilled mathematician and NDA exam expert."},
+                        {role: "user", content: prompt}
+                    ],
+                    max_tokens: 1000 // Allow for longer solutions
+                })
             });
 
             const data = await response.json();
-            const fullText = data.candidates[0].content.parts[0].text;
+            const fullText = data.choices[0].message.content;
             
-            // Logic to separate Question and Solution
-            let parts = fullText.split("Solution");
-            qArea.innerHTML = parts[0].replace(/\*\*/g, ""); // Clean formatting
-            sBox.innerHTML = "<b>SOLUTION:</b><br>" + (parts[1] ? parts[1] : "Not generated.");
-            
-            // Re-render Math symbols
-            MathJax.typeset();
+            // Split question and solution
+            let [questionPart, solutionPart] = fullText.split("**SOLUTION:**");
 
+            qArea.innerHTML = questionPart.trim();
+            sBox.innerHTML = solutionPart ? "<b>STEP-BY-STEP SOLUTION:</b><br>" + solutionPart.trim() : "Solution not available.";
+            
+            loadingMessage.style.display = 'none'; // Hide loading
+            MathJax.typesetPromise(); // Render math equations
+            
         } catch (error) {
-            qArea.innerHTML = "Error: Check API Key or Connection.";
+            console.error("Perplexity AI Error:", error);
+            loadingMessage.style.display = 'none';
+            qArea.innerHTML = "<span style='color:red;'>AI SYSTEM OFFLINE: Check Perplexity Key or Balance.</span>";
         }
     }
 
@@ -200,6 +321,9 @@
         const box = document.getElementById('solution-box');
         box.style.display = (box.style.display === 'none') ? 'block' : 'none';
     }
+
+    // Generate first question on page load
+    // generateMathQuestion(); // Uncomment if you want a question on page load
 </script>
 
 </body>
