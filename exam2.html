@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Center | Official Login</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <style>
+        :root {
+            --tcs-blue: #306da6; /* The Official Exam Blue */
+            --light-blue: #e4f2ff;
+            --answered: #00c600; /* Green */
+            --not-answered: #b40000; /* Red */
+            --not-visited: #e0e0e0;
+            --review: #6a0dad;
+            --text-black: #000000;
+        }
+
+        * { box-sizing: border-box; user-select: none; }
+        body { margin: 0; font-family: 'Roboto', sans-serif; height: 100vh; display: flex; flex-direction: column; background: #fff; }
+
+        /* 1. OFFICIAL HEADER */
+        .top-bar {
+            height: 60px; background: var(--text-black); color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;
+        }
+        .header-blue {
+            height: 40px; background: var(--tcs-blue); color: white; display: flex; align-items: center; justify-content: flex-end; padding: 0 20px; font-weight: bold; font-size: 0.9rem;
+        }
+
+        /* 2. LOGIN SCREEN (Official Look) */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f0f0f0; z-index: 9999; display: flex; align-items: center; justify-content: center;
+        }
+        .login-box {
+            background: white; border: 1px solid #ccc; width: 400px; padding: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .login-header { background: var(--tcs-blue); color: white; padding: 15px; font-weight: bold; }
+        .login-body { padding: 30px; display: flex; flex-direction: column; gap: 15px; }
+        input { padding: 10px; border: 1px solid #ccc; font-size: 1rem; }
+        .btn-login { background: var(--tcs-blue); color: white; border: none; padding: 10px; cursor: pointer; font-weight: bold; }
+
+        /* 3. EXAM INTERFACE */
+        .main-layout { display: flex; height: calc(100vh - 100px); }
+        
+        /* Left: Question */
+        .q-area { flex: 1; padding: 20px; overflow-y: auto; border-right: 1px solid #ccc; }
+        .q-title { font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.1rem; }
+        .q-content { font-size: 1.2rem; margin-bottom: 20px; }
+        .option-row { display: flex; align-items: center; margin-bottom: 10px; cursor: pointer; }
+        .option-row input { margin-right: 10px; height: 18px; width: 18px; }
+
+        /* Right: Sidebar */
+        .sidebar { width: 300px; background: #eef3f7; display: flex; flex-direction: column; border-left: 1px solid #ccc; }
+        .candidate-card { display: flex; align-items: center; gap: 10px; padding: 10px; background: white; border-bottom: 1px solid #ccc; }
+        .c-img { width: 50px; height: 50px; border: 1px solid #ccc; }
+        
+        .palette-container { padding: 10px; flex: 1; overflow-y: auto; }
+        .palette-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 10px; }
+        .p-btn { 
+            height: 35px; background: white; border: 1px solid #ccc; font-size: 0.9rem;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; 
+            clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 50% 100%, 0% 75%); /* Exam Shape */
+        }
+        /* TCS Colors */
+        .p-btn.ans { background: var(--answered); color: white; border: none; }
+        .p-btn.not-ans { background: var(--not-answered); color: white; border: none; }
+        .p-btn.visit { background: var(--not-visited); }
+
+        /* Footer */
+        .footer { height: 50px; border-top: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: #fafafa; }
+        .btn { padding: 8px 20px; border: 1px solid #ccc; background: #fff; cursor: pointer; font-weight: bold; border-radius: 2px;}
+        .btn-save { background: var(--answered); color: white; border: 1px solid #00a000; }
+        .btn-submit { background: var(--tcs-blue); color: white; }
+
+        /* LEADERBOARD OVERLAY */
+        #lb-overlay { display: none; position: fixed; top:0; left:0; width: 100%; height:100%; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; }
+        .lb-card { width: 500px; background: white; padding: 20px; border-radius: 5px; max-height: 80vh; overflow-y: auto; }
+        .lb-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+        .lb-header { font-weight: bold; background: #eee; }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <div class="login-header">System Login</div>
+            <div class="login-body">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="80" style="border: 1px solid #ccc; padding: 5px;">
+                </div>
+                <label>Candidate Name:</label>
+                <input type="text" id="username" placeholder="Enter Full Name">
+                <button class="btn-login" onclick="startSystem()">Sign In</button>
+                <div style="font-size: 0.8rem; color: #666; margin-top: 10px; text-align: center;">Authorized for Revento Academy Only</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <div style="font-weight: bold; font-size: 1.2rem;">REVENTO ACADEMY</div>
+        <div>System ID: C001</div>
+    </div>
+    <div class="header-blue">
+        <span>Time Left: <span id="timer" style="background: black; padding: 2px 5px; border-radius: 2px;">00:00:00</span></span>
+    </div>
+
+    <div class="main-layout">
+        <div class="q-area">
+            <div class="q-title">
+                Question No. <span id="q-num">1</span>
+                <span style="float: right; color: var(--tcs-blue);">Marks: +1, -0</span>
+            </div>
+            <div id="q-text" class="q-content">Loading Question...</div>
+            <div id="options-box"></div>
+        </div>
+
+        <div class="sidebar">
+            <div class="candidate-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="c-img">
+                <div>
+                    <div id="display-name" style="font-weight: bold;">Candidate</div>
+                    <div style="font-size: 0.8rem;">Roll No: 2026XX</div>
+                </div>
+            </div>
+            
+            <div class="palette-container">
+                <div style="font-weight: bold; margin-bottom: 5px;">Palette</div>
+                <div style="display: flex; gap: 5px; flex-wrap: wrap; font-size: 0.7rem; margin-bottom: 10px;">
+                    <span style="background:var(--answered); color:white; padding:2px;">Answered</span>
+                    <span style="background:var(--not-answered); color:white; padding:2px;">Not Ans</span>
+                    <span style="background:var(--not-visited); padding:2px;">Not Visited</span>
+                </div>
+                <div class="palette-grid" id="palette-grid"></div>
+            </div>
+            <button class="btn-submit" style="width: 100%; padding: 15px; border:none;" onclick="submitExam()">SUBMIT TEST</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div>
+            <button class="btn" onclick="clearResp()">Clear Response</button>
+        </div>
+        <button class="btn btn-save" onclick="saveNext()">Save & Next</button>
+    </div>
+
+    <div id="lb-overlay">
+        <div class="lb-card">
+            <h2 style="color: var(--tcs-blue); border-bottom: 2px solid var(--tcs-blue); padding-bottom: 10px;">🏆 Official Result</h2>
+            <div style="text-align: center; margin: 20px;">
+                Your Score: <span id="my-score" style="font-size: 2rem; font-weight: bold;">0</span>
+            </div>
+            <h3>Live Rankings:</h3>
+            <div class="lb-row lb-header">
+                <span>Rank</span>
+                <span>Name</span>
+                <span>Score</span>
+            </div>
+            <div id="lb-list">
+                <div style="padding:10px; text-align:center;">Loading Realtime Data...</div>
+            </div>
+            <button class="btn-login" style="width: 100%; margin-top: 20px;" onclick="location.reload()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // ==============================================================
+        // 🔴 STEP 1: यहाँ अपनी FIREBASE CONFIG डालें (तभी लीडरबोर्ड चलेगा)
+        // ==============================================================
+        
+        const firebaseConfig = {
+            // यहाँ Firebase Console से कॉपी किया हुआ कोड पेस्ट करें
+          apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+  authDomain: "revento-academy.firebaseapp.com",
+  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
+  projectId: "revento-academy",
+  storageBucket: "revento-academy.firebasestorage.app",
+  messagingSenderId: "384071300366",
+  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
+  measurementId: "G-4L8YC6J095"
+        };
+
+        // Initialize Firebase (Try-Catch block ताकि अगर Config न हो तो कोड न फटे)
+        let db;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch (e) {
+            console.log("Firebase not connected yet.");
+        }
+
+        // ==============================================================
+        // 📝 QUESTION DATA
+        // ==============================================================
+        const questions = [
+            { q: "भारत का सर्वोच्च नागरिक सम्मान कौन सा है?", opts: ["पद्म भूषण", "भारत रत्न", "पद्म विभूषण", "अर्जुन पुरस्कार"], ans: 1 },
+            { q: "वायु सेना दिवस (Air Force Day) कब मनाया जाता है?", opts: ["8 अक्टूबर", "15 जनवरी", "4 दिसंबर", "26 जनवरी"], ans: 0 },
+            { q: "राजस्थान की राजधानी क्या है?", opts: ["जोधपुर", "उदयपुर", "जयपुर", "कोटा"], ans: 2 },
+            { q: "प्रकाश वर्ष (Light Year) किसका मात्रक है?", opts: ["समय", "दूरी", "प्रकाश", "द्रव्यमान"], ans: 1 },
+            { q: "HTML का पूरा नाम क्या है?", opts: ["High Text Markup", "Hyper Text Markup Language", "Hyperlink Text Mode", "None"], ans: 1 }
+        ];
+
+        // System Variables
+        let currentQ = 0;
+        let userAns = new Array(questions.length).fill(null);
+        let visited = new Array(questions.length).fill(false);
+        let candidateName = "Guest";
+        let timeLeft = 30 * 60; // 30 Min
+
+        // --- 1. Login & Start ---
+        function startSystem() {
+            const name = document.getElementById('username').value;
+            if(!name) return alert("Please enter your name.");
+            
+            candidateName = name;
+            document.getElementById('display-name').innerText = name;
+            document.getElementById('login-overlay').style.display = 'none';
+            
+            // Fullscreen for "Khatarnak" exam feel
+            document.documentElement.requestFullscreen().catch(e=>console.log(e));
+            
+            initPalette();
+            loadQ(0);
+            startTimer();
+        }
+
+        // --- 2. Exam Logic ---
+        function loadQ(idx) {
+            currentQ = idx;
+            visited[idx] = true;
+            updatePaletteUI();
+
+            document.getElementById('q-num').innerText = idx + 1;
+            document.getElementById('q-text').innerText = questions[idx].q;
+            
+            const box = document.getElementById('options-box');
+            box.innerHTML = "";
+            questions[idx].opts.forEach((opt, i) => {
+                let checked = userAns[idx] === i ? 'checked' : '';
+                box.innerHTML += `
+                    <label class="option-row">
+                        <input type="radio" name="opt" onclick="setAns(${i})" ${checked}> ${opt}
+                    </label>`;
+            });
+        }
+
+        function setAns(i) { userAns[currentQ] = i; }
+
+        function saveNext() {
+            updatePaletteUI();
+            if(currentQ < questions.length - 1) loadQ(currentQ + 1);
+        }
+
+        function clearResp() {
+            userAns[currentQ] = null;
+            loadQ(currentQ);
+        }
+
+        function initPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = "";
+            questions.forEach((_, i) => {
+                grid.innerHTML += `<div class="p-btn" id="p-${i}" onclick="loadQ(${i})">${i+1}</div>`;
+            });
+        }
+
+        function updatePaletteUI() {
+            questions.forEach((_, i) => {
+                const btn = document.getElementById(`p-${i}`);
+                if(userAns[i] !== null) {
+                    btn.className = "p-btn ans"; // Green
+                } else if(visited[i]) {
+                    btn.className = "p-btn not-ans"; // Red
+                } else {
+                    btn.className = "p-btn visit"; // Grey
+                }
+            });
+        }
+
+        function startTimer() {
+            setInterval(() => {
+                if(timeLeft <= 0) submitExam();
+                let m = Math.floor(timeLeft / 60);
+                let s = timeLeft % 60;
+                document.getElementById('timer').innerText = `${m}:${s<10?'0'+s:s}`;
+                timeLeft--;
+            }, 1000);
+        }
+
+        // --- 3. SUBMIT & FIREBASE ---
+        function submitExam() {
+            let score = 0;
+            userAns.forEach((a, i) => { if(a === questions[i].ans) score++; });
+
+            // Show Result UI
+            document.getElementById('lb-overlay').style.display = 'flex';
+            document.getElementById('my-score').innerText = score + " / " + questions.length;
+
+            // Send to Firebase
+            if(db) {
+                const userId = Date.now(); // Unique ID
+                db.ref('results/' + userId).set({
+                    name: candidateName,
+                    score: score,
+                    time: new Date().toLocaleTimeString()
+                });
+                
+                fetchLeaderboard();
+            } else {
+                document.getElementById('lb-list').innerHTML = "<div style='color:red; text-align:center;'>Firebase Config Missing! (Data not saved)</div>";
+            }
+        }
+
+        function fetchLeaderboard() {
+            const list = document.getElementById('lb-list');
+            list.innerHTML = "Fetching Data...";
+            
+            db.ref('results').orderByChild('score').limitToLast(20).on('value', (snapshot) => {
+                list.innerHTML = "";
+                let data = [];
+                snapshot.forEach(child => data.push(child.val()));
+                
+                // Sort High to Low
+                data.sort((a, b) => b.score - a.score);
+
+                data.forEach((p, index) => {
+                    list.innerHTML += `
+                        <div class="lb-row">
+                            <span>#${index + 1}</span>
+                            <span>${p.name}</span>
+                            <span style="font-weight:bold; color:var(--tcs-blue)">${p.score}</span>
+                        </div>
+                    `;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
