@@ -3,341 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assessment Center | Official Login</title>
+    <title>Revento Academy | Official Assessment Center</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
-
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
     <style>
         :root {
-            --tcs-blue: #306da6; /* The Official Exam Blue */
-            --light-blue: #e4f2ff;
-            --answered: #00c600; /* Green */
-            --not-answered: #b40000; /* Red */
-            --not-visited: #e0e0e0;
-            --review: #6a0dad;
-            --text-black: #000000;
+            --tcs-blue: #306da6;
+            --bg-grey: #f4f6f9;
+            --card-hover: #e3f2fd;
         }
 
         * { box-sizing: border-box; user-select: none; }
-        body { margin: 0; font-family: 'Roboto', sans-serif; height: 100vh; display: flex; flex-direction: column; background: #fff; }
+        body { margin: 0; font-family: 'Roboto', sans-serif; background: var(--bg-grey); height: 100vh; display: flex; flex-direction: column; }
 
-        /* 1. OFFICIAL HEADER */
+        /* --- HEADER --- */
         .top-bar {
-            height: 60px; background: var(--text-black); color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;
+            height: 60px; background: white; border-bottom: 3px solid var(--tcs-blue); display: flex; justify-content: space-between; align-items: center; padding: 0 30px;
         }
-        .header-blue {
-            height: 40px; background: var(--tcs-blue); color: white; display: flex; align-items: center; justify-content: flex-end; padding: 0 20px; font-weight: bold; font-size: 0.9rem;
-        }
+        .brand { font-size: 1.5rem; font-weight: bold; color: var(--tcs-blue); display: flex; align-items: center; gap: 10px; }
+        .profile-badge { background: #eee; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; color: #555; }
 
-        /* 2. LOGIN SCREEN (Official Look) */
-        #login-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #f0f0f0; z-index: 9999; display: flex; align-items: center; justify-content: center;
-        }
-        .login-box {
-            background: white; border: 1px solid #ccc; width: 400px; padding: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .login-header { background: var(--tcs-blue); color: white; padding: 15px; font-weight: bold; }
-        .login-body { padding: 30px; display: flex; flex-direction: column; gap: 15px; }
-        input { padding: 10px; border: 1px solid #ccc; font-size: 1rem; }
-        .btn-login { background: var(--tcs-blue); color: white; border: none; padding: 10px; cursor: pointer; font-weight: bold; }
-
-        /* 3. EXAM INTERFACE */
-        .main-layout { display: flex; height: calc(100vh - 100px); }
+        /* --- DASHBOARD (HOME) --- */
+        #dashboard { padding: 40px; max-width: 1200px; margin: 0 auto; width: 100%; }
+        .welcome-text { font-size: 1.8rem; margin-bottom: 30px; color: #333; }
         
-        /* Left: Question */
-        .q-area { flex: 1; padding: 20px; overflow-y: auto; border-right: 1px solid #ccc; }
-        .q-title { font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.1rem; }
-        .q-content { font-size: 1.2rem; margin-bottom: 20px; }
-        .option-row { display: flex; align-items: center; margin-bottom: 10px; cursor: pointer; }
-        .option-row input { margin-right: 10px; height: 18px; width: 18px; }
-
-        /* Right: Sidebar */
-        .sidebar { width: 300px; background: #eef3f7; display: flex; flex-direction: column; border-left: 1px solid #ccc; }
-        .candidate-card { display: flex; align-items: center; gap: 10px; padding: 10px; background: white; border-bottom: 1px solid #ccc; }
-        .c-img { width: 50px; height: 50px; border: 1px solid #ccc; }
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         
-        .palette-container { padding: 10px; flex: 1; overflow-y: auto; }
-        .palette-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 10px; }
-        .p-btn { 
-            height: 35px; background: white; border: 1px solid #ccc; font-size: 0.9rem;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; 
-            clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 50% 100%, 0% 75%); /* Exam Shape */
+        .sub-card {
+            background: white; padding: 25px; border-radius: 8px; border: 1px solid #ddd; border-bottom: 4px solid #ccc;
+            cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
         }
-        /* TCS Colors */
-        .p-btn.ans { background: var(--answered); color: white; border: none; }
-        .p-btn.not-ans { background: var(--not-answered); color: white; border: none; }
-        .p-btn.visit { background: var(--not-visited); }
+        .sub-card:hover { transform: translateY(-5px); border-bottom-color: var(--tcs-blue); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .sub-card h3 { margin: 0 0 10px 0; color: #333; }
+        .sub-card p { margin: 0; font-size: 0.9rem; color: #666; }
+        .icon { font-size: 2rem; margin-bottom: 15px; color: var(--tcs-blue); }
 
-        /* Footer */
-        .footer { height: 50px; border-top: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; background: #fafafa; }
-        .btn { padding: 8px 20px; border: 1px solid #ccc; background: #fff; cursor: pointer; font-weight: bold; border-radius: 2px;}
-        .btn-save { background: var(--answered); color: white; border: 1px solid #00a000; }
-        .btn-submit { background: var(--tcs-blue); color: white; }
+        .mix-card { background: linear-gradient(135deg, #306da6, #0d47a1); color: white !important; border: none; }
+        .mix-card h3, .mix-card p, .mix-card .icon { color: white; }
 
-        /* LEADERBOARD OVERLAY */
-        #lb-overlay { display: none; position: fixed; top:0; left:0; width: 100%; height:100%; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center; }
-        .lb-card { width: 500px; background: white; padding: 20px; border-radius: 5px; max-height: 80vh; overflow-y: auto; }
-        .lb-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
-        .lb-header { font-weight: bold; background: #eee; }
+        /* --- EXAM INTERFACE (HIDDEN INITIALLY) --- */
+        #exam-portal { display: none; height: calc(100vh - 60px); display: flex; flex-direction: column; }
+        
+        .exam-header { background: #222; color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .timer-badge { background: black; border: 1px solid #555; padding: 5px 10px; font-weight: bold; color: #00e676; font-size: 1.2rem; }
+
+        .exam-body { display: flex; flex: 1; overflow: hidden; }
+        .q-panel { flex: 1; padding: 30px; overflow-y: auto; background: white; }
+        .side-panel { width: 300px; background: #f0f0f0; border-left: 1px solid #ccc; display: flex; flex-direction: column; }
+        
+        /* Question Styles */
+        .q-txt { font-size: 1.3rem; margin-bottom: 25px; font-weight: 500; line-height: 1.5; }
+        .opt-row { display: flex; align-items: center; padding: 12px; border: 1px solid #ddd; margin-bottom: 10px; cursor: pointer; border-radius: 4px; }
+        .opt-row:hover { background: #e3f2fd; border-color: var(--tcs-blue); }
+        .opt-row input { margin-right: 15px; transform: scale(1.3); }
+
+        /* Palette */
+        .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 15px; overflow-y: auto; flex: 1; }
+        .p-btn { height: 35px; background: white; border: 1px solid #ccc; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 0.9rem; }
+        .p-btn.done { background: #00c853; color: white; border: none; }
+        .p-btn.active { border: 2px solid var(--tcs-blue); }
+
     </style>
 </head>
 <body>
 
-    <div id="login-overlay">
-        <div class="login-box">
-            <div class="login-header">System Login</div>
-            <div class="login-body">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="80" style="border: 1px solid #ccc; padding: 5px;">
-                </div>
-                <label>Candidate Name:</label>
-                <input type="text" id="username" placeholder="Enter Full Name">
-                <button class="btn-login" onclick="startSystem()">Sign In</button>
-                <div style="font-size: 0.8rem; color: #666; margin-top: 10px; text-align: center;">Authorized for Revento Academy Only</div>
-            </div>
-        </div>
-    </div>
-
     <div class="top-bar">
-        <div style="font-weight: bold; font-size: 1.2rem;">REVENTO ACADEMY</div>
-        <div>System ID: C001</div>
-    </div>
-    <div class="header-blue">
-        <span>Time Left: <span id="timer" style="background: black; padding: 2px 5px; border-radius: 2px;">00:00:00</span></span>
+        <div class="brand">
+            <img src="https://cdn-icons-png.flaticon.com/512/2997/2997274.png" width="30">
+            REVENTO ACADEMY
+        </div>
+        <div class="profile-badge">User: Student | Class 10</div>
     </div>
 
-    <div class="main-layout">
-        <div class="q-area">
-            <div class="q-title">
-                Question No. <span id="q-num">1</span>
-                <span style="float: right; color: var(--tcs-blue);">Marks: +1, -0</span>
+    <div id="dashboard">
+        <div class="welcome-text">👋 आज कौन सा टेस्ट देना है?</div>
+        
+        <div class="subject-grid">
+            <div class="sub-card mix-card" onclick="startTest('MIX')">
+                <div class="icon">🚀</div>
+                <h3>FULL MOCK TEST</h3>
+                <p>All Subjects (Maths, Sci, Eng, Hindi, Skt, SST)</p>
+                <p style="margin-top: 5px; font-weight: bold;">Time: 3 Hrs 15 Min</p>
             </div>
-            <div id="q-text" class="q-content">Loading Question...</div>
-            <div id="options-box"></div>
+
+            <div class="sub-card" onclick="startTest('Maths')">
+                <div class="icon">📐</div>
+                <h3>Maths (गणित)</h3>
+                <p>Chapterwise & Mix Questions</p>
+            </div>
+
+            <div class="sub-card" onclick="startTest('Science')">
+                <div class="icon">🧬</div>
+                <h3>Science (विज्ञान)</h3>
+                <p>Physics, Chem, Bio</p>
+            </div>
+
+            <div class="sub-card" onclick="startTest('Social')">
+                <div class="icon">🌍</div>
+                <h3>Social Science (सामाजिक)</h3>
+                <p>History, Geo, Civics</p>
+            </div>
+
+            <div class="sub-card" onclick="startTest('Hindi')">
+                <div class="icon">📖</div>
+                <h3>Hindi (हिंदी)</h3>
+                <p>Vyakaran & Textbook</p>
+            </div>
+
+            <div class="sub-card" onclick="startTest('Sanskrit')">
+                <div class="icon">🕉️</div>
+                <h3>Sanskrit (संस्कृत)</h3>
+                <p>Grammar & Literature</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="exam-portal" style="display: none;">
+        <div class="exam-header">
+            <div>Subject: <span id="exam-subject" style="color:#4fc3f7; font-weight:bold;">MIX</span></div>
+            <div class="timer-badge">⏱ <span id="timer">00:00:00</span></div>
         </div>
 
-        <div class="sidebar">
-            <div class="candidate-card">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="c-img">
-                <div>
-                    <div id="display-name" style="font-weight: bold;">Candidate</div>
-                    <div style="font-size: 0.8rem;">Roll No: 2026XX</div>
+        <div class="exam-body">
+            <div class="q-panel">
+                <div style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; color: #666; display: flex; justify-content: space-between;">
+                    <span>Question No. <span id="q-no">1</span></span>
+                    <span id="sub-tag" style="background: #eee; padding: 2px 8px; font-size: 0.8rem; border-radius: 4px;">SUB</span>
                 </div>
+                <div class="q-txt" id="question-text">Loading...</div>
+                <div id="options-area"></div>
             </div>
-            
-            <div class="palette-container">
-                <div style="font-weight: bold; margin-bottom: 5px;">Palette</div>
-                <div style="display: flex; gap: 5px; flex-wrap: wrap; font-size: 0.7rem; margin-bottom: 10px;">
-                    <span style="background:var(--answered); color:white; padding:2px;">Answered</span>
-                    <span style="background:var(--not-answered); color:white; padding:2px;">Not Ans</span>
-                    <span style="background:var(--not-visited); padding:2px;">Not Visited</span>
-                </div>
-                <div class="palette-grid" id="palette-grid"></div>
-            </div>
-            <button class="btn-submit" style="width: 100%; padding: 15px; border:none;" onclick="submitExam()">SUBMIT TEST</button>
-        </div>
-    </div>
 
-    <div class="footer">
-        <div>
-            <button class="btn" onclick="clearResp()">Clear Response</button>
-        </div>
-        <button class="btn btn-save" onclick="saveNext()">Save & Next</button>
-    </div>
-
-    <div id="lb-overlay">
-        <div class="lb-card">
-            <h2 style="color: var(--tcs-blue); border-bottom: 2px solid var(--tcs-blue); padding-bottom: 10px;">🏆 Official Result</h2>
-            <div style="text-align: center; margin: 20px;">
-                Your Score: <span id="my-score" style="font-size: 2rem; font-weight: bold;">0</span>
+            <div class="side-panel">
+                <div style="padding: 10px; background: #e0e0e0; text-align: center; font-weight: bold;">Question Palette</div>
+                <div class="palette" id="palette-grid"></div>
+                <button onclick="submitExam()" style="padding: 15px; background: var(--tcs-blue); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 1rem;">SUBMIT TEST</button>
             </div>
-            <h3>Live Rankings:</h3>
-            <div class="lb-row lb-header">
-                <span>Rank</span>
-                <span>Name</span>
-                <span>Score</span>
-            </div>
-            <div id="lb-list">
-                <div style="padding:10px; text-align:center;">Loading Realtime Data...</div>
-            </div>
-            <button class="btn-login" style="width: 100%; margin-top: 20px;" onclick="location.reload()">Close</button>
         </div>
     </div>
 
     <script>
         // ==============================================================
-        // 🔴 STEP 1: यहाँ अपनी FIREBASE CONFIG डालें (तभी लीडरबोर्ड चलेगा)
+        // 🛑 UNLIMITED DATA STORAGE (MASTER DB)
         // ==============================================================
+        // यहाँ आप जितने चाहें उतने प्रश्न डाल सकते हैं। 
+        // बस subject का नाम सही लिखें: 'Maths', 'Science', 'Hindi', 'Sanskrit', 'Social'
         
-        const firebaseConfig = {
-             apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
-  authDomain: "revento-academy.firebaseapp.com",
-  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
-  projectId: "revento-academy",
-  storageBucket: "revento-academy.firebasestorage.app",
-  messagingSenderId: "384071300366",
-  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
-  measurementId: "G-4L8YC6J095"
-        };
+        const MASTER_DB = [
+            // --- MATHS ---
+            { subject: "Maths", q: "द्विघात समीकरण 2x² - 4x + 3 = 0 का विविक्तकर (Discriminant) क्या होगा?", opts: ["-8", "8", "4", "0"], ans: 0 },
+            { subject: "Maths", q: "AP: 2, 7, 12... का 10वां पद है:", opts: ["45", "47", "49", "50"], ans: 1 },
+            { subject: "Maths", q: "sin 60° का मान क्या है?", opts: ["1/2", "√3/2", "1/√2", "1"], ans: 1 },
 
-        // Initialize Firebase (Try-Catch block ताकि अगर Config न हो तो कोड न फटे)
-        let db;
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-        } catch (e) {
-            console.log("Firebase not connected yet.");
-        }
+            // --- SCIENCE ---
+            { subject: "Science", q: "मानव नेत्र के किस भाग पर प्रतिबिंब बनता है?", opts: ["कॉर्निया", "परितारिका", "पुतली", "दृष्टिपटल (Retina)"], ans: 3 },
+            { subject: "Science", q: "pH स्केल की परास (Range) क्या होती है?", opts: ["1-14", "0-14", "1-10", "0-10"], ans: 1 },
+            { subject: "Science", q: "विद्युत धारा का SI मात्रक क्या है?", opts: ["वॉल्ट", "ओम", "एम्पीयर", "जूल"], ans: 2 },
 
-        // ==============================================================
-        // 📝 QUESTION DATA
-        // ==============================================================
-        const questions = [
-            { q: "भारत का सर्वोच्च नागरिक सम्मान कौन सा है?", opts: ["पद्म भूषण", "भारत रत्न", "पद्म विभूषण", "अर्जुन पुरस्कार"], ans: 1 },
-            { q: "वायु सेना दिवस (Air Force Day) कब मनाया जाता है?", opts: ["8 अक्टूबर", "15 जनवरी", "4 दिसंबर", "26 जनवरी"], ans: 0 },
-            { q: "राजस्थान की राजधानी क्या है?", opts: ["जोधपुर", "उदयपुर", "जयपुर", "कोटा"], ans: 2 },
-            { q: "प्रकाश वर्ष (Light Year) किसका मात्रक है?", opts: ["समय", "दूरी", "प्रकाश", "द्रव्यमान"], ans: 1 },
-            { q: "HTML का पूरा नाम क्या है?", opts: ["High Text Markup", "Hyper Text Markup Language", "Hyperlink Text Mode", "None"], ans: 1 }
+            // --- HINDI ---
+            { subject: "Hindi", q: "'रामचरितमानस' की रचना किसने की?", opts: ["तुलसीदास", "सूरदास", "कबीर", "मीरा"], ans: 0 },
+            { subject: "Hindi", q: "'नेताजी का चश्मा' कहानी में किस शहर का उल्लेख है?", opts: ["कानपुर", "कस्बा", "दिल्ली", "लखनऊ"], ans: 1 },
+
+            // --- SANSKRIT ---
+            { subject: "Sanskrit", q: "सदाचारः .... धर्मः अस्ति।", opts: ["परमः", "लघुः", "कुटिलः", "नीचः"], ans: 0 },
+            { subject: "Sanskrit", q: "‘विद्यया अमृतमश्नुते’ - यह किस उपनिषद से है?", opts: ["ईशावास्योपनिषद", "कठोपनिषद", "मुण्डक", "प्रश्न"], ans: 0 },
+
+            // --- SOCIAL ---
+            { subject: "Social", q: "जलियावाला बाग हत्याकांड कब हुआ?", opts: ["1919", "1920", "1921", "1922"], ans: 0 },
+            { subject: "Social", q: "भारत में कुल कितने राज्य हैं?", opts: ["28", "29", "27", "30"], ans: 0 },
         ];
 
-        // System Variables
-        let currentQ = 0;
-        let userAns = new Array(questions.length).fill(null);
-        let visited = new Array(questions.length).fill(false);
-        let candidateName = "Guest";
-        let timeLeft = 30 * 60; // 30 Min
+        // ==============================================================
+        // ⚙️ SYSTEM LOGIC
+        // ==============================================================
 
-        // --- 1. Login & Start ---
-        function startSystem() {
-            const name = document.getElementById('username').value;
-            if(!name) return alert("Please enter your name.");
+        let activeQuestions = []; // इसमें छंटे हुए प्रश्न आएंगे
+        let currentIdx = 0;
+        let userAns = [];
+        let timerInterval;
+
+        // 1. START TEST LOGIC (FILTERING)
+        function startTest(subject) {
+            // Filter Questions
+            if(subject === 'MIX') {
+                activeQuestions = MASTER_DB; // सारे प्रश्न ले लो
+                startTimer(195 * 60); // 3 Hours 15 Mins
+            } else {
+                // सिर्फ उस विषय के प्रश्न छांटो
+                activeQuestions = MASTER_DB.filter(item => item.subject === subject);
+                startTimer(60 * 60); // 1 Hour for single subject
+            }
+
+            if(activeQuestions.length === 0) {
+                alert("इस विषय के प्रश्न अभी अपलोड नहीं हुए हैं। कृपया बाद में चेक करें।");
+                return;
+            }
+
+            // UI Switch
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('exam-portal').style.display = 'flex'; // Fix display
+            document.getElementById('exam-subject').innerText = subject.toUpperCase();
             
-            candidateName = name;
-            document.getElementById('display-name').innerText = name;
-            document.getElementById('login-overlay').style.display = 'none';
+            // Init Arrays
+            userAns = new Array(activeQuestions.length).fill(null);
             
-            // Fullscreen for "Khatarnak" exam feel
-            document.documentElement.requestFullscreen().catch(e=>console.log(e));
-            
-            initPalette();
+            // Render First Q
+            renderPalette();
             loadQ(0);
-            startTimer();
-        }
-
-        // --- 2. Exam Logic ---
-        function loadQ(idx) {
-            currentQ = idx;
-            visited[idx] = true;
-            updatePaletteUI();
-
-            document.getElementById('q-num').innerText = idx + 1;
-            document.getElementById('q-text').innerText = questions[idx].q;
             
-            const box = document.getElementById('options-box');
+            // Fullscreen
+            document.documentElement.requestFullscreen().catch(e => console.log(e));
+        }
+
+        // 2. LOAD QUESTION
+        function loadQ(idx) {
+            currentIdx = idx;
+            const data = activeQuestions[idx];
+
+            document.getElementById('q-no').innerText = idx + 1;
+            document.getElementById('sub-tag').innerText = data.subject;
+            document.getElementById('question-text').innerText = data.q;
+
+            const box = document.getElementById('options-area');
             box.innerHTML = "";
-            questions[idx].opts.forEach((opt, i) => {
-                let checked = userAns[idx] === i ? 'checked' : '';
+            
+            data.opts.forEach((opt, i) => {
+                const checked = userAns[idx] === i ? 'checked' : '';
                 box.innerHTML += `
-                    <label class="option-row">
-                        <input type="radio" name="opt" onclick="setAns(${i})" ${checked}> ${opt}
-                    </label>`;
+                    <label class="opt-row">
+                        <input type="radio" name="opt" onclick="saveAns(${i})" ${checked}>
+                        ${opt}
+                    </label>
+                `;
             });
-        }
 
-        function setAns(i) { userAns[currentQ] = i; }
-
-        function saveNext() {
             updatePaletteUI();
-            if(currentQ < questions.length - 1) loadQ(currentQ + 1);
         }
 
-        function clearResp() {
-            userAns[currentQ] = null;
-            loadQ(currentQ);
+        function saveAns(optIdx) {
+            userAns[currentIdx] = optIdx;
+            updatePaletteUI();
         }
 
-        function initPalette() {
+        // 3. PALETTE SYSTEM
+        function renderPalette() {
             const grid = document.getElementById('palette-grid');
             grid.innerHTML = "";
-            questions.forEach((_, i) => {
+            activeQuestions.forEach((_, i) => {
                 grid.innerHTML += `<div class="p-btn" id="p-${i}" onclick="loadQ(${i})">${i+1}</div>`;
             });
         }
 
         function updatePaletteUI() {
-            questions.forEach((_, i) => {
+            activeQuestions.forEach((_, i) => {
                 const btn = document.getElementById(`p-${i}`);
-                if(userAns[i] !== null) {
-                    btn.className = "p-btn ans"; // Green
-                } else if(visited[i]) {
-                    btn.className = "p-btn not-ans"; // Red
-                } else {
-                    btn.className = "p-btn visit"; // Grey
-                }
+                btn.className = "p-btn";
+                if(userAns[i] !== null) btn.classList.add('done');
+                if(i === currentIdx) btn.classList.add('active');
             });
         }
 
-        function startTimer() {
-            setInterval(() => {
-                if(timeLeft <= 0) submitExam();
-                let m = Math.floor(timeLeft / 60);
-                let s = timeLeft % 60;
-                document.getElementById('timer').innerText = `${m}:${s<10?'0'+s:s}`;
-                timeLeft--;
+        // 4. TIMER
+        function startTimer(duration) {
+            let t = duration;
+            timerInterval = setInterval(() => {
+                let h = Math.floor(t/3600);
+                let m = Math.floor((t%3600)/60);
+                let s = t%60;
+                document.getElementById('timer').innerText = `${h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+                if(t <= 0) submitExam();
+                t--;
             }, 1000);
         }
 
-        // --- 3. SUBMIT & FIREBASE ---
+        // 5. SUBMIT
         function submitExam() {
+            clearInterval(timerInterval);
             let score = 0;
-            userAns.forEach((a, i) => { if(a === questions[i].ans) score++; });
-
-            // Show Result UI
-            document.getElementById('lb-overlay').style.display = 'flex';
-            document.getElementById('my-score').innerText = score + " / " + questions.length;
-
-            // Send to Firebase
-            if(db) {
-                const userId = Date.now(); // Unique ID
-                db.ref('results/' + userId).set({
-                    name: candidateName,
-                    score: score,
-                    time: new Date().toLocaleTimeString()
-                });
-                
-                fetchLeaderboard();
-            } else {
-                document.getElementById('lb-list').innerHTML = "<div style='color:red; text-align:center;'>Firebase Config Missing! (Data not saved)</div>";
-            }
-        }
-
-        function fetchLeaderboard() {
-            const list = document.getElementById('lb-list');
-            list.innerHTML = "Fetching Data...";
-            
-            db.ref('results').orderByChild('score').limitToLast(20).on('value', (snapshot) => {
-                list.innerHTML = "";
-                let data = [];
-                snapshot.forEach(child => data.push(child.val()));
-                
-                // Sort High to Low
-                data.sort((a, b) => b.score - a.score);
-
-                data.forEach((p, index) => {
-                    list.innerHTML += `
-                        <div class="lb-row">
-                            <span>#${index + 1}</span>
-                            <span>${p.name}</span>
-                            <span style="font-weight:bold; color:var(--tcs-blue)">${p.score}</span>
-                        </div>
-                    `;
-                });
+            userAns.forEach((a, i) => {
+                if(a === activeQuestions[i].ans) score++;
             });
+            
+            // Simple Alert Result (You can replace this with the fancy leaderboard logic)
+            alert(`TEST SUBMITTED!\n\nScore: ${score} / ${activeQuestions.length}`);
+            location.reload(); // Reload to go back to Dashboard
         }
+
     </script>
 </body>
 </html>
