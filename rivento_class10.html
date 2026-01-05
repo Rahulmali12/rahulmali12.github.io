@@ -3,534 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rivento Academy | High Security App</title>
+    <title>Rivento Academy | Secure Cloud App</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet"> <style>
-        /* --- CSS START --- */
-        
-        :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --accent: #00cec9;
-            --dark: #2d3436;
-            --light: #dfe6e9;
-            --success: #00b894;
-            --danger: #d63031;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
+    <style>
+        /* (पुराना CSS सेम रहेगा, बस लॉगिन बॉक्स को अपडेट किया है) */
+        :root { --primary: #6c5ce7; --dark: #2d3436; --accent: #00cec9; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-
-        body {
-            background-color: #f1f2f6;
-            color: var(--dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-
-        /* 1. SCROLLING TICKER (NEWS STYLE) */
-        .ticker-wrap {
-            width: 100%;
-            background: var(--dark);
-            height: 40px;
-            overflow: hidden;
-            position: sticky;
-            top: 0;
-            z-index: 200;
-            border-bottom: 2px solid var(--accent);
-            display: flex;
-            align-items: center;
-        }
-        .ticker {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: ticker 20s linear infinite;
-            color: #fff;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-        .ticker span { color: var(--accent); }
+        body { background-color: #f1f2f6; color: var(--dark); display: flex; flex-direction: column; min-height: 100vh; }
         
-        @keyframes ticker {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-
-        /* HEADER */
-        header {
-            background: white;
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            position: relative;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-transform: uppercase;
-        }
-
-        /* Mobile Responsive Nav */
-        nav button {
-            background: var(--primary);
-            border: none;
-            color: white;
-            padding: 8px 18px;
-            margin-left: 5px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
-        }
-        nav button.login-btn {
-            background: var(--dark);
-            font-family: 'Orbitron', sans-serif; /* Techy Font */
-            border: 1px solid var(--accent);
-            letter-spacing: 1px;
-        }
-        nav button:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
-
-        /* MAIN CONTENT */
-        main { padding: 20px 5%; max-width: 1200px; margin: 0 auto; width: 100%; }
-
-        .hero {
-            text-align: center;
-            margin: 30px 0 50px;
-        }
-        .hero h1 { font-size: 2.2rem; margin-bottom: 10px; color: var(--dark); }
-        .hero p { color: #636e72; }
-
-        /* CARDS GRID */
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            cursor: pointer;
-            transition: 0.4s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%;
-        }
+        header { background: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
         
-        .math::before { background: #e74c3c; }
-        .science::before { background: #00b894; }
-        .sst::before { background: #f39c12; }
-        .english::before { background: #0984e3; }
+        .btn-login { background: var(--dark); color: white; border: none; padding: 8px 20px; border-radius: 5px; cursor: pointer; font-family: 'Orbitron'; letter-spacing: 1px; }
+        .btn-logout { background: #d63031; display: none; } /* शुरू में छिपा रहेगा */
 
-        .card h2 { font-size: 1.4rem; margin-bottom: 8px; }
-
-        /* DETAIL VIEW */
-        .hidden { display: none !important; }
+        /* MAIN CONTENT - BLURRED UNTIL LOGIN */
+        #protected-content { filter: blur(5px); pointer-events: none; user-select: none; transition: 0.5s; opacity: 0.5; }
         
-        .subject-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            background: white;
-            padding: 15px 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        /* अगर लॉगिन हो गया तो सब साफ़ दिखेगा */
+        body.logged-in #protected-content { filter: blur(0); pointer-events: all; opacity: 1; }
+
+        .lock-message {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            text-align: center; z-index: 50; background: white; padding: 40px;
+            border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         }
+        body.logged-in .lock-message { display: none; }
+
+        /* Login Modal */
+        #login-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; place-items: center; z-index: 1000; }
+        .modal-box { background: #111; padding: 30px; border: 1px solid var(--accent); color: var(--accent); width: 300px; text-align: center; font-family: 'Orbitron'; box-shadow: 0 0 30px var(--primary); }
+        .inp { width: 100%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid #444; color: white; text-align: center; }
+        .btn-go { width: 100%; padding: 10px; background: var(--accent); font-weight: bold; cursor: pointer; border: none; }
         
-        .toggle-box {
-            background: #dfe6e9;
-            padding: 5px;
-            border-radius: 50px;
-            display: inline-flex;
-            margin-bottom: 30px;
-            width: 100%;
-            max-width: 400px;
-        }
-        .toggle-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: transparent;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #636e72;
-            transition: 0.3s;
-        }
-        .toggle-btn.active {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* QUESTIONS STYLING */
-        .q-item {
-            background: white;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            border-left: 4px solid var(--primary);
-        }
-        .ans-box {
-            margin-top: 15px;
-            padding: 15px;
-            background: #f0f3ff;
-            color: var(--dark);
-            border-radius: 8px;
-            display: none;
-            font-size: 0.95rem;
-        }
-        .show-ans-btn {
-            background: var(--dark);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        /* QUIZ STYLING */
-        .quiz-card {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        }
-        .quiz-option {
-            width: 100%;
-            text-align: left;
-            padding: 12px 15px;
-            margin: 8px 0;
-            border: 2px solid #f1f2f6;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .quiz-option:hover { border-color: var(--primary); background: #f8f9fe; }
-        .correct { background: #d4edda !important; border-color: #28a745 !important; }
-        .wrong { background: #f8d7da !important; border-color: #d63031 !important; }
-
-        /* SECURITY LOGIN MODAL */
-        #login-modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-        .security-box {
-            background: #000;
-            border: 2px solid var(--accent);
-            padding: 30px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 0 20px var(--accent);
-            color: var(--accent);
-            font-family: 'Orbitron', sans-serif;
-        }
-        .security-box h2 { margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
-        .security-input {
-            width: 100%;
-            padding: 12px;
-            background: #111;
-            border: 1px solid #333;
-            color: white;
-            font-size: 1.2rem;
-            text-align: center;
-            margin-bottom: 20px;
-            outline: none;
-            font-family: monospace;
-        }
-        .security-input:focus { border-color: var(--accent); }
-        .btn-enter {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent);
-            color: black;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-        }
-        .close-modal { margin-top: 15px; color: #555; cursor: pointer; font-size: 0.8rem; }
-        .status-msg { margin-top: 10px; height: 20px; font-size: 0.9rem; }
-
-        footer { text-align: center; padding: 20px; color: #b2bec3; margin-top: auto; }
-
-        /* --- CSS END --- */
+        /* बाकी वेबसाइट का स्टाइल */
+        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px 5%; margin-top: 50px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .card h2 { color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <div class="ticker-wrap">
-        <div class="ticker">
-            🚨 <span>RIVENTO ACADEMY</span> में आपका स्वागत है! &nbsp;&nbsp;|&nbsp;&nbsp; 
-            🔥 कक्षा 10वीं के नए नोट्स और क्विज अपलोड हो गए हैं &nbsp;&nbsp;|&nbsp;&nbsp; 
-            🏆 Toppers की पहली पसंद - Rivento Academy &nbsp;&nbsp;|&nbsp;&nbsp; 
-            🔒 High Security Enabled
-        </div>
-    </div>
-
     <header>
-        <div class="logo">RIVENTO</div>
+        <div class="logo">RIVENTO <span style="color:gold; font-size:0.8em">PRO</span></div>
         <nav>
-            <button onclick="goHome()">Dashboard</button>
-            <button class="login-btn" onclick="openLogin()">🔒 LOGIN</button>
+            <button id="loginBtn" class="btn-login" onclick="showLogin()">🔒 LOGIN</button>
+            <button id="logoutBtn" class="btn-login btn-logout">🚪 LOGOUT</button>
         </nav>
     </header>
 
-    <div id="login-modal" class="hidden">
-        <div class="security-box">
-            <h2>Security Check</h2>
-            <p style="font-size:0.7rem; color:#888; margin-bottom:10px;">ENTER ACCESS CODE</p>
-            <input type="password" id="passcode" class="security-input" placeholder="****">
-            <button class="btn-enter" onclick="checkSecurity()">UNLOCK SYSTEM</button>
-            <div id="status-msg" class="status-msg"></div>
-            <div class="close-modal" onclick="closeLogin()">Cancel Access</div>
+    <div class="lock-message">
+        <h1 style="font-size:3rem;">⛔</h1>
+        <h2>SECURE AREA</h2>
+        <p>Rivento Academy के नोट्स देखने के लिए लॉगिन करें।</p>
+    </div>
+
+    <main id="protected-content">
+        <div class="subject-grid">
+            <div class="card"><h2>Mathematics</h2><p>Notes & Quiz (Locked)</p></div>
+            <div class="card"><h2>Science</h2><p>Notes & Quiz (Locked)</p></div>
+            <div class="card"><h2>Social Science</h2><p>Notes & Quiz (Locked)</p></div>
+            <div class="card"><h2>English</h2><p>Notes & Quiz (Locked)</p></div>
+        </div>
+        <p style="text-align:center; margin-top:30px;">(लॉगिन करने के बाद यहाँ आपके सारे Quiz और Questions आ जायेंगे)</p>
+    </main>
+
+    <div id="login-modal">
+        <div class="modal-box">
+            <h2>SYSTEM LOGIN</h2>
+            <p id="auth-status" style="font-size:0.8rem; margin-bottom:15px; color:#888;">SERVER: DISCONNECTED</p>
+            <input type="email" id="email" class="inp" placeholder="Admin Email">
+            <input type="password" id="password" class="inp" placeholder="Password">
+            <button class="btn-go" id="submit-login">AUTHENTICATE</button>
+            <button onclick="document.getElementById('login-modal').style.display='none'" style="margin-top:10px; background:none; border:none; color:#555; cursor:pointer;">Cancel</button>
         </div>
     </div>
 
-    <main id="main-content">
-        <section class="hero">
-            <h1>कक्षा 10 की संपूर्ण तैयारी 🚀</h1>
-            <p>Subjective बैंक और Live Quiz - एक ही जगह।</p>
-        </section>
+    <script type="module">
+        // 1. Firebase SDK इंपोर्ट करें
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } 
+        from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        <div class="subject-grid">
-            <div class="card math" onclick="openSubject('Maths')">
-                <h2>Mathematics</h2>
-                <p>गणित (Trigonometry, Algebra)</p>
-            </div>
-            <div class="card science" onclick="openSubject('Science')">
-                <h2>Science</h2>
-                <p>विज्ञान (Physics, Chem, Bio)</p>
-            </div>
-            <div class="card sst" onclick="openSubject('SST')">
-                <h2>Social Science</h2>
-                <p>सामाजिक विज्ञान (History, Geo)</p>
-            </div>
-            <div class="card english" onclick="openSubject('English')">
-                <h2>English</h2>
-                <p>Grammar & Literature</p>
-            </div>
-        </div>
-    </main>
+        // 2. अपना Config यहाँ पेस्ट करें (नीचे वाले को हटाकर अपना वाला डालें)
+        // 🔥🔥🔥 IMPORTANT: REPLACE THIS OBJECT WITH YOUR COPIED CONFIG 🔥🔥🔥
+        const firebaseConfig = {
+         apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+  authDomain: "revento-academy.firebaseapp.com",
+  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
+  projectId: "revento-academy",
+  storageBucket: "revento-academy.firebasestorage.app",
+  messagingSenderId: "384071300366",
+  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
+  measurementId: "G-4L8YC6J095"
+};
 
-    <section id="subject-view" class="hidden" style="max-width: 800px; margin: 20px auto; padding: 0 20px;">
-        <div class="subject-header">
-            <h2 id="sub-title">Subject Name</h2>
-            <button onclick="goHome()" style="background:none; border:none; cursor:pointer;">❌ Close</button>
-        </div>
+        // 3. Firebase शुरू करें
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-        <div class="toggle-box" style="margin: 0 auto 30px auto; display:flex;">
-            <button class="toggle-btn active" onclick="switchTab('sub')">📖 Question Bank</button>
-            <button class="toggle-btn" onclick="switchTab('quiz')">⚡ Live Quiz</button>
-        </div>
+        // UI Elements
+        const loginModal = document.getElementById('login-modal');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const submitBtn = document.getElementById('submit-login');
+        const statusMsg = document.getElementById('auth-status');
 
-        <div id="tab-subjective">
-            </div>
+        // 4. लॉगिन बटन का लॉजिक
+        window.showLogin = () => { loginModal.style.display = 'grid'; }
 
-        <div id="tab-quiz" class="hidden">
-            </div>
-    </section>
+        submitBtn.addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
 
-    <footer>
-        <p>&copy; 2026 Rivento Academy | Secure Platform</p>
-    </footer>
+            statusMsg.innerText = "CONNECTING TO GOOGLE...";
+            statusMsg.style.color = "yellow";
 
-    <script>
-        /* =====================================================
-          🔥🔥 QUESTION BANK DATABASE (एडिट करने की जगह) 🔥🔥
-          नीचे दिए गए सेक्शन में अपने सारे सवाल और जवाब डालें।
-        =====================================================
-        */
-
-        const QUESTION_BANK = {
-            'Maths': {
-                // सब्जेक्टिव सवाल (Notes/Questions)
-                subjective: [
-                    { q: "द्विघात सूत्र (Quadratic Formula) क्या है?", a: "x = [-b ± √(b² - 4ac)] / 2a" },
-                    { q: "पाइथागोरस प्रमेय (Pythagoras Theorem) लिखिए।", a: "कर्ण² = लंब² + आधार² (H² = P² + B²)" },
-                    // नया सवाल यहाँ जोड़ें...
-                ],
-                // ऑब्जेक्टिव सवाल (Quiz)
-                quiz: [
-                    { q: "sin 90° का मान क्या है?", opts: ["0", "1", "1/2", "अनंत"], ans: 1 }, // ans: 1 मतलब दूसरा ऑप्शन (1) सही है
-                    { q: "वृत्त की परिधि का सूत्र क्या है?", opts: ["πr²", "2πr", "πr", "2πr²"], ans: 1 }
-                ]
-            },
-            'Science': {
-                subjective: [
-                    { q: "ओम का नियम (Ohm's Law) क्या है?", a: "स्थिर ताप पर, किसी चालक में प्रवाहित धारा उसके सिरों के विभवांतर के समानुपाती होती है (V = IR)।" },
-                    { q: "उदासीनीकरण अभिक्रिया (Neutralization) क्या है?", a: "अम्ल और क्षार की अभिक्रिया से लवण और जल बनने की क्रिया।" }
-                ],
-                quiz: [
-                    { q: "मानव शरीर का सामान्य तापमान क्या है?", opts: ["35°C", "37°C", "40°C", "32°C"], ans: 1 },
-                    { q: "विद्युत धारा का SI मात्रक क्या है?", opts: ["Volts", "Ampere", "Ohm", "Watt"], ans: 1 }
-                ]
-            },
-            'SST': {
-                subjective: [
-                    { q: "जलियावाला बाग हत्याकांड कब हुआ?", a: "13 अप्रैल 1919 को।" },
-                    { q: "रबी की फसल के दो उदाहरण दें।", a: "गेहूँ और चना।" }
-                ],
-                quiz: [
-                    { q: "भारत का संविधान कब लागू हुआ?", opts: ["1947", "1950", "1949", "1952"], ans: 1 },
-                    { q: "सबसे बड़ा महाद्वीप कौन सा है?", opts: ["अफ्रीका", "एशिया", "यूरोप", "ऑस्ट्रेलिया"], ans: 1 }
-                ]
-            },
-            'English': {
-                subjective: [
-                    { q: "Who wrote 'A Letter to God'?", a: "G.L. Fuentes wrote the story." }
-                ],
-                quiz: [
-                    { q: "Opposite of 'Happy' is?", opts: ["Sad", "Joy", "Cry", "Laugh"], ans: 0 }
-                ]
-            }
-        };
-
-        /* --- SYSTEM LOGIC (DO NOT TOUCH BELOW UNLESS EXPERT) --- */
-
-        let currentSubject = '';
-
-        // Navigation
-        function goHome() {
-            document.getElementById('main-content').classList.remove('hidden');
-            document.getElementById('subject-view').classList.add('hidden');
-            window.scrollTo(0,0);
-        }
-
-        function openSubject(sub) {
-            currentSubject = sub;
-            document.getElementById('main-content').classList.add('hidden');
-            document.getElementById('subject-view').classList.remove('hidden');
-            document.getElementById('sub-title').innerText = sub + " Bank";
-            
-            loadData(sub);
-            switchTab('sub'); // Default to subjective
-        }
-
-        function switchTab(mode) {
-            const btns = document.querySelectorAll('.toggle-btn');
-            btns[0].classList.toggle('active', mode === 'sub');
-            btns[1].classList.toggle('active', mode === 'quiz');
-
-            if(mode === 'sub') {
-                document.getElementById('tab-subjective').classList.remove('hidden');
-                document.getElementById('tab-quiz').classList.add('hidden');
-            } else {
-                document.getElementById('tab-subjective').classList.add('hidden');
-                document.getElementById('tab-quiz').classList.remove('hidden');
-            }
-        }
-
-        // Data Loader
-        function loadData(sub) {
-            const data = QUESTION_BANK[sub];
-            
-            // 1. Load Subjective
-            const subContainer = document.getElementById('tab-subjective');
-            subContainer.innerHTML = '';
-            if(data && data.subjective.length > 0) {
-                data.subjective.forEach((item, i) => {
-                    subContainer.innerHTML += `
-                        <div class="q-item">
-                            <p><strong>Q${i+1}:</strong> ${item.q}</p>
-                            <button class="show-ans-btn" onclick="this.nextElementSibling.style.display='block'">View Answer</button>
-                            <div class="ans-box">${item.a}</div>
-                        </div>
-                    `;
+            signInWithEmailAndPassword(auth, email, pass)
+                .then((userCredential) => {
+                    // अगर पासवर्ड सही है:
+                    statusMsg.innerText = "SUCCESS! UNLOCKING...";
+                    statusMsg.style.color = "#00cec9";
+                    setTimeout(() => { loginModal.style.display = 'none'; }, 1000);
+                })
+                .catch((error) => {
+                    // अगर गलत है:
+                    statusMsg.innerText = "ACCESS DENIED ❌";
+                    statusMsg.style.color = "red";
+                    console.error(error.message);
                 });
-            } else {
-                subContainer.innerHTML = '<p style="text-align:center; color:#888;">No questions added yet.</p>';
-            }
+        });
 
-            // 2. Load Quiz
-            const quizContainer = document.getElementById('tab-quiz');
-            quizContainer.innerHTML = '';
-            if(data && data.quiz.length > 0) {
-                data.quiz.forEach((item, i) => {
-                    let optsHtml = '';
-                    item.opts.forEach((opt, oIndex) => {
-                        optsHtml += `<button class="quiz-option" onclick="checkAns(this, ${oIndex}, ${item.ans})">${opt}</button>`;
-                    });
-                    
-                    quizContainer.innerHTML += `
-                        <div class="quiz-card">
-                            <p class="q-title"><strong>Q${i+1}:</strong> ${item.q}</p>
-                            <div>${optsHtml}</div>
-                        </div>
-                    `;
-                });
-            } else {
-                quizContainer.innerHTML = '<p style="text-align:center; color:#888;">No quiz available.</p>';
-            }
-        }
+        // 5. लॉगआउट लॉजिक
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                alert("Logged out securely.");
+            });
+        });
 
-        function checkAns(btn, selected, correct) {
-            const parent = btn.parentElement;
-            const options = parent.getElementsByClassName('quiz-option');
-            
-            for(let opt of options) {
-                opt.disabled = true;
-                if(opt === options[correct]) opt.classList.add('correct');
-            }
-            if(selected !== correct) btn.classList.add('wrong');
-        }
-
-        // --- SECURITY SYSTEM ---
-        function openLogin() {
-            document.getElementById('login-modal').classList.remove('hidden');
-            document.getElementById('passcode').value = '';
-            document.getElementById('status-msg').innerText = '';
-        }
-        function closeLogin() {
-            document.getElementById('login-modal').classList.add('hidden');
-        }
-        function checkSecurity() {
-            const pass = document.getElementById('passcode').value;
-            const status = document.getElementById('status-msg');
-            
-            if(pass === 'admin123') { // PASSWORD HERE
-                status.style.color = '#00b894';
-                status.innerText = 'ACCESS GRANTED...';
-                setTimeout(() => {
-                    closeLogin();
-                    alert("Welcome Admin! You have full access.");
-                }, 1000);
+        // 6. सिक्योरिटी चेक (जासूस) - यह हमेशा चेक करता है कि यूजर लॉगिन है या नहीं
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // यूजर लॉगिन है -> वेबसाइट अनलॉक करो
+                document.body.classList.add('logged-in');
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'inline-block';
+                console.log("Admin Logged In:", user.email);
             } else {
-                status.style.color = '#d63031';
-                status.innerText = 'ACCESS DENIED ⛔';
-                // Shake effect logic could be added here
+                // यूजर लॉगिन नहीं है -> लॉक लगा दो
+                document.body.classList.remove('logged-in');
+                loginBtn.style.display = 'inline-block';
+                logoutBtn.style.display = 'none';
             }
-        }
+        });
     </script>
 </body>
 </html>
