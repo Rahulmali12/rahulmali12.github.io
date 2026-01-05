@@ -2,141 +2,100 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airforce Maths "Brahmastra" E-Book</title>
+    <title>Airforce Maths Brahmastra E-Book</title>
     <style>
-        :root {
-            --primary: #00d2ff;
-            --secondary: #3a7bd5;
-            --dark: #1a1a2e;
-            --accent: #f39c12;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--dark);
-            color: white;
-            margin: 0;
-            padding: 0;
-        }
-        .header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        .container { padding: 20px; max-width: 900px; margin: auto; }
-        .chapter-card {
-            background: #16213e;
-            border-left: 5px solid var(--primary);
-            margin-bottom: 25px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        h2 { color: var(--primary); text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .formula-list { list-style: none; padding: 0; }
-        .formula-list li { margin-bottom: 12px; padding: 8px; border-bottom: 1px dashed #2c3e50; }
-        .trick {
-            background: rgba(243, 156, 18, 0.1);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .important { color: #ff4757; font-weight: bold; }
-        @media print {
-            body { background: white; color: black; }
-            .chapter-card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; }
-            .trick { color: #d35400; border: 1px solid #d35400; }
-        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #0b0e14; color: #e0e0e0; line-height: 1.5; }
+        .page { width: 800px; margin: 20px auto; background: #1a1d23; padding: 40px; border-radius: 15px; border: 2px solid #3498db; box-shadow: 0 0 20px #3498db; }
+        h1 { text-align: center; color: #3498db; font-size: 35px; text-transform: uppercase; border-bottom: 3px solid #f1c40f; padding-bottom: 10px; }
+        h2 { background: #3498db; color: white; padding: 10px; border-radius: 5px; margin-top: 30px; font-size: 20px; }
+        .formula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .box { background: #252932; padding: 15px; border-radius: 8px; border-left: 4px solid #f1c40f; }
+        .trick-box { background: #27ae6033; border: 1px dashed #27ae60; color: #2ecc71; padding: 10px; margin-top: 10px; font-weight: bold; border-radius: 5px; }
+        .highlight { color: #f1c40f; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>AIRFORCE (GROUP X) MATHS BRAHMASTRA</h1>
-    <p>Complete Formula E-Book | Quick Revision Guide</p>
+<div class="page">
+    <h1>✈️ AIRFORCE MATHS MASTER BOOK</h1>
+    <p style="text-align:center;">Complete Revision: Navy SSR | Airforce Group X | NDA</p>
+
+    <h2>1. SETS, RELATIONS & FUNCTIONS</h2>
+    <div class="formula-grid">
+        <div class="box">
+            • Subsets = $2^n$ <br>
+            • Proper Subsets = $2^n - 1$ <br>
+            • $n(A \cup B) = n(A) + n(B) - n(A \cap B)$
+        </div>
+        <div class="trick-box">
+            TRICK: Agar Relation 'Reflexive, Symmetric aur Transitive' teeno ho, to wo "Equivalence Relation" hota hai.
+        </div>
+    </div>
+
+    <h2>2. LOGARITHM (लघुगणक)</h2>
+    <div class="box">
+        • $\log(mn) = \log m + \log n$ <br>
+        • $\log(m/n) = \log m - \log n$ <br>
+        • $\log_a b = \frac{\log_c b}{\log_c a}$ (Base change formula)
+    </div>
+
+    <h2>3. COMPLEX NUMBERS</h2>
+    <div class="formula-grid">
+        <div class="box">
+            • $i = \sqrt{-1}, i^2 = -1, i^3 = -i, i^4 = 1$ <br>
+            • Cube roots of unity: $1, \omega, \omega^2$ <br>
+            • $1 + \omega + \omega^2 = 0, \omega^3 = 1$
+        </div>
+        <div class="trick-box">
+            TRICK: $(1+i)^2 = 2i$ aur $(1-i)^2 = -2i$. Ye exams mein seedha aata hai!
+        </div>
+    </div>
+
+    <h2>4. SEQUENCE & SERIES (AP, GP, HP)</h2>
+    <div class="box">
+        • AP: $T_n = a + (n-1)d$ | $S_n = \frac{n}{2}[2a + (n-1)d]$ <br>
+        • GP: $T_n = ar^{n-1}$ | $S_\infty = \frac{a}{1-r}$ (agar $|r| < 1$) <br>
+        <span class="highlight">Relation: $AM \ge GM \ge HM$</span>
+    </div>
+
+    <h2>5. TRIGONOMETRY (Most Important)</h2>
+    <div class="box">
+        • $\sin 2\theta = 2\sin \theta \cos \theta$ <br>
+        • $\cos 2\theta = 2\cos^2 \theta - 1 = 1 - 2\sin^2 \theta$ <br>
+        • $\tan(A+B) = \frac{\tan A + \tan B}{1 - \tan A \tan B}$
+    </div>
+    <div class="trick-box">
+        TRICK: $\sin\theta \cdot \sin(60-\theta) \cdot \sin(60+\theta) = \frac{1}{4} \sin 3\theta$
+    </div>
+
+    <h2>6. CALCULUS (Differentiation & Integration)</h2>
+    <div class="formula-grid">
+        <div class="box">
+            • $\frac{d}{dx}(\tan x) = \sec^2 x$ <br>
+            • $\int \frac{1}{\sqrt{a^2-x^2}} dx = \sin^{-1}(x/a) + C$
+        </div>
+        <div class="box">
+            • $\int e^x[f(x) + f'(x)] dx = e^x f(x) + C$ <br>
+            • $\lim_{x \to 0} \frac{e^x - 1}{x} = 1$
+        </div>
+    </div>
+
+    <h2>7. CONIC SECTIONS</h2>
+    <div class="box">
+        • Parabola: $y^2 = 4ax$ (Focus: $a,0$) <br>
+        • Ellipse: $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ | $e = \sqrt{1 - \frac{b^2}{a^2}}$ <br>
+        • Hyperbola: $e = \sqrt{1 + \frac{b^2}{a^2}}$
+    </div>
+
+    <h2>8. PROBABILITY (प्रायिकता)</h2>
+    <div class="box">
+        • $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ <br>
+        • Independent Events: $P(A \cap B) = P(A) \cdot P(B)$ <br>
+        • Bayes' Theorem: Reverse probability find karne ke liye.
+    </div>
+
+    <p style="text-align:center; color:#7f8c8d; margin-top:50px;">© 2026 Airforce Success Guide | Taiyari Jeet Ki!</p>
 </div>
-
-<div class="container">
-
-    <div class="chapter-card">
-        <h2>1. Sets, Relations & Functions</h2>
-        <ul class="formula-list">
-            <li>$n(A \cup B) = n(A) + n(B) - n(A \cap B)$</li>
-            <li>Number of Subsets = $2^n$</li>
-            <li>Number of Relations = $2^{n \times m}$</li>
-            <li>De Morgan's Law: $(A \cup B)' = A' \cap B'$</li>
-        </ul>
-        <div class="trick">TRICK: Total Proper Subsets = $2^n - 1$</div>
-    </div>
-
-    <div class="chapter-card">
-        <h2>2. Trigonometry (All Quadrants)</h2>
-        <ul class="formula-list">
-            <li>$\sin(A \pm B) = \sin A \cos B \pm \cos A \sin B$</li>
-            <li>$\cos 2\theta = \cos^2 \theta - \sin^2 \theta = 2\cos^2 \theta - 1 = 1 - 2\sin^2 \theta$</li>
-            <li>$\tan(45^\circ + \theta) = \frac{1 + \tan \theta}{1 - \tan \theta}$</li>
-            <li>$\sin 15^\circ = \frac{\sqrt{3}-1}{2\sqrt{2}}$, $\cos 15^\circ = \frac{\sqrt{3}+1}{2\sqrt{2}}$</li>
-        </ul>
-        <div class="trick">TRICK: Maximum Value of $a\sin\theta + b\cos\theta = \sqrt{a^2 + b^2}$</div>
-    </div>
-
-    <div class="chapter-card">
-        <h2>3. Complex Numbers</h2>
-        <ul class="formula-list">
-            <li>$\omega = \frac{-1 + i\sqrt{3}}{2}$, $\omega^2 = \frac{-1 - i\sqrt{3}}{2}$</li>
-            <li>$1 + \omega + \omega^2 = 0$ and $\omega^3 = 1$</li>
-            <li>Square root of $i = \pm \frac{1}{\sqrt{2}}(1+i)$</li>
-        </ul>
-        <div class="trick">TRICK: $\arg(z) + \arg(\bar{z}) = 0$</div>
-    </div>
-
-    <div class="chapter-card">
-        <h2>4. Calculus (Diff. & Integration)</h2>
-        <ul class="formula-list">
-            <li>$\frac{d}{dx} \log(\sec x + \tan x) = \sec x$</li>
-            <li>$\int e^x [f(x) + f'(x)] dx = e^x f(x) + C$</li>
-            <li>Limit: $\lim_{x \to 0} \frac{\sin x}{x} = 1$</li>
-        </ul>
-        <div class="trick">TRICK: Integration of $|x|$ from $-a$ to $a$ is always $a^2$.</div>
-    </div>
-
-    <div class="chapter-card">
-        <h2>5. 2D & 3D Geometry</h2>
-        <ul class="formula-list">
-            <li>Distance of point $(x_1, y_1)$ from $ax+by+c=0$ is $\frac{|ax_1 + by_1 + c|}{\sqrt{a^2+b^2}}$</li>
-            <li>Circle condition: $g^2 + f^2 - c \ge 0$</li>
-            <li>Eccentricity ($e$): Parabola $e=1$, Ellipse $e < 1$, Hyperbola $e > 1$.</li>
-        </ul>
-    </div>
-
-    <div class="chapter-card">
-        <h2>6. Matrices & Determinants</h2>
-        <ul class="formula-list">
-            <li>$A \cdot adj(A) = |A| I$</li>
-            <li>$(AB)^{-1} = B^{-1} A^{-1}$</li>
-            <li>If $|A| = 0$, Matrix is Singular.</li>
-        </ul>
-        <div class="trick">TRICK: $|adj(A)| = |A|^{n-1}$</div>
-    </div>
-
-    <div class="chapter-card">
-        <h2>7. Probability & Stats</h2>
-        <ul class="formula-list">
-            <li>$P(A|B) = \frac{P(A \cap B)}{P(B)}$</li>
-            <li>Mean ($\bar{x}$) of first $n$ natural numbers = $(n+1)/2$</li>
-            <li>Variance of first $n$ natural numbers = $(n^2 - 1)/12$</li>
-        </ul>
-    </div>
-
-</div>
-
-<footer style="text-align: center; padding: 20px; font-size: 0.8em; opacity: 0.6;">
-    Generated for Airforce Aspirants | 2026 Revision Edition
-</footer>
 
 </body>
 </html>
