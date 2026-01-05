@@ -3,294 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revento Academy | Official Assessment Center</title>
+    <title>Revento Academy | Live Exam Portal</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 
     <style>
-        :root {
-            --tcs-blue: #306da6;
-            --bg-grey: #f4f6f9;
-            --card-hover: #e3f2fd;
-        }
-
+        :root { --brand: #306da6; --bg: #f4f6f9; }
         * { box-sizing: border-box; user-select: none; }
-        body { margin: 0; font-family: 'Roboto', sans-serif; background: var(--bg-grey); height: 100vh; display: flex; flex-direction: column; }
+        body { margin: 0; font-family: 'Roboto', sans-serif; background: var(--bg); height: 100vh; display: flex; flex-direction: column; }
 
-        /* --- HEADER --- */
-        .top-bar {
-            height: 60px; background: white; border-bottom: 3px solid var(--tcs-blue); display: flex; justify-content: space-between; align-items: center; padding: 0 30px;
-        }
-        .brand { font-size: 1.5rem; font-weight: bold; color: var(--tcs-blue); display: flex; align-items: center; gap: 10px; }
-        .profile-badge { background: #eee; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; color: #555; }
+        /* HEADER */
+        .top-bar { height: 60px; background: white; border-bottom: 3px solid var(--brand); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; }
+        .brand-text { font-family: 'Teko', sans-serif; font-size: 1.8rem; color: var(--brand); }
 
-        /* --- DASHBOARD (HOME) --- */
-        #dashboard { padding: 40px; max-width: 1200px; margin: 0 auto; width: 100%; }
-        .welcome-text { font-size: 1.8rem; margin-bottom: 30px; color: #333; }
-        
-        .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        
-        .sub-card {
-            background: white; padding: 25px; border-radius: 8px; border: 1px solid #ddd; border-bottom: 4px solid #ccc;
-            cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
-        }
-        .sub-card:hover { transform: translateY(-5px); border-bottom-color: var(--tcs-blue); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .sub-card h3 { margin: 0 0 10px 0; color: #333; }
-        .sub-card p { margin: 0; font-size: 0.9rem; color: #666; }
-        .icon { font-size: 2rem; margin-bottom: 15px; color: var(--tcs-blue); }
+        /* LOGIN OVERLAY */
+        #login-screen { position: fixed; top:0; left:0; width:100%; height:100%; background:#fff; z-index:2000; display:flex; align-items:center; justify-content:center; }
+        .login-box { width: 350px; text-align: center; }
+        .inp-field { padding: 12px; width: 100%; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
 
-        .mix-card { background: linear-gradient(135deg, #306da6, #0d47a1); color: white !important; border: none; }
-        .mix-card h3, .mix-card p, .mix-card .icon { color: white; }
+        /* DASHBOARD */
+        #dashboard { padding: 30px; max-width: 1000px; margin: 0 auto; width: 100%; }
+        .sub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .card { background: white; padding: 20px; border-radius: 8px; border-bottom: 4px solid #ccc; cursor: pointer; transition: 0.3s; text-align: center; }
+        .card:hover { transform: translateY(-5px); border-color: var(--brand); }
+        .mix-card { background: var(--brand); color: white; border: none; }
+        .mix-card h3 { color: white; }
 
-        /* --- EXAM INTERFACE (HIDDEN INITIALLY) --- */
-        #exam-portal { display: none; height: calc(100vh - 60px); display: flex; flex-direction: column; }
-        
-        .exam-header { background: #222; color: #fff; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .timer-badge { background: black; border: 1px solid #555; padding: 5px 10px; font-weight: bold; color: #00e676; font-size: 1.2rem; }
-
+        /* EXAM AREA */
+        #exam-portal { display: none; height: calc(100vh - 60px); flex-direction: column; }
         .exam-body { display: flex; flex: 1; overflow: hidden; }
-        .q-panel { flex: 1; padding: 30px; overflow-y: auto; background: white; }
-        .side-panel { width: 300px; background: #f0f0f0; border-left: 1px solid #ccc; display: flex; flex-direction: column; }
+        .q-area { flex: 1; padding: 30px; overflow-y: auto; background: white; }
+        .sidebar { width: 280px; background: #eee; border-left: 1px solid #ccc; display: flex; flex-direction: column; }
         
-        /* Question Styles */
-        .q-txt { font-size: 1.3rem; margin-bottom: 25px; font-weight: 500; line-height: 1.5; }
-        .opt-row { display: flex; align-items: center; padding: 12px; border: 1px solid #ddd; margin-bottom: 10px; cursor: pointer; border-radius: 4px; }
-        .opt-row:hover { background: #e3f2fd; border-color: var(--tcs-blue); }
-        .opt-row input { margin-right: 15px; transform: scale(1.3); }
+        .opt-row { display: flex; padding: 10px; border: 1px solid #ddd; margin-bottom: 10px; cursor: pointer; border-radius: 4px; }
+        .opt-row:hover { background: #e3f2fd; }
+        .opt-row input { margin-right: 15px; }
 
-        /* Palette */
-        .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 15px; overflow-y: auto; flex: 1; }
+        .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 10px; overflow-y: auto; flex: 1; }
         .p-btn { height: 35px; background: white; border: 1px solid #ccc; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 0.9rem; }
-        .p-btn.done { background: #00c853; color: white; border: none; }
-        .p-btn.active { border: 2px solid var(--tcs-blue); }
+        .p-btn.done { background: #00c853; color: white; }
+        .p-btn.active { border: 2px solid var(--brand); }
+
+        /* LEADERBOARD OVERLAY */
+        #lb-overlay { display: none; position: fixed; top:0; left:0; width: 100%; height:100%; background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center; }
+        .lb-box { width: 500px; background: white; border-radius: 10px; overflow: hidden; max-height: 80vh; display: flex; flex-direction: column; }
+        .lb-head { background: var(--brand); color: white; padding: 15px; text-align: center; font-weight: bold; }
+        .lb-list { overflow-y: auto; padding: 10px; flex: 1; }
+        .lb-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+        .my-rank { background: #e3f2fd; border: 2px solid var(--brand); font-weight: bold; }
 
     </style>
 </head>
 <body>
 
+    <div id="login-screen">
+        <div class="login-box">
+            <h2 style="font-family: 'Teko'; font-size: 2.5rem; color: var(--brand); margin: 0;">REVENTO ACADEMY</h2>
+            <p style="color: #666;">Enter Name to Start</p>
+            <input type="text" id="username" class="inp-field" placeholder="Student Name (e.g. Rahul)">
+            <button onclick="login()" style="width: 100%; padding: 12px; background: var(--brand); color: white; border: none; font-weight: bold; cursor: pointer;">ENTER DASHBOARD</button>
+        </div>
+    </div>
+
     <div class="top-bar">
-        <div class="brand">
-            <img src="https://cdn-icons-png.flaticon.com/512/2997/2997274.png" width="30">
-            REVENTO ACADEMY
-        </div>
-        <div class="profile-badge">User: Student | Class 10</div>
+        <div class="brand-text">REVENTO ACADEMY</div>
+        <div id="user-display" style="font-weight: bold; color: #555;">Guest</div>
     </div>
 
-    <div id="dashboard">
-        <div class="welcome-text">👋 आज कौन सा टेस्ट देना है?</div>
-        
-        <div class="subject-grid">
-            <div class="sub-card mix-card" onclick="startTest('MIX')">
-                <div class="icon">🚀</div>
+    <div id="dashboard" style="display: none;">
+        <h2>👋 Select Test Subject</h2>
+        <div class="sub-grid">
+            <div class="card mix-card" onclick="startTest('MIX')">
+                <div style="font-size: 2rem;">🚀</div>
                 <h3>FULL MOCK TEST</h3>
-                <p>All Subjects (Maths, Sci, Eng, Hindi, Skt, SST)</p>
-                <p style="margin-top: 5px; font-weight: bold;">Time: 3 Hrs 15 Min</p>
+                <p>All Subjects Mixed</p>
             </div>
+            <div class="card" onclick="startTest('Maths')"><h3>📐 Maths</h3></div>
+            <div class="card" onclick="startTest('Science')"><h3>🧬 Science</h3></div>
+            <div class="card" onclick="startTest('Social')"><h3>🌍 Social Sc.</h3></div>
+            <div class="card" onclick="startTest('Hindi')"><h3>📖 Hindi</h3></div>
+            <div class="card" onclick="startTest('Sanskrit')"><h3>🕉️ Sanskrit</h3></div>
+        </div>
+    </div>
 
-            <div class="sub-card" onclick="startTest('Maths')">
-                <div class="icon">📐</div>
-                <h3>Maths (गणित)</h3>
-                <p>Chapterwise & Mix Questions</p>
+    <div id="exam-portal">
+        <div style="background: #222; color: white; padding: 10px 20px; display: flex; justify-content: space-between;">
+            <span>Subject: <span id="sub-name" style="color: #4fc3f7; font-weight: bold;">MIX</span></span>
+            <span>Time: <span id="timer">00:00:00</span></span>
+        </div>
+        <div class="exam-body">
+            <div class="q-area">
+                <div style="margin-bottom: 20px; font-weight: bold; color: #666;">
+                    Question <span id="q-no">1</span>
+                    <span id="q-sub-badge" style="background: #eee; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-left: 10px;">SUB</span>
+                </div>
+                <div id="q-text" style="font-size: 1.3rem; margin-bottom: 20px;">Loading...</div>
+                <div id="opt-area"></div>
             </div>
-
-            <div class="sub-card" onclick="startTest('Science')">
-                <div class="icon">🧬</div>
-                <h3>Science (विज्ञान)</h3>
-                <p>Physics, Chem, Bio</p>
-            </div>
-
-            <div class="sub-card" onclick="startTest('Social')">
-                <div class="icon">🌍</div>
-                <h3>Social Science (सामाजिक)</h3>
-                <p>History, Geo, Civics</p>
-            </div>
-
-            <div class="sub-card" onclick="startTest('Hindi')">
-                <div class="icon">📖</div>
-                <h3>Hindi (हिंदी)</h3>
-                <p>Vyakaran & Textbook</p>
-            </div>
-
-            <div class="sub-card" onclick="startTest('Sanskrit')">
-                <div class="icon">🕉️</div>
-                <h3>Sanskrit (संस्कृत)</h3>
-                <p>Grammar & Literature</p>
+            <div class="sidebar">
+                <div class="palette" id="palette-grid"></div>
+                <button onclick="submitExam()" style="padding: 15px; background: var(--brand); color: white; border: none; font-weight: bold; cursor: pointer;">SUBMIT TEST</button>
             </div>
         </div>
     </div>
 
-    <div id="exam-portal" style="display: none;">
-        <div class="exam-header">
-            <div>Subject: <span id="exam-subject" style="color:#4fc3f7; font-weight:bold;">MIX</span></div>
-            <div class="timer-badge">⏱ <span id="timer">00:00:00</span></div>
-        </div>
-
-        <div class="exam-body">
-            <div class="q-panel">
-                <div style="border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px; color: #666; display: flex; justify-content: space-between;">
-                    <span>Question No. <span id="q-no">1</span></span>
-                    <span id="sub-tag" style="background: #eee; padding: 2px 8px; font-size: 0.8rem; border-radius: 4px;">SUB</span>
-                </div>
-                <div class="q-txt" id="question-text">Loading...</div>
-                <div id="options-area"></div>
+    <div id="lb-overlay">
+        <div class="lb-box">
+            <div class="lb-head">🏆 LIVE LEADERBOARD</div>
+            <div style="text-align: center; padding: 15px; border-bottom: 1px solid #ccc; background: #f9f9f9;">
+                Score: <span id="my-final-score" style="font-size: 1.5rem; color: var(--brand); font-weight: bold;">0</span>
             </div>
-
-            <div class="side-panel">
-                <div style="padding: 10px; background: #e0e0e0; text-align: center; font-weight: bold;">Question Palette</div>
-                <div class="palette" id="palette-grid"></div>
-                <button onclick="submitExam()" style="padding: 15px; background: var(--tcs-blue); color: white; border: none; cursor: pointer; font-weight: bold; font-size: 1rem;">SUBMIT TEST</button>
+            <div class="lb-list" id="lb-list">
+                <div style="text-align: center; padding: 20px;">Connecting to Server...</div>
             </div>
+            <button onclick="location.reload()" style="padding: 15px; border: none; background: #333; color: white; cursor: pointer;">Close & Restart</button>
         </div>
     </div>
 
     <script>
-        // ==============================================================
-        // 🛑 UNLIMITED DATA STORAGE (MASTER DB)
-        // ==============================================================
-        // यहाँ आप जितने चाहें उतने प्रश्न डाल सकते हैं। 
-        // बस subject का नाम सही लिखें: 'Maths', 'Science', 'Hindi', 'Sanskrit', 'Social'
-        
+        // ======================================================
+        // 🔴 STEP 1: FIREBASE CONFIG (Paste here)
+        // ======================================================
+        const firebaseConfig = {
+          apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+  authDomain: "revento-academy.firebaseapp.com",
+  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
+  projectId: "revento-academy",
+  storageBucket: "revento-academy.firebasestorage.app",
+  messagingSenderId: "384071300366",
+  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
+  measurementId: "G-4L8YC6J095"
+        };
+
+        let db;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch(e) { console.log("Firebase not connected"); }
+
+
+        // ======================================================
+        // 📝 MASTER QUESTION BANK (Unlimited)
+        // ======================================================
         const MASTER_DB = [
-            // --- MATHS ---
-            { subject: "Maths", q: "द्विघात समीकरण 2x² - 4x + 3 = 0 का विविक्तकर (Discriminant) क्या होगा?", opts: ["-8", "8", "4", "0"], ans: 0 },
-            { subject: "Maths", q: "AP: 2, 7, 12... का 10वां पद है:", opts: ["45", "47", "49", "50"], ans: 1 },
-            { subject: "Maths", q: "sin 60° का मान क्या है?", opts: ["1/2", "√3/2", "1/√2", "1"], ans: 1 },
-
-            // --- SCIENCE ---
-            { subject: "Science", q: "मानव नेत्र के किस भाग पर प्रतिबिंब बनता है?", opts: ["कॉर्निया", "परितारिका", "पुतली", "दृष्टिपटल (Retina)"], ans: 3 },
-            { subject: "Science", q: "pH स्केल की परास (Range) क्या होती है?", opts: ["1-14", "0-14", "1-10", "0-10"], ans: 1 },
-            { subject: "Science", q: "विद्युत धारा का SI मात्रक क्या है?", opts: ["वॉल्ट", "ओम", "एम्पीयर", "जूल"], ans: 2 },
-
-            // --- HINDI ---
-            { subject: "Hindi", q: "'रामचरितमानस' की रचना किसने की?", opts: ["तुलसीदास", "सूरदास", "कबीर", "मीरा"], ans: 0 },
-            { subject: "Hindi", q: "'नेताजी का चश्मा' कहानी में किस शहर का उल्लेख है?", opts: ["कानपुर", "कस्बा", "दिल्ली", "लखनऊ"], ans: 1 },
-
-            // --- SANSKRIT ---
-            { subject: "Sanskrit", q: "सदाचारः .... धर्मः अस्ति।", opts: ["परमः", "लघुः", "कुटिलः", "नीचः"], ans: 0 },
-            { subject: "Sanskrit", q: "‘विद्यया अमृतमश्नुते’ - यह किस उपनिषद से है?", opts: ["ईशावास्योपनिषद", "कठोपनिषद", "मुण्डक", "प्रश्न"], ans: 0 },
-
-            // --- SOCIAL ---
-            { subject: "Social", q: "जलियावाला बाग हत्याकांड कब हुआ?", opts: ["1919", "1920", "1921", "1922"], ans: 0 },
-            { subject: "Social", q: "भारत में कुल कितने राज्य हैं?", opts: ["28", "29", "27", "30"], ans: 0 },
+            { subject: "Maths", q: "sin 90° का मान क्या है?", opts: ["0", "1", "1/2", "∞"], ans: 1 },
+            { subject: "Maths", q: "2, 4, 6... का सार्व अंतर (d) क्या है?", opts: ["1", "2", "3", "4"], ans: 1 },
+            { subject: "Science", q: "मानव शरीर की सबसे बड़ी हड्डी कौन सी है?", opts: ["फीमर", "स्टेप्स", "ह्यूमरस", "टिबिआ"], ans: 0 },
+            { subject: "Science", q: "शुद्ध जल का pH मान कितना होता है?", opts: ["0", "7", "14", "10"], ans: 1 },
+            { subject: "Hindi", q: "‘गोदान’ के लेखक कौन हैं?", opts: ["प्रेमचंद", "प्रसाद", "निराला", "पंत"], ans: 0 },
+            { subject: "Sanskrit", q: "अधोलिखितेषु अव्ययपदं किम्?", opts: ["अत्र", "गच्छति", "बालकः", "लता"], ans: 0 },
+            { subject: "Social", q: "भारत का संविधान कब लागू हुआ?", opts: ["1947", "1950", "1952", "1949"], ans: 1 },
         ];
 
-        // ==============================================================
-        // ⚙️ SYSTEM LOGIC
-        // ==============================================================
-
-        let activeQuestions = []; // इसमें छंटे हुए प्रश्न आएंगे
-        let currentIdx = 0;
+        // ======================================================
+        // ⚙️ LOGIC
+        // ======================================================
+        let activeQs = [];
         let userAns = [];
-        let timerInterval;
+        let currIdx = 0;
+        let userName = "Student";
+        let timerInt;
 
-        // 1. START TEST LOGIC (FILTERING)
-        function startTest(subject) {
-            // Filter Questions
-            if(subject === 'MIX') {
-                activeQuestions = MASTER_DB; // सारे प्रश्न ले लो
-                startTimer(195 * 60); // 3 Hours 15 Mins
+        function login() {
+            const n = document.getElementById('username').value;
+            if(!n) return alert("Enter Name!");
+            userName = n;
+            document.getElementById('user-display').innerText = n;
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        }
+
+        function startTest(sub) {
+            // Filter Logic
+            if(sub === 'MIX') {
+                activeQs = MASTER_DB;
             } else {
-                // सिर्फ उस विषय के प्रश्न छांटो
-                activeQuestions = MASTER_DB.filter(item => item.subject === subject);
-                startTimer(60 * 60); // 1 Hour for single subject
+                activeQs = MASTER_DB.filter(q => q.subject === sub);
             }
 
-            if(activeQuestions.length === 0) {
-                alert("इस विषय के प्रश्न अभी अपलोड नहीं हुए हैं। कृपया बाद में चेक करें।");
-                return;
-            }
+            if(activeQs.length === 0) return alert("No questions found for " + sub);
 
-            // UI Switch
+            // Setup Exam
+            userAns = new Array(activeQs.length).fill(null);
             document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('exam-portal').style.display = 'flex'; // Fix display
-            document.getElementById('exam-subject').innerText = subject.toUpperCase();
+            document.getElementById('exam-portal').style.display = 'flex';
+            document.getElementById('sub-name').innerText = sub;
             
-            // Init Arrays
-            userAns = new Array(activeQuestions.length).fill(null);
-            
-            // Render First Q
+            // Fullscreen
+            document.documentElement.requestFullscreen().catch(e=>{});
+
             renderPalette();
             loadQ(0);
             
-            // Fullscreen
-            document.documentElement.requestFullscreen().catch(e => console.log(e));
-        }
-
-        // 2. LOAD QUESTION
-        function loadQ(idx) {
-            currentIdx = idx;
-            const data = activeQuestions[idx];
-
-            document.getElementById('q-no').innerText = idx + 1;
-            document.getElementById('sub-tag').innerText = data.subject;
-            document.getElementById('question-text').innerText = data.q;
-
-            const box = document.getElementById('options-area');
-            box.innerHTML = "";
-            
-            data.opts.forEach((opt, i) => {
-                const checked = userAns[idx] === i ? 'checked' : '';
-                box.innerHTML += `
-                    <label class="opt-row">
-                        <input type="radio" name="opt" onclick="saveAns(${i})" ${checked}>
-                        ${opt}
-                    </label>
-                `;
-            });
-
-            updatePaletteUI();
-        }
-
-        function saveAns(optIdx) {
-            userAns[currentIdx] = optIdx;
-            updatePaletteUI();
-        }
-
-        // 3. PALETTE SYSTEM
-        function renderPalette() {
-            const grid = document.getElementById('palette-grid');
-            grid.innerHTML = "";
-            activeQuestions.forEach((_, i) => {
-                grid.innerHTML += `<div class="p-btn" id="p-${i}" onclick="loadQ(${i})">${i+1}</div>`;
-            });
-        }
-
-        function updatePaletteUI() {
-            activeQuestions.forEach((_, i) => {
-                const btn = document.getElementById(`p-${i}`);
-                btn.className = "p-btn";
-                if(userAns[i] !== null) btn.classList.add('done');
-                if(i === currentIdx) btn.classList.add('active');
-            });
-        }
-
-        // 4. TIMER
-        function startTimer(duration) {
-            let t = duration;
-            timerInterval = setInterval(() => {
-                let h = Math.floor(t/3600);
-                let m = Math.floor((t%3600)/60);
+            // Timer (Demo: 30 mins)
+            let t = 30 * 60;
+            timerInt = setInterval(() => {
+                let m = Math.floor(t/60);
                 let s = t%60;
-                document.getElementById('timer').innerText = `${h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
-                if(t <= 0) submitExam();
+                document.getElementById('timer').innerText = `${m}:${s<10?'0'+s:s}`;
+                if(t<=0) submitExam();
                 t--;
             }, 1000);
         }
 
-        // 5. SUBMIT
-        function submitExam() {
-            clearInterval(timerInterval);
-            let score = 0;
-            userAns.forEach((a, i) => {
-                if(a === activeQuestions[i].ans) score++;
+        function loadQ(idx) {
+            currIdx = idx;
+            const q = activeQs[idx];
+            document.getElementById('q-no').innerText = idx+1;
+            document.getElementById('q-sub-badge').innerText = q.subject;
+            document.getElementById('q-text').innerText = q.q;
+
+            const area = document.getElementById('opt-area');
+            area.innerHTML = "";
+            q.opts.forEach((opt, i) => {
+                let check = userAns[idx] === i ? 'checked' : '';
+                area.innerHTML += `
+                    <label class="opt-row">
+                        <input type="radio" name="opt" onclick="saveAns(${i})" ${check}> ${opt}
+                    </label>
+                `;
             });
+            updatePalette();
+        }
+
+        function saveAns(i) {
+            userAns[currIdx] = i;
+            updatePalette();
+        }
+
+        function renderPalette() {
+            const g = document.getElementById('palette-grid');
+            g.innerHTML = "";
+            activeQs.forEach((_, i) => g.innerHTML += `<div class="p-btn" id="p-${i}" onclick="loadQ(${i})">${i+1}</div>`);
+        }
+
+        function updatePalette() {
+            activeQs.forEach((_, i) => {
+                const b = document.getElementById(`p-${i}`);
+                b.className = "p-btn";
+                if(userAns[i] !== null) b.classList.add('done');
+                if(i === currIdx) b.classList.add('active');
+            });
+        }
+
+        // --- SUBMIT & LEADERBOARD ---
+        function submitExam() {
+            clearInterval(timerInt);
+            let score = 0;
+            userAns.forEach((a, i) => { if(a === activeQs[i].ans) score++; });
+
+            // Show Result
+            document.getElementById('lb-overlay').style.display = 'flex';
+            document.getElementById('my-final-score').innerText = `${score} / ${activeQs.length}`;
+
+            // Send to Firebase
+            if(db) {
+                const uid = Date.now();
+                db.ref('leaderboard/' + uid).set({
+                    name: userName,
+                    score: score,
+                    subject: document.getElementById('sub-name').innerText,
+                    time: new Date().toLocaleTimeString()
+                });
+                fetchLB();
+            } else {
+                document.getElementById('lb-list').innerHTML = "<div style='text-align:center; padding:20px; color:red;'>Firebase Not Configured!</div>";
+            }
+        }
+
+        function fetchLB() {
+            const list = document.getElementById('lb-list');
+            list.innerHTML = "Loading...";
             
-            // Simple Alert Result (You can replace this with the fancy leaderboard logic)
-            alert(`TEST SUBMITTED!\n\nScore: ${score} / ${activeQuestions.length}`);
-            location.reload(); // Reload to go back to Dashboard
+            // Get Top 20 Scores
+            db.ref('leaderboard').orderByChild('score').limitToLast(20).on('value', (snap) => {
+                let data = [];
+                snap.forEach(c => data.push(c.val()));
+                data.sort((a,b) => b.score - a.score); // High to Low
+
+                list.innerHTML = "";
+                data.forEach((p, i) => {
+                    let style = p.name === userName ? "my-rank" : "";
+                    list.innerHTML += `
+                        <div class="lb-row ${style}">
+                            <div>#${i+1} ${p.name} <small style='color:#777'>(${p.subject})</small></div>
+                            <div style="font-weight:bold; color:var(--brand)">${p.score}</div>
+                        </div>
+                    `;
+                });
+            });
         }
 
     </script>
