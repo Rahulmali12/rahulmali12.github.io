@@ -1,38 +1,74 @@
-<div id="quiz-container">
-    <div id="content"></div>
-    <div style="text-align:center; margin-top:20px;">
-        <button id="prevBtn" onclick="changePage(-1)">Peeche</button>
-        <span id="pageNo">1/20</span>
-        <button id="nextBtn" onclick="changePage(1)">Aage</button>
-    </div>
-</div>
-
-<script>
-    let currentIdx = 0;
-    let quizData = [];
-
-    fetch('data.json').then(r => r.json()).then(data => {
-        quizData = data.articles;
-        showQuestion(0);
-    });
-
-    function showQuestion(idx) {
-        const item = quizData[idx];
-        document.getElementById('content').innerHTML = `
-            <div class="notes-section">
-                <h2>${idx + 1}. ${item.topic}</h2>
-                <p>${item.notes}</p>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NDA UPSC Daily 20 Quiz</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; user-select: none; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h1 { color: #1a237e; text-align: center; border-bottom: 3px solid #ff9800; }
+        .notes-section { background: #fff8e1; padding: 15px; border-radius: 8px; border-left: 5px solid #ff9800; margin-bottom: 20px; }
+        .quiz-section { background: #e8eaf6; padding: 20px; border-radius: 8px; }
+        .option { display: block; background: white; margin: 10px 0; padding: 12px; border-radius: 5px; cursor: pointer; border: 1px solid #ddd; }
+        .nav-btns { display: flex; justify-content: space-between; margin-top: 20px; }
+        button { background: #1a237e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        #result { font-weight: bold; text-align: center; margin-top: 15px; }
+        #pageNo { font-weight: bold; align-self: center; }
+    </style>
+</head>
+<body oncontextmenu="return false;"> <div class="container">
+        <h1>NDA/UPSC Daily 20</h1>
+        <div id="quiz-wrapper">
+            <div id="content">लोड हो रहा है...</div>
+            <div class="nav-btns">
+                <button onclick="changePage(-1)">← पिछला</button>
+                <span id="pageNo">1 / 20</span>
+                <button onclick="changePage(1)">अगला →</button>
             </div>
-            <div class="quiz-section">
-                <p><b>Q:</b> ${item.question}</p>
-                ${item.options.map(o => `<label class="option-label"><input type="radio" name="q" value="${o[0]}"> ${o}</label>`).join('')}
-            </div>`;
-        document.getElementById('pageNo').innerText = `${idx + 1} / ${quizData.length}`;
-    }
+            <div id="result"></div>
+        </div>
+    </div>
 
-    function changePage(step) {
-        currentIdx += step;
-        if(currentIdx >= 0 && currentIdx < quizData.length) showQuestion(currentIdx);
-        else currentIdx -= step;
-    }
-</script>
+    <script>
+        let currentIdx = 0;
+        let quizData = [];
+
+        fetch('data.json')
+            .then(res => res.json())
+            .then(data => {
+                quizData = data.articles;
+                showQuestion(0);
+            });
+
+        function showQuestion(idx) {
+            const item = quizData[idx];
+            document.getElementById('result').innerText = "";
+            document.getElementById('content').innerHTML = `
+                <div class="notes-section">
+                    <h3>${idx + 1}. ${item.topic}</h3>
+                    <p>${item.notes}</p>
+                </div>
+                <div class="quiz-section">
+                    <p><b>Q:</b> ${item.question}</p>
+                    ${item.options.map(o => `<label class="option"><input type="radio" name="q" value="${o[0]}" onclick="check('${item.answer}', this.value)"> ${o}</label>`).join('')}
+                </div>`;
+            document.getElementById('pageNo').innerText = `${idx + 1} / ${quizData.length}`;
+        }
+
+        function check(correct, selected) {
+            const res = document.getElementById('result');
+            if(selected === correct) { res.innerText = "सही उत्तर! ✅"; res.style.color = "green"; }
+            else { res.innerText = "गलत! सही उत्तर " + correct + " है। ❌"; res.style.color = "red"; }
+        }
+
+        function changePage(step) {
+            let newIdx = currentIdx + step;
+            if(newIdx >= 0 && newIdx < quizData.length) {
+                currentIdx = newIdx;
+                showQuestion(currentIdx);
+            }
+        }
+    </script>
+</body>
+</html>
