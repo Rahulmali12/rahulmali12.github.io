@@ -3,138 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REVENTO ACADEMY | NDA INTEL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <title>UPSC NDA - डेली नोट्स एवं प्रश्न</title>
+    
     <style>
-        :root { --bg: #020b1c; --gold: #FFD700; --blue: #00f3ff; }
-        body { background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; padding-bottom: 50px; overflow-x: hidden; }
-        .ticker { background: var(--gold); color: black; padding: 10px; font-family: 'Black Ops One'; position: fixed; top: 0; width: 100%; z-index: 100; border-bottom: 3px solid #000; }
-        .ticker-text { display: inline-block; white-space: nowrap; animation: scroll 25s linear infinite; }
-        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        header { margin-top: 80px; text-align: center; }
-        h1 { font-family: 'Black Ops One'; color: var(--gold); font-size: clamp(2rem, 8vw, 3.5rem); margin: 0; text-shadow: 3px 3px 0px #000; }
-        .container { max-width: 850px; margin: 20px auto; padding: 20px; }
-        .card { background: rgba(10, 25, 60, 0.9); border-left: 5px solid var(--gold); padding: 25px; margin-bottom: 30px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; border-top: 1px solid rgba(255,255,255,0.1); }
-        .badge { background: var(--gold); color: black; padding: 4px 12px; font-weight: bold; position: absolute; top: -12px; right: 20px; font-size: 0.8rem; }
-        .question-box { background: rgba(0,0,0,0.6); border: 1px dashed var(--blue); padding: 20px; margin-top: 20px; border-radius: 5px; }
-        .question-text { font-size: 1.25rem; color: var(--blue); font-weight: bold; line-height: 1.5; white-space: pre-wrap; }
-        button.reveal-btn { background: var(--gold); border: none; color: black; padding: 12px; font-weight: 900; cursor: pointer; width: 100%; margin-top: 15px; text-transform: uppercase; border-radius: 4px; transition: 0.3s; }
-        button.reveal-btn:hover { background: white; box-shadow: 0 0 20px var(--gold); }
-        .ans-box { display: none; margin-top: 15px; padding: 15px; background: rgba(0, 255, 100, 0.1); border-left: 3px solid #0f0; color: #fff; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        :root {
+            --primary: #1a237e;
+            --secondary: #ff9800;
+            --bg: #f0f2f5;
+        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+        header { text-align: center; border-bottom: 4px solid var(--secondary); margin-bottom: 25px; padding-bottom: 10px; }
+        h1 { color: var(--primary); margin: 0; }
+        .date { color: #666; font-weight: bold; margin-bottom: 15px; }
+        .notes-section { background: #fff8e1; border-left: 8px solid var(--secondary); padding: 20px; border-radius: 10px; margin-bottom: 30px; }
+        .quiz-section { background: #e8eaf6; border-left: 8px solid var(--primary); padding: 20px; border-radius: 10px; }
+        .option-label { display: block; background: white; margin: 10px 0; padding: 15px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; transition: 0.3s; }
+        .option-label:hover { background: #d1d9ff; }
+        button { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; font-size: 18px; cursor: pointer; margin-top: 15px; }
+        button:hover { background: #0d144d; }
+        #result { margin-top: 20px; font-weight: bold; text-align: center; font-size: 20px; }
+        .loading { text-align: center; font-style: italic; color: #888; }
     </style>
 </head>
 <body>
 
-    <div class="ticker"><div class="ticker-text">★ REVENTO ACADEMY ★ PERPLEXITY AI-INTEL SYSTEM ONLINE ★ TARGET NDA 2026 ★ JAI HIND ★</div></div>
+    <div class="container">
+        <header>
+            <h1>NDA UPSC डेली कोच</h1>
+        </header>
 
-    <header>
-        <h1>REVENTO ACADEMY</h1>
-        <p style="color:var(--blue); letter-spacing: 3px; font-weight: bold;">UPSC DEFENCE INTELLIGENCE FEED</p>
-    </header>
+        <div id="loader" class="loading">डेटा तैयार किया जा रहा है...</div>
 
-    <div class="container" id="feed">
-        <p style="text-align:center; font-size: 1.2rem; color: var(--blue); animation: blink 1.5s infinite;">[ ESTABLISHING ENCRYPTED DATALINK... ]</p>
+        <div id="content" style="display:none;">
+            <div class="date">दिनांक: <span id="display-date"></span></div>
+            
+            <div class="notes-section">
+                <h2 id="display-topic" style="margin-top:0; color: #e65100;"></h2>
+                <p id="display-notes" style="line-height: 1.7; font-size: 18px;"></p>
+            </div>
+
+            <div class="quiz-section">
+                <h3>📝 आज की परीक्षा (MCQ)</h3>
+                <p id="display-question" style="font-weight: bold; font-size: 19px;"></p>
+                <div id="options-container"></div>
+                <button onclick="validateAnswer()">उत्तर की जांच करें</button>
+                <div id="result"></div>
+            </div>
+        </div>
     </div>
 
-<script>
-    // ============================================
-    // 👇 यहाँ अपनी KEYS डालें (KEYS GO HERE) 👇
-    // ============================================
-    
-    const GNEWS_KEY = "7eed358766060404613f5e50f0532a02"; 
-    const PPLX_KEY = "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"; // यहाँ pplx- वाली Key डालें
+    <script>
+        let correctOption = "";
 
-    // ============================================
+        // यह फंक्शन डेटा को लोड करता है
+        async function loadContent() {
+            try {
+                // यहाँ हम आपकी 'data.json' फाइल से डेटा लेंगे
+                const response = await fetch('data.json');
+                const data = await response.json();
 
-    const newsContainer = document.getElementById('feed');
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
 
-    async function fetchNews() {
-        // GNews API call (Fixed 401 & CORS)
-        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+Forces+DRDO+ISRO&lang=hi&country=in&max=5&apikey=${GNEWS_KEY}`;
-        
-        try {
-            const res = await fetch(url);
-            const data = await res.json();
-            
-            if (data.articles) {
-                newsContainer.innerHTML = ""; 
-                data.articles.forEach(article => {
-                    generateCard(article);
+                document.getElementById('display-date').innerText = data.date;
+                document.getElementById('display-topic').innerText = data.topic;
+                document.getElementById('display-notes').innerText = data.notes;
+                document.getElementById('display-question').innerText = data.question;
+                correctOption = data.answer;
+
+                const optionsDiv = document.getElementById('options-container');
+                data.options.forEach(opt => {
+                    optionsDiv.innerHTML += `
+                        <label class="option-label">
+                            <input type="radio" name="upsc_quiz" value="${opt[0]}"> ${opt}
+                        </label>
+                    `;
                 });
-            } else if (data.errors) {
-                newsContainer.innerHTML = `<h3 style='color:red; text-align:center;'>GNews Error: ${data.errors[0]}</h3>`;
+            } catch (error) {
+                document.getElementById('loader').innerText = "त्रुटि: डेटा फाइल नहीं मिली। कृपया 'data.json' अपलोड करें।";
             }
-        } catch (e) {
-            console.error("News Fetch Error:", e);
-            newsContainer.innerHTML = "<h3 style='text-align:center;'>DATALINK OFFLINE. REFRESH.</h3>";
         }
-    }
 
-    async function generateCard(article) {
-        const id = Math.random().toString(36).substr(2, 9);
-        const cardHTML = `
-            <div class="card">
-                <span class="badge">UPSC INTEL</span>
-                <h3 style="color:#fff; margin: 10px 0;">${article.title}</h3>
-                <p style="color:#ccc; font-size: 1rem;">${article.description}</p>
-                <div class="question-box" id="q-${id}">
-                    <div style="color:var(--gold); font-weight:bold; animation: blink 1s infinite;">⚡ PERPLEXITY AI GENERATING UPSC QUESTION...</div>
-                </div>
-            </div>
-        `;
-        newsContainer.insertAdjacentHTML('beforeend', cardHTML);
-        askPerplexity(article.title + " " + article.description, id);
-    }
+        function validateAnswer() {
+            const selected = document.querySelector('input[name="upsc_quiz"]:checked');
+            const resultDiv = document.getElementById('result');
 
-    async function askPerplexity(newsText, id) {
-        const url = "https://api.perplexity.ai/chat/completions";
-        
-        const prompt = `Act as a UPSC NDA Exam paper setter. 
-        Based on this news: "${newsText}". 
-        Create 1 high-quality MCQ in Hindi. 
-        Format your response EXACTLY like this:
-        [Question Text]
-        (A) Option (B) Option (C) Option (D) Option
-        ---
-        Correct Answer: [Letter] - [Explanation]`;
+            if (!selected) {
+                resultDiv.innerText = "⚠️ कृपया एक विकल्प चुनें!";
+                resultDiv.style.color = "orange";
+                return;
+            }
 
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'accept': 'application/json',
-                    'content-type': 'application/json',
-                    'Authorization': `Bearer ${PPLX_KEY}`
-                },
-                body: JSON.stringify({
-                    model: "sonar-pro",
-                    messages: [
-                        {role: "system", content: "You are a professional NDA Exam expert."},
-                        {role: "user", content: prompt}
-                    ]
-                })
-            });
-
-            const data = await response.json();
-            const aiText = data.choices[0].message.content;
-            
-            // UI Update
-            let [question, answer] = aiText.split("---");
-            
-            document.getElementById(`q-${id}`).innerHTML = `
-                <div class="question-text">${question.trim()}</div>
-                <button class="reveal-btn" onclick="document.getElementById('ans-${id}').style.display='block'">DECLASSIFY ANSWER</button>
-                <div id="ans-${id}" class="ans-box">🎯 <b>VERIFIED:</b> ${answer ? answer.trim() : "See full explanation above."}</div>
-            `;
-
-        } catch (error) {
-            console.error("AI Error:", error);
-            document.getElementById(`q-${id}`).innerHTML = "<span style='color:red;'>AI Intel Interrupted. Check Perplexity Balance.</span>";
+            if (selected.value === correctOption) {
+                resultDiv.innerText = "बिल्कुल सही! ✅ शानदार तैयारी।";
+                resultDiv.style.color = "green";
+            } else {
+                resultDiv.innerText = "ओह! यह गलत है। ❌ सही उत्तर " + correctOption + " है।";
+                resultDiv.style.color = "red";
+            }
         }
-    }
 
-    fetchNews();
-</script>
+        // पेज खुलते ही लोड शुरू करें
+        window.onload = loadContent;
+    </script>
 </body>
 </html>
