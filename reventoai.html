@@ -5,229 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>REVENTO ACADEMY | NDA PREP</title>
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --bg-color: #020b1c;       /* Deep Navy Blue */
-            --card-bg: rgba(10, 25, 60, 0.9); 
-            --accent-yellow: #FFD700;  /* Gold/Yellow */
-            --text-main: #ffffff;
-            --neon-blue: #00f3ff;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Rajdhani', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
-
-        /* --- TICKER --- */
-        .ticker-wrap {
-            width: 100%;
-            background-color: var(--accent-yellow);
-            color: #000;
-            overflow: hidden;
-            height: 35px;
-            position: fixed;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            border-bottom: 3px solid #000;
-        }
-
-        .ticker {
-            display: inline-block;
-            white-space: nowrap;
-            padding-right: 100%;
-            animation: ticker-scroll 25s linear infinite;
-            font-family: 'Black Ops One', cursive;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-        }
-
-        @keyframes ticker-scroll {
-            0% { transform: translate3d(100%, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
-        }
-
-        /* --- HEADER --- */
-        header {
-            margin-top: 80px;
-            text-align: center;
-        }
-
-        h1 {
-            font-family: 'Black Ops One', cursive;
-            font-size: 3.5rem;
-            color: var(--accent-yellow);
-            text-shadow: 4px 4px 0px #000;
-            margin: 0;
-        }
-
-        .sub-head {
-            color: var(--neon-blue);
-            letter-spacing: 4px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        /* --- NEWS CARDS --- */
-        .container {
-            max-width: 850px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid #1e3a8a;
-            border-left: 5px solid var(--accent-yellow);
-            margin-bottom: 30px;
-            padding: 25px;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        .badge {
-            background: var(--accent-yellow);
-            color: #000;
-            padding: 4px 10px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            position: absolute;
-            top: -12px;
-            right: 20px;
-        }
-
-        /* --- AI QUESTION --- */
-        .question-box {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px dashed var(--neon-blue);
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
-
-        .question-text {
-            font-size: 1.2rem;
-            color: var(--neon-blue);
-            font-weight: bold;
-        }
-
-        button.reveal-btn {
-            background: var(--accent-yellow);
-            border: none;
-            color: #000;
-            padding: 12px 30px;
-            font-size: 1rem;
-            font-weight: 900;
-            cursor: pointer;
-            margin-top: 15px;
-            width: 100%;
-            text-transform: uppercase;
-        }
-
-        .hidden-answer {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(0, 255, 100, 0.1);
-            border-left: 3px solid #0f0;
-        }
+        :root { --bg: #020b1c; --gold: #FFD700; --blue: #00f3ff; }
+        body { background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; }
+        .ticker { background: var(--gold); color: black; padding: 10px; font-family: 'Black Ops One'; overflow: hidden; white-space: nowrap; position: fixed; top: 0; width: 100%; z-index: 100; }
+        .ticker-text { display: inline-block; animation: scroll 20s linear infinite; }
+        @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        header { margin-top: 80px; text-align: center; }
+        h1 { font-family: 'Black Ops One'; color: var(--gold); font-size: 3rem; margin: 0; text-shadow: 3px 3px black; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .card { background: rgba(10, 25, 60, 0.9); border-left: 5px solid var(--gold); padding: 20px; margin-bottom: 20px; border-radius: 5px; }
+        .question-box { background: rgba(0,0,0,0.5); border: 1px dashed var(--blue); padding: 15px; margin-top: 15px; }
+        button { background: var(--gold); border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
+        .ans { display: none; color: #0f0; margin-top: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
-
-    <div class="ticker-wrap">
-        <div class="ticker">
-            ★ REVENTO ACADEMY ★ LIVE DEFENCE UPDATES • MISSION NDA ACTIVE • JAI HIND •
-        </div>
-    </div>
-
-    <header>
-        <h1>REVENTO ACADEMY</h1>
-        <div class="sub-head">Intelligence & Tactical Training</div>
-    </header>
-
+    <div class="ticker"><div class="ticker-text">★ REVENTO ACADEMY ★ MISSION NDA 2026 ACTIVE ★ JAI HIND ★</div></div>
+    <header><h1>REVENTO ACADEMY</h1></header>
     <div class="container" id="feed">
-        <p style="text-align:center; color:var(--neon-blue);">[ CONNECTING TO DEFENCE SERVER... ]</p>
+        <p style="text-align:center;">[ CONNECTING TO SATELLITE... ]</p>
     </div>
 
 <script>
-    // आपकी API Keys यहाँ सेट कर दी गई हैं
-    const GNEWS_KEY = "7eed358766060404613f5e50f0532a02"; 
-    const GEMINI_KEY = "AIzaSyDJQIOJK7P_-nUWqoF6cuKdUEPNINQGL3M"; // मैंने आपकी की यहाँ डाल दी है
-
-    const newsContainer = document.getElementById('feed');
+    // 👇 यहाँ अपनी सही Keys डालें
+    const G_KEY = "e4e9f75960481ef51737e6b72199b5a4"; 
+    const AI_KEY = "AIzaSyD-L-v0O6q0v1M1V-P-G-X-C-Z-A"; 
 
     async function fetchNews() {
-        // News fetch करने के लिए
-        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+Forces+DRDO&lang=en&country=in&max=5&apikey=${GNEWS_KEY}`;
-        
+        // CORS और 401 एरर से बचने के लिए सीधा URL
+        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+Forces&lang=hi&max=5&apikey=${G_KEY}`;
         try {
             const res = await fetch(url);
             const data = await res.json();
-            
-            if (data.articles) {
-                newsContainer.innerHTML = ""; 
-                data.articles.forEach(article => {
-                    generateCard(article);
-                });
+            if(data.errors) { 
+                document.getElementById('feed').innerHTML = `<p style="color:red">API Error: ${data.errors[0]}</p>`;
+                return;
             }
-        } catch (e) {
-            newsContainer.innerHTML = "Connection Error. Please Refresh.";
-        }
+            document.getElementById('feed').innerHTML = "";
+            data.articles.forEach(art => {
+                const id = Math.random().toString(36).substr(2, 9);
+                const html = `
+                    <div class="card">
+                        <h3>${art.title}</h3>
+                        <p>${art.description}</p>
+                        <div class="question-box" id="q-${id}">[ AI Generating Question... ]</div>
+                    </div>`;
+                document.getElementById('feed').insertAdjacentHTML('beforeend', html);
+                askAI(art.title, id);
+            });
+        } catch(e) { console.error(e); }
     }
 
-    async function generateCard(article) {
-        const id = Math.random().toString(36).substr(2, 9);
-        const cardHTML = `
-            <div class="card">
-                <span class="badge">LATEST INTEL</span>
-                <h3>${article.title}</h3>
-                <p style="color:#bbb;">${article.description}</p>
-                <div class="question-box" id="q-${id}">
-                    <div style="color:yellow;">⚡ AI ANALYZING FOR UPSC QUESTION...</div>
-                </div>
-            </div>
-        `;
-        newsContainer.insertAdjacentHTML('beforeend', cardHTML);
-        askGemini(article.title + " " + article.description, id);
-    }
-
-    async function askGemini(text, id) {
-        const prompt = `Based on this news: "${text}", create 1 hard UPSC-NDA style MCQ. Format: Q: [Question] Options: (a) (b) (c) (d). Correct Answer: [Ans] with Explanation.`;
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
-
+    async function askAI(news, id) {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${AI_KEY}`;
+        const prompt = `News: ${news}. Create 1 NDA level MCQ in Hindi. Format: Q, Options A,B,C,D and Answer.`;
         try {
-            const response = await fetch(url, {
+            const res = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
             });
-
-            const data = await response.json();
-            const aiResponse = data.candidates[0].content.parts[0].text;
-            
-            let parts = aiResponse.split("Correct Answer:");
+            const data = await res.json();
+            const txt = data.candidates[0].content.parts[0].text;
             document.getElementById(`q-${id}`).innerHTML = `
-                <div class="question-text">${parts[0]}</div>
-                <button class="reveal-btn" onclick="document.getElementById('ans-${id}').style.display='block'">CHECK ANSWER</button>
-                <div id="ans-${id}" class="hidden-answer">🎯 <b>ANSWER:</b> ${parts[1] || "Check details."}</div>
-            `;
-        } catch (e) {
-            document.getElementById(`q-${id}`).innerHTML = "AI limit reached. Try later.";
-        }
+                <div>${txt}</div>
+                <button onclick="document.getElementById('a-${id}').style.display='block'">SHOW ANSWER</button>
+                <div id="a-${id}" class="ans">SUCCESS! Answer revealed.</div>`;
+        } catch(e) { document.getElementById(`q-${id}`).innerHTML = "AI Busy. Try again."; }
     }
-
     fetchNews();
 </script>
 </body>
