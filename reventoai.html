@@ -3,53 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NDA WAR ROOM | REVENTO</title>
+    <title>REVENTO ACADEMY | NDA PREP</title>
     <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --danger: #ff0000;    /* Bright Red */
-            --dark: #0a0a0a;      /* Deep Black */
-            --panel: #1a0505;     /* Dark Redish Black */
-            --text: #ffffff;
-            --neon-glow: 0 0 10px rgba(255, 0, 0, 0.7);
+            /* --- NEW COLOR PALETTE --- */
+            --bg-color: #020b1c;       /* Deep Navy Blue */
+            --card-bg: rgba(10, 25, 60, 0.85); /* Blue Glass */
+            --accent-yellow: #FFD700;  /* Gold/Yellow */
+            --text-main: #ffffff;
+            --neon-blue: #00f3ff;
         }
 
         body {
-            background-color: var(--dark);
-            color: var(--text);
-            font-family: 'Rajdhani', sans-serif; /* Tech/Sci-fi font */
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Rajdhani', sans-serif;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
+            /* Navy Grid Background */
             background-image: 
-                radial-gradient(circle at 50% 50%, rgba(50, 0, 0, 0.5), transparent 70%),
-                linear-gradient(0deg, rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        /* --- SCROLLING TICKER (जोश वाली पट्टी) --- */
+        /* --- SCROLLING TICKER (Black & Yellow) --- */
         .ticker-wrap {
             width: 100%;
-            background-color: var(--danger);
+            background-color: var(--accent-yellow); /* Yellow Background */
+            color: #000; /* Black Text */
             overflow: hidden;
             height: 35px;
-            border-bottom: 2px solid #fff;
-            box-shadow: 0 5px 15px rgba(255,0,0,0.5);
             position: fixed;
             top: 0;
             z-index: 100;
             display: flex;
             align-items: center;
+            border-bottom: 3px solid #000;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         .ticker {
             display: inline-block;
             white-space: nowrap;
             padding-right: 100%;
-            animation: ticker-scroll 20s linear infinite;
-            font-family: 'Black Ops One', cursive; /* Army Stencil Font */
-            font-size: 1.2rem;
-            color: #000;
+            animation: ticker-scroll 25s linear infinite;
+            font-family: 'Black Ops One', cursive;
+            font-size: 1.1rem;
             text-transform: uppercase;
         }
 
@@ -58,134 +60,126 @@
             100% { transform: translate3d(-100%, 0, 0); }
         }
 
-        /* --- MAIN HEADER --- */
+        /* --- HEADER (Revento Academy) --- */
         header {
-            margin-top: 60px; /* Space for ticker */
+            margin-top: 80px;
             text-align: center;
-            border-bottom: 1px solid var(--danger);
             padding-bottom: 20px;
         }
 
         h1 {
             font-family: 'Black Ops One', cursive;
-            font-size: 3rem;
-            color: var(--danger);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 2px 2px 0px #fff, var(--neon-glow);
+            font-size: 3.5rem; /* Big Title */
+            color: var(--accent-yellow); /* Yellow Text */
+            text-shadow: 
+                4px 4px 0px #000, /* Black Shadow for 3D effect */
+                0 0 20px rgba(255, 215, 0, 0.5);
             margin: 0;
-            animation: pulse 2s infinite;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .sub-head {
-            color: #aaa;
-            letter-spacing: 5px;
-            font-size: 1.2rem;
+            color: var(--neon-blue);
+            letter-spacing: 4px;
+            font-size: 1.1rem;
             font-weight: bold;
+            text-transform: uppercase;
+            margin-top: -10px;
         }
 
         /* --- NEWS CARDS --- */
         .container {
-            max-width: 900px;
+            max-width: 850px;
             margin: 20px auto;
             padding: 20px;
         }
 
         .card {
-            background: rgba(20, 0, 0, 0.8);
-            border: 2px solid #333;
-            border-left: 5px solid var(--danger);
+            background: var(--card-bg);
+            border: 1px solid #1e3a8a; /* Dark Blue Border */
+            border-left: 5px solid var(--accent-yellow); /* Yellow Accent */
             margin-bottom: 30px;
-            padding: 20px;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            transition: transform 0.3s;
             position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
-            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .card:hover {
-            transform: scale(1.02);
-            border-color: var(--danger);
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
-            background: #1a0505;
+            transform: translateY(-5px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
         }
 
         .card h3 {
-            font-size: 1.8rem; /* Bigger Font */
+            font-size: 1.6rem;
             margin: 0 0 10px 0;
             color: #fff;
             text-transform: uppercase;
         }
 
-        .ai-badge {
-            background: var(--danger);
-            color: #fff;
-            padding: 3px 8px;
+        .badge {
+            background: var(--accent-yellow);
+            color: #000;
+            padding: 4px 10px;
             font-weight: bold;
             font-size: 0.8rem;
-            border-radius: 2px;
+            border-radius: 4px;
             position: absolute;
-            top: -10px;
-            right: 10px;
-            box-shadow: 0 0 10px var(--danger);
+            top: -12px;
+            right: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* --- QUESTION BOX --- */
+        /* --- QUESTION SECTION --- */
         .question-box {
-            background: #000;
-            border: 1px dashed #555;
-            padding: 15px;
-            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px dashed var(--neon-blue);
+            padding: 20px;
+            margin-top: 20px;
             border-radius: 5px;
         }
 
         .question-text {
-            font-size: 1.3rem;
-            color: #ffd700; /* Gold color for question */
+            font-size: 1.2rem;
+            color: var(--neon-blue); /* Sci-fi Blue text */
             font-weight: bold;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         button.reveal-btn {
-            background: linear-gradient(45deg, #800000, #ff0000);
+            background: linear-gradient(180deg, var(--accent-yellow), #e6c200);
             border: none;
-            color: white;
-            padding: 12px 25px;
+            color: #000;
+            padding: 12px 30px;
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 900;
             cursor: pointer;
             margin-top: 15px;
+            border-radius: 4px;
             width: 100%;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 1px solid #fff;
+            box-shadow: 0 4px 0 #b39700; /* 3D Button Effect */
         }
 
-        button.reveal-btn:hover {
-            background: #fff;
-            color: #d00;
-            box-shadow: 0 0 20px #fff;
+        button.reveal-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
         }
 
         .hidden-answer {
             display: none;
             margin-top: 15px;
             padding: 15px;
-            background: #0f2b0f; /* Green bg for correct answer */
-            border: 1px solid #0f0;
+            background: rgba(0, 255, 100, 0.1);
+            border-left: 3px solid #0f0;
             color: #fff;
-            font-size: 1.1rem;
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; text-shadow: 0 0 20px var(--danger); }
-            100% { opacity: 1; }
-        }
-
-        /* Responsive */
         @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .ticker { font-size: 0.9rem; }
+            h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -193,18 +187,18 @@
 
     <div class="ticker-wrap">
         <div class="ticker">
-            ⚠ MISSION ALERT: NDA 2026 PREPARATION ACTIVE • UPSC LEVEL INTEL LOADED • TARGET: NATIONAL DEFENCE ACADEMY • JAI HIND • REVENTO WAR ROOM ONLINE • 
+            ★ REVENTO ACADEMY EXCLUSIVE ★ NDA/CDS CURRENT AFFAIRS LIVE UPDATE • PREPARING FUTURE WARRIORS • JAI HIND •
         </div>
     </div>
 
     <header>
-        <h1>REVENTO WAR ROOM</h1>
-        <div class="sub-head">INTELLIGENCE & TACTICAL OPERATIONS</div>
+        <h1>REVENTO ACADEMY</h1>
+        <div class="sub-head">Premier Defence Institute</div>
     </header>
 
     <div class="container" id="feed">
-        <p style="text-align:center; color:var(--danger); font-size:1.5rem; animation: blink 1s infinite;">
-            <br><br>CONNECTING TO SATELLITE...
+        <p style="text-align:center; color:var(--neon-blue); font-size:1.2rem;">
+            [ ESTABLISHING SECURE CONNECTION... ]
         </p>
     </div>
 
@@ -213,8 +207,8 @@
     // 👇 यहाँ अपनी KEYS डालें (PASTE KEYS HERE) 👇
     // ============================================
 
-    const NEWS_API_KEY = "YOUR_GNEWS_API_KEY";   // GNews Key
-    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; // Gemini Key
+    const NEWS_API_KEY = "YOUR_GNEWS_API_KEY";   
+    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; 
 
     // ============================================
 
@@ -222,11 +216,12 @@
 
     async function fetchIntel() {
         if(NEWS_API_KEY.includes("YOUR")) {
-            alert("⚠️ WARNING: API Keys not found! Please edit the code.");
+            alert("⚠️ WARNING: API Keys Missing! Code Edit karein.");
             return;
         }
 
-        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+Army+DRDO+Missile&lang=en&country=in&max=5&apikey=${NEWS_API_KEY}`;
+        // Searching for Defence News
+        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+Forces+DRDO+ISRO&lang=en&country=in&max=4&apikey=${NEWS_API_KEY}`;
         
         try {
             const res = await fetch(url);
@@ -238,7 +233,7 @@
             });
         } catch (e) {
             console.error(e);
-            newsContainer.innerHTML = "<h2 style='text-align:center;color:red'>SYSTEM OFFLINE: CHECK INTERNET</h2>";
+            newsContainer.innerHTML = "<h3 style='text-align:center;color:white'>SYSTEM OFFLINE. CHECK CONNECTION.</h3>";
         }
     }
 
@@ -247,13 +242,13 @@
         
         const cardHTML = `
             <div class="card" id="card-${cardId}">
-                <span class="ai-badge">TOP SECRET</span>
+                <span class="badge">UPSC UPDATE</span>
                 <h3>${article.title}</h3>
-                <p style="color:#ccc; font-size:1.1rem;">${article.description}</p>
+                <p style="color:#bbb; font-size:1rem;">${article.description}</p>
                 
                 <div class="question-box" id="q-${cardId}">
-                    <div style="color:var(--danger); font-weight:bold;">
-                        [⚠ ANALYZING INTEL...] AI is generating a question...
+                    <div style="color:yellow; font-weight:bold;">
+                        ⚡ AI GENERATING QUESTION...
                     </div>
                 </div>
             </div>
@@ -268,14 +263,14 @@
 
     async function askGemini(text, id) {
         const prompt = `
-            Based on this news: "${text}", create 1 hard UPSC-NDA style MCQ question.
-            Format exactly like this:
-            QUESTION: [Question Text]
-            (A) [Option A]
-            (B) [Option B]
-            (C) [Option C]
-            (D) [Option D]
-            CORRECT ANSWER: [Option] - [Explanation]
+            Based on this news: "${text}", create 1 conceptual MCQ for NDA Exam.
+            Format:
+            Q: [Question]
+            (a) [Option]
+            (b) [Option]
+            (c) [Option]
+            (d) [Option]
+            Correct: [Answer & Logic]
         `;
 
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
@@ -297,18 +292,18 @@
     }
 
     function renderQuestion(id, text) {
-        // Splitting Question and Answer
-        let parts = text.split("CORRECT ANSWER:");
-        let questionPart = parts[0].replace("QUESTION:", "").trim();
-        let answerPart = parts[1] ? parts[1].trim() : "See details.";
+        // Simple Logic to split Question and Answer
+        let parts = text.split("Correct:");
+        let questionPart = parts[0];
+        let answerPart = parts[1] ? parts[1] : "Details inside.";
 
         const html = `
-            <div class="question-text">Q: ${questionPart}</div>
+            <div class="question-text">${questionPart}</div>
             <button class="reveal-btn" onclick="document.getElementById('ans-${id}').style.display='block'">
-                🔓 DECLASSIFY ANSWER
+                CHECK ANSWER
             </button>
             <div id="ans-${id}" class="hidden-answer">
-                ✅ <b>CORRECT:</b> ${answerPart}
+                🎯 <b>ANSWER:</b> ${answerPart}
             </div>
         `;
         document.getElementById(`q-${id}`).innerHTML = html;
