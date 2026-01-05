@@ -3,85 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rivento Air Force X (Leaderboard Edition)</title>
+    <title>Revento Air Force X (Strict Mode)</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CSS: असली डिजाइन (Sidebar वाला) --- */
-        :root { --af-blue: #00308F; --bg-gray: #eef2f5; --text-dark: #2c3e50; }
-        body { font-family: 'Roboto', sans-serif; background: var(--bg-gray); margin: 0; padding: 0; user-select: none; height: 100vh; overflow: hidden; }
+        :root { --af-blue: #00308F; --bg-gray: #eef2f5; }
+        body { font-family: 'Roboto', sans-serif; background: var(--bg-gray); margin: 0; padding: 0; user-select: none; }
 
-        /* Header Fix */
-        .cbt-header { height: 60px; background: var(--af-blue); color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; position: fixed; top: 0; left: 0; width: 100%; z-index: 100; box-sizing: border-box; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .brand { font-weight: 900; letter-spacing: 1px; font-size: 1.2rem; flex-shrink: 0; margin-right: 10px; white-space: nowrap; }
-        .exam-name { font-size: 0.95rem; opacity: 0.9; text-align: right; line-height: 1.2; display: flex; flex-direction: column; justify-content: center; max-width: 60%; }
-        @media (max-width: 480px) { .brand { font-size: 1rem; } .exam-name { font-size: 0.75rem; white-space: normal; } }
+        /* Header */
+        .cbt-header { height: 60px; background: var(--af-blue); color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2); box-sizing: border-box; }
+        .brand { font-weight: 900; font-size: 1.2rem; flex-shrink: 0; margin-right: 10px; white-space: nowrap; }
+        .exam-name { font-size: 0.9rem; text-align: right; line-height: 1.2; }
 
-        /* Layout */
-        .main-wrapper { display: flex; margin-top: 60px; height: calc(100vh - 60px); }
-        .left-panel { flex: 3; padding: 20px; overflow-y: auto; border-right: 1px solid #ddd; }
-        .right-panel { flex: 1; background: white; display: flex; flex-direction: column; align-items: center; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.05); max-width: 250px; min-width: 200px; }
-
-        /* Components */
-        .profile-box { text-align: center; width: 100%; border-bottom: 2px solid #f1f1f1; padding-bottom: 20px; margin-bottom: 20px; }
-        .candidate-img { width: 100px; height: 100px; border-radius: 8px; border: 3px solid var(--af-blue); object-fit: cover; margin-bottom: 10px; }
-        .candidate-name { font-weight: bold; color: var(--text-dark); display: block; }
-        
-        .timer-display { background: #2c3e50; color: #00ff00; font-family: monospace; font-size: 1.5rem; font-weight: bold; padding: 10px 20px; border-radius: 5px; margin-bottom: 20px; border: 2px solid #555; }
-        
-        /* Questions UI */
-        .tabs-container { display: flex; gap: 5px; margin-bottom: 20px; position: sticky; top: 0; z-index: 50; background: var(--bg-gray); padding-bottom: 10px; }
-        .tab { padding: 8px 15px; font-size: 0.8rem; font-weight: bold; border: 1px solid #ccc; background: #fff; color: #aaa; border-radius: 4px; }
-        .tab.active { background: var(--af-blue); color: white; border-color: var(--af-blue); }
-        
-        .question-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .q-badge { background: var(--af-blue); color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; margin-right: 10px; }
-        .q-text { font-weight: bold; display: inline-block; }
-        .options label { display: flex; align-items: center; padding: 12px; border: 1px solid #eee; margin-top: 10px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        .options label:hover { background: #e3f2fd; }
-        .options input { margin-right: 15px; transform: scale(1.2); }
+        /* Layout (Scroll Fixed) */
+        .main-wrapper { display: flex; margin-top: 60px; height: calc(100vh - 60px); overflow: hidden; }
+        .left-panel { flex: 3; padding: 20px; overflow-y: auto; border-right: 1px solid #ddd; padding-bottom: 120px; } /* Footer space */
+        .right-panel { flex: 1; background: white; padding: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: -2px 0 5px rgba(0,0,0,0.05); }
 
         /* Mobile Fixes */
         @media (max-width: 768px) {
-            .main-wrapper { flex-direction: column; height: auto; overflow: visible; padding-bottom: 80px; }
-            .left-panel { order: 2; width: 100%; border: none; padding: 10px; box-sizing: border-box; }
-            .right-panel { order: 1; width: 100%; max-width: none; flex-direction: row; justify-content: space-between; padding: 10px; min-height: auto; }
-            .profile-box { border: none; margin: 0; padding: 0; text-align: left; display: flex; align-items: center; gap: 10px; width: auto; margin-left: 5px; }
-            .candidate-img { width: 50px; height: 50px; margin: 0; }
-            .candidate-name { font-size: 0.9rem; }
-            .timer-display { margin: 0; font-size: 1.1rem; padding: 5px 10px; margin-right: 15px; }
-            .footer-bar { position: fixed; bottom: 0; left: 0; padding: 10px; background: white; border-top: 1px solid #ddd; z-index: 200; width: 100%; box-sizing: border-box; display: flex; gap: 10px; }
-            .footer-bar .btn { flex: 1; padding: 12px; border: none; border-radius: 5px; font-weight: bold; color: white; cursor: pointer; }
-            .btn-green { background: #2e7d32; }
-            .btn-gray { background: #cfd8dc; color: #333; }
+            .main-wrapper { display: block; height: auto; overflow: visible; margin-bottom: 80px; }
+            .left-panel { width: 100%; border: none; padding: 15px; box-sizing: border-box; overflow: visible; padding-bottom: 100px; }
+            .right-panel { display: none; }
+            .footer-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; gap: 10px; box-sizing: border-box; z-index: 2000; }
         }
-        .desktop-footer { width: 100%; display: flex; flex-direction: column; gap: 10px; }
-        .desktop-footer button { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; }
-        .d-btn-green { background: #2e7d32; }
-        .d-btn-gray { background: #cfd8dc; color: #333; }
-        @media (max-width: 768px) { .desktop-footer { display: none; } }
         @media (min-width: 769px) { .footer-bar { display: none; } }
 
+        /* Components */
+        .tabs-container { display: flex; gap: 5px; margin-bottom: 20px; position: sticky; top: 0; z-index: 50; background: var(--bg-gray); padding: 5px 0; }
+        .tab { padding: 8px 15px; font-size: 0.8rem; font-weight: bold; border: 1px solid #ccc; background: #fff; color: #aaa; border-radius: 4px; cursor: pointer; }
+        .tab.active { background: var(--af-blue); color: white; border-color: var(--af-blue); }
+        .question-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        .options label { display: flex; align-items: center; padding: 10px; border: 1px solid #eee; margin-top: 8px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .options label:hover { background: #e3f2fd; }
+        .options input { margin-right: 12px; transform: scale(1.2); }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 5px; font-weight: bold; color: white; cursor: pointer; }
+        .btn-green { background: #2e7d32; } .btn-gray { background: #cfd8dc; color: #333; }
+
         /* Overlays */
-        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0d1b42, #1a237e); z-index: 2000; display: flex; align-items: center; justify-content: center; }
+        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0d1b42, #1a237e); z-index: 3000; display: flex; align-items: center; justify-content: center; }
+        #loading { display:none; color:white; margin-top:10px; font-weight:bold; }
     </style>
 </head>
 <body>
 
 <div id="login-overlay">
-    <div style="background: white; padding: 40px; border-radius: 15px; text-align: center; width: 90%; max-width: 350px;">
-        <h2 style="color:#00308F; margin:0;">RIVENTO ACADEMY</h2>
-        <p>Air Force Group X (Mock Test)</p>
-        <button onclick="signInWithGoogle()" style="background:#00308F; color:white; border:none; padding:12px 30px; border-radius:30px; font-weight:bold; cursor:pointer;">Login with Google</button>
+    <div style="background: white; padding: 40px; border-radius: 15px; text-align: center; width: 85%; max-width: 350px;">
+        <h2 style="color:#00308F; margin:0;">RIVENTO</h2>
+        <p>Air Force X Group</p>
+        <button onclick="signInWithGoogle()" style="background:#00308F; color:white; border:none; padding:12px 30px; border-radius:30px; font-weight:bold; cursor:pointer; width:100%;">Login with Google</button>
+        <div id="loading">Checking Record...</div>
     </div>
 </div>
 
 <div class="cbt-header">
-    <div class="brand">RIVENTO</div>
-    <div class="exam-name">Group X (Technical)</div>
+    <div class="brand">REVENTO ACADEMY</div>
+    <div class="exam-name">Group X (Tech) <span id="mob-timer" style="margin-left:10px; font-family:monospace; color:#0f0;">20:00</span></div>
 </div>
 
-<div class="main-wrapper" id="exam-ui" style="display:none;">
+<div class="main-wrapper" id="exam-ui">
     <div class="left-panel">
         <div class="tabs-container">
             <div id="tab-0" class="tab active">PHYSICS</div>
@@ -89,36 +69,36 @@
             <div id="tab-2" class="tab">ENGLISH</div>
         </div>
         <form id="quizForm">
-            <div id="cont-0" style="display:block;"></div> <div id="cont-1" style="display:none;"></div>  <div id="cont-2" style="display:none;"></div>  </form>
+            <div id="cont-0" style="display:block;"></div>
+            <div id="cont-1" style="display:none;"></div>
+            <div id="cont-2" style="display:none;"></div>
+        </form>
     </div>
+
     <div class="right-panel">
-        <div class="profile-box">
-            <img id="user-photo" class="candidate-img" src="" alt="Candidate">
-            <span id="user-name" class="candidate-name">Student</span>
-            <span style="font-size:0.8rem; color:#777;">ID: AF-2026-X</span>
+        <div style="text-align:center; margin-bottom:20px;">
+            <img id="user-photo" src="" style="width:80px; height:80px; border-radius:8px; border:3px solid #00308F;">
+            <div id="user-name" style="font-weight:bold; margin-top:5px;">User</div>
         </div>
-        <div class="timer-display" id="timer">20:00</div>
-        <div class="desktop-footer">
-            <button class="d-btn-gray" onclick="document.getElementById('quizForm').reset()">Clear</button>
-            <button class="d-btn-green" id="next-btn-pc" onclick="nextSection()">Save & Next</button>
-        </div>
+        <div style="background:#2c3e50; color:#0f0; padding:10px; font-size:1.5rem; font-weight:bold; border-radius:5px; margin-bottom:20px;" id="pc-timer">20:00</div>
+        <button class="btn-green" style="width:100%; padding:12px; margin-bottom:10px;" onclick="nextSection()">SAVE & NEXT</button>
+        <button class="btn-gray" style="width:100%; padding:12px;" onclick="document.getElementById('quizForm').reset()">CLEAR</button>
     </div>
 </div>
 
 <div class="footer-bar">
     <button class="btn btn-gray" onclick="document.getElementById('quizForm').reset()">Clear</button>
-    <button class="btn btn-green" id="next-btn-mob" onclick="nextSection()">Save & Next</button>
+    <button class="btn btn-green" id="mob-next-btn" onclick="nextSection()">Save & Next</button>
 </div>
 
 <script type="module">
-    // 👇 यहाँ मैंने IMPORT सही कर दिया है ताकि लीडरबोर्ड चले 👇
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // 🔴🔴 अपनी FIREBASE KEY यहाँ डालें 🔴🔴
+    // 🔴🔴 सबसे जरुरी: अपनी FIREBASE API KEY यहाँ डालें 🔴🔴
     const firebaseConfig = {
-         apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+      apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
   authDomain: "revento-academy.firebaseapp.com",
   databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
   projectId: "revento-academy",
@@ -127,20 +107,14 @@
   appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
   measurementId: "G-4L8YC6J095"
 };
-
     // 🚀 QUESTION BANK
     const PHYSICS_QS = [
         { q: "Unit of Force?", a: "Joule", b: "Newton", c: "Watt", d: "Volt", ans: "b" },
-        { q: "Scalar Quantity?", a: "Force", b: "Speed", c: "Velocity", d: "Time", ans: "b" },
+        { q: "Vector Quantity?", a: "Speed", b: "Mass", c: "Velocity", d: "Time", ans: "c" },
+        { q: "Light year is unit of?", a: "Time", b: "Distance", c: "Light", d: "Mass", ans: "b" },
     ];
-    const MATH_QS = [
-        { q: "Value of sin(0)?", a: "0", b: "1", c: "-1", d: "Inf", ans: "a" },
-        { q: "Derivative of x^2?", a: "x", b: "2x", c: "x^2", d: "0", ans: "b" },
-    ];
-    const ENG_QS = [
-        { q: "Synonym of 'FAST'?", a: "Slow", b: "Quick", c: "Lazy", d: "Calm", ans: "b" },
-        { q: "Plural of 'Box'?", a: "Boxs", b: "Boxies", c: "Boxes", d: "None", ans: "c" },
-    ];
+    const MATH_QS = [ { q: "Value of sin(0)?", a: "0", b: "1", c: "-1", d: "Inf", ans: "a" } ];
+    const ENG_QS = [ { q: "Synonym of FAST?", a: "Slow", b: "Quick", c: "Lazy", d: "Calm", ans: "b" } ];
 
     // SYSTEM LOGIC
     const app = initializeApp(firebaseConfig);
@@ -149,113 +123,114 @@
     const provider = new GoogleAuthProvider();
     let currentUser, timerInt, time=1200, currentSec=0;
 
-    function generateHTML(data, containerID, prefix) {
-        let html = "";
+    // Generate HTML
+    function renderQ(data, id, pre) {
+        let h = "";
         data.forEach((item, i) => {
-            html += `
-            <div class="question-card">
-                <span class="q-badge">Q${i+1}</span> <div class="q-text">${item.q}</div>
-                <div class="options">
-                    <label><input type="radio" name="${prefix}${i}" value="a"> ${item.a}</label>
-                    <label><input type="radio" name="${prefix}${i}" value="b"> ${item.b}</label>
-                    <label><input type="radio" name="${prefix}${i}" value="c"> ${item.c}</label>
-                    <label><input type="radio" name="${prefix}${i}" value="d"> ${item.d}</label>
-                </div>
-            </div>`;
+            h += `<div class="question-card"><span style="font-weight:bold; color:#00308F;">Q${i+1}</span> <b>${item.q}</b>
+            <div class="options">
+                <label><input type="radio" name="${pre}${i}" value="a"> ${item.a}</label>
+                <label><input type="radio" name="${pre}${i}" value="b"> ${item.b}</label>
+                <label><input type="radio" name="${pre}${i}" value="c"> ${item.c}</label>
+                <label><input type="radio" name="${pre}${i}" value="d"> ${item.d}</label>
+            </div></div>`;
         });
-        document.getElementById(containerID).innerHTML = html;
+        document.getElementById(id).innerHTML = h;
     }
+    renderQ(PHYSICS_QS, "cont-0", "p");
+    renderQ(MATH_QS, "cont-1", "m");
+    renderQ(ENG_QS, "cont-2", "e");
 
-    generateHTML(PHYSICS_QS, "cont-0", "p");
-    generateHTML(MATH_QS, "cont-1", "m");
-    generateHTML(ENG_QS, "cont-2", "e");
-
+    // Login Logic
     window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e => alert(e));
 
-    onAuthStateChanged(auth, (user) => {
+    // 👇 MAIN LOGIC: CHECK IF USER ALREADY SUBMITTED 👇
+    onAuthStateChanged(auth, async (user) => {
         if(user) {
             currentUser = user;
-            document.getElementById('login-overlay').style.display='none';
-            document.getElementById('exam-ui').style.display='flex';
-            document.getElementById('user-name').innerText = user.displayName;
-            document.getElementById('user-photo').src = user.photoURL;
-            startTimer();
+            document.getElementById('loading').style.display = 'block';
+            
+            // Check Database
+            const docRef = doc(db, "airforce_attempts", user.uid);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                // 🛑 BANNED: Already took test
+                alert("आपने यह टेस्ट पहले ही दे दिया है! (You have already attempted this test). सीधा रिजल्ट देखें।");
+                showFinalResult(docSnap.data());
+                document.getElementById('login-overlay').style.display = 'none';
+            } else {
+                // ✅ ALLOWED: First time
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('user-name').innerText = user.displayName;
+                document.getElementById('user-photo').src = user.photoURL;
+                startTimer();
+            }
         }
     });
 
     function startTimer() {
-        time = 20 * 60; 
+        time = 20 * 60;
         clearInterval(timerInt);
         timerInt = setInterval(() => {
             time--;
             let m = Math.floor(time/60).toString().padStart(2,'0');
             let s = (time%60).toString().padStart(2,'0');
-            document.getElementById('timer').innerText = `${m}:${s}`;
+            document.getElementById('pc-timer').innerText = `${m}:${s}`;
+            document.getElementById('mob-timer').innerText = `${m}:${s}`;
             if(time <= 0) nextSection(true);
         }, 1000);
     }
 
     window.nextSection = (auto=false) => {
-        if(!auto && !confirm("Move to next section?")) return;
-        
-        if(currentSec < 2) {
+        if(!auto && !confirm("Save & Next?")) return;
+        if (currentSec < 2) {
             document.getElementById(`cont-${currentSec}`).style.display='none';
             document.getElementById(`tab-${currentSec}`).classList.remove('active');
             currentSec++;
             document.getElementById(`cont-${currentSec}`).style.display='block';
             document.getElementById(`tab-${currentSec}`).classList.add('active');
+            window.scrollTo(0,0);
             if(currentSec===2) {
-                document.getElementById('next-btn-pc').innerText = "Submit Exam";
-                document.getElementById('next-btn-mob').innerText = "Submit Exam";
+                document.getElementById('mob-next-btn').innerText = "SUBMIT EXAM";
+                document.getElementById('mob-next-btn').style.background = "#d32f2f";
             }
             startTimer();
         } else {
-            calculateResult();
+            submitExam();
         }
     };
 
-    async function calculateResult() {
+    async function submitExam() {
         clearInterval(timerInt);
         let score=0, correct=0, wrong=0;
         const form = document.getElementById('quizForm');
         const formData = new FormData(form);
 
-        PHYSICS_QS.forEach((q, i) => { let val = formData.get(`p${i}`); if(val === q.ans) { score++; correct++; } else if(val) { score-=0.25; wrong++; } });
-        MATH_QS.forEach((q, i) => { let val = formData.get(`m${i}`); if(val === q.ans) { score++; correct++; } else if(val) { score-=0.25; wrong++; } });
-        ENG_QS.forEach((q, i) => { let val = formData.get(`e${i}`); if(val === q.ans) { score++; correct++; } else if(val) { score-=0.25; wrong++; } });
+        PHYSICS_QS.forEach((q, i) => { let v = formData.get(`p${i}`); if(v===q.ans){score++; correct++} else if(v){score-=0.25; wrong++} });
+        MATH_QS.forEach((q, i) => { let v = formData.get(`m${i}`); if(v===q.ans){score++; correct++} else if(v){score-=0.25; wrong++} });
+        ENG_QS.forEach((q, i) => { let v = formData.get(`e${i}`); if(v===q.ans){score++; correct++} else if(v){score-=0.25; wrong++} });
 
-        // 👇 RESULT HTML WITH LEADERBOARD 👇
+        const resultData = { name: currentUser.displayName, score, correct, wrong, timestamp: new Date() };
+
+        // Save to DB (So they can't take it again)
+        await setDoc(doc(db, "airforce_attempts", currentUser.uid), resultData);
+        showFinalResult(resultData);
+    }
+
+    function showFinalResult(data) {
         document.body.innerHTML = `
-            <div style="padding:20px; text-align:center; font-family:Roboto; overflow-y:auto; height:100vh;">
+            <div style="padding:40px; text-align:center; font-family:Roboto;">
                 <h1 style="color:#00308F">RESULT</h1>
-                <div style="font-size:4rem; font-weight:900; color:#00308F;">${score}</div>
-                <div style="display:flex; justify-content:center; gap:15px; margin:20px 0;">
-                    <div style="background:#e8f5e9; padding:10px;"><strong style="color:green">${correct}</strong> Correct</div>
-                    <div style="background:#ffebee; padding:10px;"><strong style="color:red">${wrong}</strong> Wrong</div>
+                <div style="font-size:4rem; font-weight:900; color:#00308F;">${data.score}</div>
+                <p>Marks</p>
+                <div style="margin:20px 0;">
+                    <span style="color:green; font-weight:bold; margin-right:15px;">Correct: ${data.correct}</span>
+                    <span style="color:red; font-weight:bold;">Wrong: ${data.wrong}</span>
                 </div>
-                <h3>🏆 TOP 10 RANKERS</h3>
-                <table id="lb" style="width:100%; max-width:500px; margin:0 auto; border-collapse:collapse; text-align:left;">
-                    <tr style="background:#00308F; color:white;"><th style="padding:10px;">Rank</th><th>Name</th><th>Score</th></tr>
-                    <tr><td colspan="3" style="padding:10px;">Loading ranks...</td></tr>
-                </table>
-                <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px; background:#333; color:white; border:none; border-radius:5px;">Close</button>
+                <button onclick="location.reload()" style="background:#333; color:white; padding:10px 20px; border:none; border-radius:5px;">Close</button>
             </div>
         `;
-        
-        // Save to Firebase
-        await setDoc(doc(db, "airforce_ranks_final", currentUser.uid), {
-            name: currentUser.displayName, score, correct, wrong, timestamp: new Date()
-        });
-
-        // 👇 FETCH LEADERBOARD 👇
-        const q = query(collection(db, "airforce_ranks_final"), orderBy("score", "desc"), limit(10));
-        const snap = await getDocs(q);
-        let html = `<tr style="background:#00308F; color:white;"><th style="padding:10px;">Rank</th><th>Name</th><th>Score</th></tr>`;
-        let r = 1;
-        snap.forEach(d => {
-            html += `<tr style="border-bottom:1px solid #ddd;"><td style="padding:10px;">#${r++}</td><td>${d.data().name}</td><td>${d.data().score}</td></tr>`;
-        });
-        document.getElementById('lb').innerHTML = html;
     }
 </script>
 </body>
