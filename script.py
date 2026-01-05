@@ -4,7 +4,7 @@ import datetime
 import google.generativeai as genai
 
 # Security: GitHub Secrets से API Key उठाएगा
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = os.getenv("AIzaSyDVVKHllpddYD-hkXVwWWeK53AyIfGm0CE")
 genai.configure(api_key=api_key)
 
 def generate_content():
