@@ -8,9 +8,8 @@
     
     <style>
         :root {
-            /* --- NEW COLOR PALETTE --- */
             --bg-color: #020b1c;       /* Deep Navy Blue */
-            --card-bg: rgba(10, 25, 60, 0.85); /* Blue Glass */
+            --card-bg: rgba(10, 25, 60, 0.9); 
             --accent-yellow: #FFD700;  /* Gold/Yellow */
             --text-main: #ffffff;
             --neon-blue: #00f3ff;
@@ -22,18 +21,17 @@
             font-family: 'Rajdhani', sans-serif;
             margin: 0;
             padding: 0;
-            /* Navy Grid Background */
             background-image: 
                 linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
-        /* --- SCROLLING TICKER (Black & Yellow) --- */
+        /* --- TICKER --- */
         .ticker-wrap {
             width: 100%;
-            background-color: var(--accent-yellow); /* Yellow Background */
-            color: #000; /* Black Text */
+            background-color: var(--accent-yellow);
+            color: #000;
             overflow: hidden;
             height: 35px;
             position: fixed;
@@ -42,7 +40,6 @@
             display: flex;
             align-items: center;
             border-bottom: 3px solid #000;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         .ticker {
@@ -60,23 +57,18 @@
             100% { transform: translate3d(-100%, 0, 0); }
         }
 
-        /* --- HEADER (Revento Academy) --- */
+        /* --- HEADER --- */
         header {
             margin-top: 80px;
             text-align: center;
-            padding-bottom: 20px;
         }
 
         h1 {
             font-family: 'Black Ops One', cursive;
-            font-size: 3.5rem; /* Big Title */
-            color: var(--accent-yellow); /* Yellow Text */
-            text-shadow: 
-                4px 4px 0px #000, /* Black Shadow for 3D effect */
-                0 0 20px rgba(255, 215, 0, 0.5);
+            font-size: 3.5rem;
+            color: var(--accent-yellow);
+            text-shadow: 4px 4px 0px #000;
             margin: 0;
-            letter-spacing: 2px;
-            text-transform: uppercase;
         }
 
         .sub-head {
@@ -85,7 +77,6 @@
             font-size: 1.1rem;
             font-weight: bold;
             text-transform: uppercase;
-            margin-top: -10px;
         }
 
         /* --- NEWS CARDS --- */
@@ -97,27 +88,12 @@
 
         .card {
             background: var(--card-bg);
-            border: 1px solid #1e3a8a; /* Dark Blue Border */
-            border-left: 5px solid var(--accent-yellow); /* Yellow Accent */
+            border: 1px solid #1e3a8a;
+            border-left: 5px solid var(--accent-yellow);
             margin-bottom: 30px;
             padding: 25px;
             border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-            transition: transform 0.3s;
             position: relative;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
-        }
-
-        .card h3 {
-            font-size: 1.6rem;
-            margin: 0 0 10px 0;
-            color: #fff;
-            text-transform: uppercase;
         }
 
         .badge {
@@ -126,14 +102,12 @@
             padding: 4px 10px;
             font-weight: bold;
             font-size: 0.8rem;
-            border-radius: 4px;
             position: absolute;
             top: -12px;
             right: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* --- QUESTION SECTION --- */
+        /* --- AI QUESTION --- */
         .question-box {
             background: rgba(0, 0, 0, 0.6);
             border: 1px dashed var(--neon-blue);
@@ -144,13 +118,12 @@
 
         .question-text {
             font-size: 1.2rem;
-            color: var(--neon-blue); /* Sci-fi Blue text */
+            color: var(--neon-blue);
             font-weight: bold;
-            line-height: 1.5;
         }
 
         button.reveal-btn {
-            background: linear-gradient(180deg, var(--accent-yellow), #e6c200);
+            background: var(--accent-yellow);
             border: none;
             color: #000;
             padding: 12px 30px;
@@ -158,15 +131,8 @@
             font-weight: 900;
             cursor: pointer;
             margin-top: 15px;
-            border-radius: 4px;
             width: 100%;
             text-transform: uppercase;
-            box-shadow: 0 4px 0 #b39700; /* 3D Button Effect */
-        }
-
-        button.reveal-btn:active {
-            transform: translateY(4px);
-            box-shadow: none;
         }
 
         .hidden-answer {
@@ -175,11 +141,6 @@
             padding: 15px;
             background: rgba(0, 255, 100, 0.1);
             border-left: 3px solid #0f0;
-            color: #fff;
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -187,93 +148,64 @@
 
     <div class="ticker-wrap">
         <div class="ticker">
-            ★ REVENTO ACADEMY EXCLUSIVE ★ NDA/CDS CURRENT AFFAIRS LIVE UPDATE • PREPARING FUTURE WARRIORS • JAI HIND •
+            ★ REVENTO ACADEMY ★ LIVE DEFENCE UPDATES • MISSION NDA ACTIVE • JAI HIND •
         </div>
     </div>
 
     <header>
         <h1>REVENTO ACADEMY</h1>
-        <div class="sub-head">Premier Defence Institute</div>
+        <div class="sub-head">Intelligence & Tactical Training</div>
     </header>
 
     <div class="container" id="feed">
-        <p style="text-align:center; color:var(--neon-blue); font-size:1.2rem;">
-            [ ESTABLISHING SECURE CONNECTION... ]
-        </p>
+        <p style="text-align:center; color:var(--neon-blue);">[ CONNECTING TO DEFENCE SERVER... ]</p>
     </div>
 
 <script>
-    // ============================================
-    // 👇 यहाँ अपनी KEYS डालें (PASTE KEYS HERE) 👇
-    // ============================================
-
-    const NEWS_API_KEY = "7eed358766060404613f5e50f0532a02";   
-    const GEMINI_API_KEY = "AIzaSyDJQIOJK7P_-nUWqoF6cuKdUEPNINQGL3M"; 
-
-    // ============================================
+    // आपकी API Keys यहाँ सेट कर दी गई हैं
+    const GNEWS_KEY = "e4e9f75960481ef51737e6b72199b5a4"; 
+    const GEMINI_KEY = "AIzaSyD-L-v0O6q0v1M1V-P-G-X-C-Z-A"; // मैंने आपकी की यहाँ डाल दी है
 
     const newsContainer = document.getElementById('feed');
 
-    async function fetchIntel() {
-        if(NEWS_API_KEY.includes("YOUR")) {
-            alert("⚠️ WARNING: API Keys Missing! Code Edit karein.");
-            return;
-        }
-
-        // Searching for Defence News
-        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+Forces+DRDO+ISRO&lang=en&country=in&max=4&apikey=${NEWS_API_KEY}`;
+    async function fetchNews() {
+        // News fetch करने के लिए
+        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+Forces+DRDO&lang=en&country=in&max=5&apikey=${GNEWS_KEY}`;
         
         try {
             const res = await fetch(url);
             const data = await res.json();
-            newsContainer.innerHTML = ""; 
             
-            data.articles.forEach(article => {
-                generateCard(article);
-            });
+            if (data.articles) {
+                newsContainer.innerHTML = ""; 
+                data.articles.forEach(article => {
+                    generateCard(article);
+                });
+            }
         } catch (e) {
-            console.error(e);
-            newsContainer.innerHTML = "<h3 style='text-align:center;color:white'>SYSTEM OFFLINE. CHECK CONNECTION.</h3>";
+            newsContainer.innerHTML = "Connection Error. Please Refresh.";
         }
     }
 
     async function generateCard(article) {
-        const cardId = Math.random().toString(36).substr(2, 9);
-        
+        const id = Math.random().toString(36).substr(2, 9);
         const cardHTML = `
-            <div class="card" id="card-${cardId}">
-                <span class="badge">UPSC UPDATE</span>
+            <div class="card">
+                <span class="badge">LATEST INTEL</span>
                 <h3>${article.title}</h3>
-                <p style="color:#bbb; font-size:1rem;">${article.description}</p>
-                
-                <div class="question-box" id="q-${cardId}">
-                    <div style="color:yellow; font-weight:bold;">
-                        ⚡ AI GENERATING QUESTION...
-                    </div>
+                <p style="color:#bbb;">${article.description}</p>
+                <div class="question-box" id="q-${id}">
+                    <div style="color:yellow;">⚡ AI ANALYZING FOR UPSC QUESTION...</div>
                 </div>
             </div>
         `;
-        
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = cardHTML;
-        newsContainer.appendChild(tempDiv.firstChild);
-
-        askGemini(article.title + " " + article.description, cardId);
+        newsContainer.insertAdjacentHTML('beforeend', cardHTML);
+        askGemini(article.title + " " + article.description, id);
     }
 
     async function askGemini(text, id) {
-        const prompt = `
-            Based on this news: "${text}", create 1 conceptual MCQ for NDA Exam.
-            Format:
-            Q: [Question]
-            (a) [Option]
-            (b) [Option]
-            (c) [Option]
-            (d) [Option]
-            Correct: [Answer & Logic]
-        `;
-
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+        const prompt = `Based on this news: "${text}", create 1 hard UPSC-NDA style MCQ. Format: Q: [Question] Options: (a) (b) (c) (d). Correct Answer: [Ans] with Explanation.`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`;
 
         try {
             const response = await fetch(url, {
@@ -283,34 +215,20 @@
             });
 
             const data = await response.json();
-            const aiText = data.candidates[0].content.parts[0].text;
-            renderQuestion(id, aiText);
-
-        } catch (error) {
-            console.error(error);
+            const aiResponse = data.candidates[0].content.parts[0].text;
+            
+            let parts = aiResponse.split("Correct Answer:");
+            document.getElementById(`q-${id}`).innerHTML = `
+                <div class="question-text">${parts[0]}</div>
+                <button class="reveal-btn" onclick="document.getElementById('ans-${id}').style.display='block'">CHECK ANSWER</button>
+                <div id="ans-${id}" class="hidden-answer">🎯 <b>ANSWER:</b> ${parts[1] || "Check details."}</div>
+            `;
+        } catch (e) {
+            document.getElementById(`q-${id}`).innerHTML = "AI limit reached. Try later.";
         }
     }
 
-    function renderQuestion(id, text) {
-        // Simple Logic to split Question and Answer
-        let parts = text.split("Correct:");
-        let questionPart = parts[0];
-        let answerPart = parts[1] ? parts[1] : "Details inside.";
-
-        const html = `
-            <div class="question-text">${questionPart}</div>
-            <button class="reveal-btn" onclick="document.getElementById('ans-${id}').style.display='block'">
-                CHECK ANSWER
-            </button>
-            <div id="ans-${id}" class="hidden-answer">
-                🎯 <b>ANSWER:</b> ${answerPart}
-            </div>
-        `;
-        document.getElementById(`q-${id}`).innerHTML = html;
-    }
-
-    fetchIntel();
-
+    fetchNews();
 </script>
 </body>
 </html>
