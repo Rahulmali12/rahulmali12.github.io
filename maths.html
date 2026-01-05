@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVENTO MATHS | NDA PREP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        :root {
+            --navy: #020b1c;
+            --gold: #FFD700;
+            --neon-blue: #00f3ff;
+            --card: rgba(10, 25, 60, 0.9);
+        }
+
+        body {
+            background-color: var(--navy);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            background-image: radial-gradient(circle at center, #0a1942 0%, #020b1c 100%);
+        }
+
+        .ticker-wrap {
+            width: 100%;
+            background: var(--gold);
+            color: #000;
+            height: 35px;
+            position: fixed;
+            top: 0;
+            display: flex;
+            align-items: center;
+            font-family: 'Black Ops One', cursive;
+            z-index: 100;
+            border-bottom: 2px solid #000;
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll 20s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        header {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Black Ops One', cursive;
+            color: var(--gold);
+            font-size: 3rem;
+            text-shadow: 3px 3px 0 #000;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .math-card {
+            background: var(--card);
+            border: 2px solid #1e3a8a;
+            border-left: 6px solid var(--gold);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .q-header {
+            color: var(--neon-blue);
+            font-weight: bold;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 5px;
+        }
+
+        .math-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .generate-btn {
+            background: linear-gradient(180deg, var(--gold), #ccac00);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            text-transform: uppercase;
+            box-shadow: 0 5px 0 #806b00;
+        }
+
+        .generate-btn:active { transform: translateY(3px); box-shadow: none; }
+
+        .solution-btn {
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .solution-box {
+            display: none;
+            background: rgba(0,0,0,0.4);
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #0f0;
+            color: #afffaf;
+        }
+    </style>
+</head>
+<body>
+
+<div class="ticker-wrap">
+    <div class="ticker">
+        ★ MATHS SPECIAL OPS ★ TARGET: 120 QUESTIONS • 300 MARKS • CALCULATION SPEED: ACTIVE • JAI HIND •
+    </div>
+</div>
+
+<header>
+    <h1>REVENTO MATHS</h1>
+    <p style="letter-spacing: 3px; color: var(--neon-blue);">UPSC NDA AI-PRACTICE WING</p>
+</header>
+
+<div class="container">
+    <button class="generate-btn" onclick="generateMathQuestion()">GENERATE NEW MISSION (QUESTION)</button>
+    <br><br>
+    
+    <div class="math-card" id="math-card" style="display:none;">
+        <div class="q-header">MISSION OBJECTIVE:</div>
+        <div id="question-area" class="math-text">
+            [ AI Is Calculating... ]
+        </div>
+        
+        <button class="solution-btn" onclick="toggleSolution()">DECLASSIFY SOLUTION</button>
+        <div id="solution-box" class="solution-box"></div>
+    </div>
+</div>
+
+<script>
+    const GEMINI_API_KEY = "AIzaSyDJQIOJK7P_-nUWqoF6cuKdUEPNINQGL3M"; 
+
+    async function generateMathQuestion() {
+        const card = document.getElementById('math-card');
+        const qArea = document.getElementById('question-area');
+        const sBox = document.getElementById('solution-box');
+        
+        card.style.display = 'block';
+        sBox.style.display = 'none';
+        qArea.innerHTML = "🌀 AI is crafting a UPSC Level Question...";
+
+        const prompt = "Create 1 hard UPSC NDA level Mathematics question from topics like Calculus, Vectors, or Matrices. Provide 4 options (a,b,c,d). Also provide a detailed step-by-step solution. Format: Question, then Options, then Solution. Use LaTeX for math symbols.";
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+
+            const data = await response.json();
+            const fullText = data.candidates[0].content.parts[0].text;
+            
+            // Logic to separate Question and Solution
+            let parts = fullText.split("Solution");
+            qArea.innerHTML = parts[0].replace(/\*\*/g, ""); // Clean formatting
+            sBox.innerHTML = "<b>SOLUTION:</b><br>" + (parts[1] ? parts[1] : "Not generated.");
+            
+            // Re-render Math symbols
+            MathJax.typeset();
+
+        } catch (error) {
+            qArea.innerHTML = "Error: Check API Key or Connection.";
+        }
+    }
+
+    function toggleSolution() {
+        const box = document.getElementById('solution-box');
+        box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+    }
+</script>
+
+</body>
+</html>
