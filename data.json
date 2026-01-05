@@ -1,8 +1,41 @@
 {
-    "date": "05 जनवरी 2026",
-    "topic": "मिशन शक्ति - एंटी सैटेलाइट मिसाइल",
-    "notes": "भारत ने स्वदेशी रूप से विकसित एंटी-सैटेलाइट (ASAT) मिसाइल का सफल परीक्षण किया है। इसके साथ ही भारत अंतरिक्ष में मलबे को नष्ट करने की क्षमता रखने वाला चौथा देश बन गया है।",
-    "question": "भारत ASAT मिसाइल परीक्षण करने वाला दुनिया का कौन सा देश बना है?",
-    "options": ["A. दूसरा", "B. तीसरा", "C. चौथा", "D. पाँचवा"],
-    "answer": "C"
+  "date": "05 January 2026",
+  "articles": [
+    {
+      "topic": "Mission Divyastra: Agni-5 MIRV",
+      "notes": "Bharat ne MIRV technology ke saath Agni-5 missile ka safal parikshan kiya hai. Ye ek saath kai targets ko nishana bana sakti hai aur iski range 5000km+ hai.",
+      "question": "Agni-5 missile ki range lagbhag kitni hai?",
+      "options": [
+        "A. 1000 km",
+        "B. 3000 km",
+        "C. 5000 km se zyada",
+        "D. 500 km"
+      ],
+      "answer": "C"
+    },
+    {
+      "topic": "Exercise SHAKTI 2024",
+      "notes": "Ye Bharat aur France ke beech hone wala ek sanyukt sainya abhyas (Military Exercise) hai jo aatankwad virodhi abhiyanon par kendrit hai.",
+      "question": "Exercise 'SHAKTI' kin do deshon ke beech hoti hai?",
+      "options": [
+        "A. Bharat aur Russia",
+        "B. Bharat aur France",
+        "C. Bharat aur USA",
+        "D. Bharat aur Japan"
+      ],
+      "answer": "B"
+    },
+    {
+      "topic": "BrahMos Missile Export",
+      "notes": "Bharat ne Philippines ko BrahMos supersonic cruise missiles ki pehli khep export ki hai. Ye Bharat ke defence export sector ke liye badi uplabdhi hai.",
+      "question": "Bharat ne BrahMos missile kis desh ko export ki hai?",
+      "options": [
+        "A. Vietnam",
+        "B. Philippines",
+        "C. Indonesia",
+        "D. Brazil"
+      ],
+      "answer": "B"
+    }
+  ]
 }
