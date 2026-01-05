@@ -2,122 +2,97 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Airforce Group X Maths Complete Formula Book</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airforce Group X Maths Formula E-Book - Part 1</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; padding: 10px; }
-        .container { max-width: 1000px; margin: auto; background: #161b22; padding: 30px; border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
-        h1 { text-align: center; color: #58a6ff; text-transform: uppercase; border-bottom: 4px solid #f0883e; padding-bottom: 15px; font-size: 2.2em; }
-        h2 { color: #f0883e; background: rgba(240, 136, 62, 0.1); padding: 12px; border-radius: 8px; border-left: 6px solid #f0883e; margin-top: 45px; font-size: 1.5em; }
-        .section { margin-bottom: 25px; padding: 15px; border-radius: 8px; background: #21262d; border: 1px solid #30363d; }
-        .chapter-title { font-weight: bold; font-size: 1.2em; color: #79c0ff; margin-bottom: 10px; display: block; }
-        .trick { background: rgba(35, 134, 54, 0.15); border: 1px dashed #238636; color: #3fb950; padding: 10px; border-radius: 6px; margin: 10px 0; font-weight: bold; }
-        .formula { font-size: 1.15em; margin: 10px 0; color: #ffffff; }
-        footer { text-align: center; margin-top: 50px; font-size: 0.9em; color: #8b949e; }
+        :root { --primary: #007bff; --success: #28a745; --warning: #ffc107; --danger: #dc3545; --dark: #121212; --card-bg: #1e1e1e; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--dark); color: #e0e0e0; line-height: 1.6; margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; }
+        .header { text-align: center; border-bottom: 4px solid var(--primary); padding-bottom: 20px; margin-bottom: 40px; }
+        .header h1 { color: var(--primary); font-size: 2.5em; margin: 0; }
+        .chapter-box { background: var(--card-bg); border-radius: 10px; padding: 25px; margin-bottom: 30px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        h2 { color: var(--warning); border-left: 5px solid var(--warning); padding-left: 15px; text-transform: uppercase; font-size: 1.4em; }
+        .formula-list { margin: 15px 0; font-size: 1.1em; }
+        .important-note { background: rgba(220, 53, 69, 0.1); border: 1px solid var(--danger); color: #ff8080; padding: 10px; border-radius: 5px; margin: 10px 0; font-weight: bold; }
+        .trick-card { background: rgba(40, 167, 69, 0.1); border-left: 5px solid var(--success); color: #a8e6cf; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .highlight { color: var(--primary); font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>✈️ Airforce Group X: Complete Maths Formula E-Book</h1>
-    <p style="text-align: center;">Sabhi Chapters | Shortcut Tricks | Hindi Mein</p>
-
-    <h2>I. Algebra (बीजगणित)</h2>
-    
-    <div class="section">
-        <span class="chapter-title">1. Sets, Relations & Functions (समुच्चय और संबंध)</span>
-        <div class="formula">
-            • \(n(A \cup B) = n(A) + n(B) - n(A \cap B)\)<br>
-            • Subsets (उप-समुच्चय) की संख्या = \(2^n\)<br>
-            • Proper Subsets की संख्या = \(2^n - 1\)
-        </div>
-        <div class="trick">TRICK: Total relations from A to B = \(2^{n(A) \times n(B)}\)</div>
+    <div class="header">
+        <h1>Airforce Group X Mathematics</h1>
+        <p>Complete Exam-Oriented Formula Book (Part 1)</p>
     </div>
 
-    <div class="section">
-        <span class="chapter-title">2. Complex Numbers (सम्मिश्र संख्याएँ)</span>
-        <div class="formula">
-            • \(i = \sqrt{-1}, i^2 = -1, i^3 = -i, i^4 = 1\)<br>
-            • \(\omega^3 = 1, 1 + \omega + \omega^2 = 0\)<br>
-            • Modulus \(|z| = \sqrt{x^2+y^2}\)
+    <div class="chapter-box">
+        <h2>1. Sets, Relations & Functions (समुच्चय और संबंध)</h2>
+        <div class="formula-list">
+            • कुल Subsets (उप-समुच्चय): \(2^n\) <br>
+            • Proper Subsets: \(2^n - 1\) <br>
+            • \(n(A \cup B) = n(A) + n(B) - n(A \cap B)\) <br>
+            • Total Relations from A to B: \(2^{n(A) \times n(B)}\)
         </div>
-        <div class="trick">TRICK: \((1+i)^2 = 2i\) aur \((1-i)^2 = -2i\)</div>
-    </div>
-
-    <div class="section">
-        <span class="chapter-title">3. Quadratic Equations (द्विघात समीकरण)</span>
-        <div class="formula">
-            • \(ax^2 + bx + c = 0\) के मूल: \(x = \frac{-b \pm \sqrt{D}}{2a}\) (जहाँ \(D = b^2 - 4ac\))<br>
-            • मूलों का योग (\(\alpha+\beta\)) = \(-b/a\)<br>
-            • मूलों का गुणनफल (\(\alpha\beta\)) = \(c/a\)
+        <div class="important-note">NOTE: "Empty Set" (\(\phi\)) har set ka subset hota hai.</div>
+        <div class="trick-card">
+            <strong>TRICK:</strong> Agar ek relation Reflexive, Symmetric aur Transitive teeno hai, to use आंख बंद karke <b>Equivalence Relation</b> tick karein.
         </div>
     </div>
 
-    <h2>II. Trigonometry (त्रिकोणमिति)</h2>
-    <div class="section">
-        <span class="chapter-title">4. Trigonometric Functions & Inverse</span>
-        <div class="formula">
-            • \(\sin^2 \theta + \cos^2 \theta = 1\)<br>
-            • \(\sin(A+B) = \sin A \cos B + \cos A \sin B\)<br>
-            • \(\cos 2\theta = 2\cos^2 \theta - 1 = 1 - 2\sin^2 \theta\)<br>
-            • \(\sin^{-1}x + \cos^{-1}x = \pi/2\)
+    <div class="chapter-box">
+        <h2>2. Complex Numbers (सम्मिश्र संख्याएँ)</h2>
+        <div class="formula-list">
+            • \(i = \sqrt{-1}, i^2 = -1, i^3 = -i, i^4 = 1\) <br>
+            • Cube roots of unity: \(1, \omega, \omega^2\) <br>
+            • \(1 + \omega + \omega^2 = 0\) aur \(\omega^3 = 1\) <br>
+            • Modulus \(|z| = \sqrt{x^2+y^2}\) | Argument \(\theta = \tan^{-1}(y/x)\)
         </div>
-        <div class="trick">TRICK: \(\tan(45 + \theta) = \frac{1 + \tan \theta}{1 - \tan \theta}\)</div>
-    </div>
-
-    <h2>III. Calculus (कलन शास्त्र)</h2>
-    <div class="section">
-        <span class="chapter-title">5. Limits & Differentiation (सीमा और अवकलन)</span>
-        <div class="formula">
-            • \(\lim_{x \to 0} \frac{\sin x}{x} = 1\)<br>
-            • \(\frac{d}{dx}(\tan x) = \sec^2 x\)<br>
-            • \(\frac{d}{dx}(\log x) = 1/x\)
-        </div>
-        <div class="trick">TRICK: L'Hospital Rule tab lagayein jab \(\frac{0}{0}\) या \(\frac{\infty}{\infty}\) form ho.</div>
-    </div>
-
-    <div class="section">
-        <span class="chapter-title">6. Integration (समाकलन)</span>
-        <div class="formula">
-            • \(\int x^n dx = \frac{x^{n+1}}{n+1} + C\)<br>
-            • \(\int e^x [f(x) + f'(x)] dx = e^x f(x) + C\)<br>
-            • \(\int \frac{1}{\sqrt{a^2-x^2}} dx = \sin^{-1}(x/a) + C\)
+        <div class="trick-card">
+            <strong>SUPER TRICK:</strong> \(\omega = \frac{-1+i\sqrt{3}}{2}\) aur \(\omega^2 = \frac{-1-i\sqrt{3}}{2}\). <br>
+            Agar Exam mein \(x^2 + x + 1 = 0\) dikhe, to iske roots hamesha \(\omega, \omega^2\) hote hain.
         </div>
     </div>
 
-    <h2>IV. Geometry & Vectors</h2>
-    <div class="section">
-        <span class="chapter-title">7. Conic Sections (Straight Lines, Circle, Parabola, Ellipse)</span>
-        <div class="formula">
-            • Straight Line: \(y = mx + c\)<br>
-            • Parabola: \(y^2 = 4ax\) (Focus: \(a, 0\))<br>
-            • Ellipse Eccentricity: \(e = \sqrt{1 - \frac{b^2}{a^2}}\)
+    <div class="chapter-box">
+        <h2>3. Quadratic Equation (द्विघात समीकरण)</h2>
+        <div class="formula-list">
+            • Roots: \(x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}\) <br>
+            • Sum of roots (\(\alpha+\beta\)): \(-b/a\) <br>
+            • Product of roots (\(\alpha\beta\)): \(c/a\) <br>
+            • Condition for Real Roots: \(D \ge 0\)
         </div>
+        <div class="important-note">IMPORTANT: Agar roots reciprocal (व्युत्क्रम) hain, to \(a = c\) hoga.</div>
     </div>
 
-    <div class="section">
-        <span class="chapter-title">8. Vectors & 3D Geometry</span>
-        <div class="formula">
-            • Dot Product: \(\vec{a} \cdot \vec{b} = |a||b|\cos\theta\)<br>
-            • Distance formula in 3D: \(d = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2 + (z_2-z_1)^2}\)
+    <div class="chapter-box">
+        <h2>4. Logarithm (लघुगणक)</h2>
+        <div class="formula-list">
+            • \(\log_a(mn) = \log_a m + \log_a n\) <br>
+            • \(\log_a(m/n) = \log_a m - \log_a n\) <br>
+            • \(\log_a m^n = n \log_a m\) <br>
+            • \(\log_b a = \frac{\log a}{\log b}\) (Base Change Formula)
         </div>
+        <div class="trick-card">TRICK: \(\log_a a = 1\) aur \(\log_x 1 = 0\) (Hamesha yaad rakhein).</div>
     </div>
 
-    <h2>V. Probability & Statistics</h2>
-    <div class="section">
-        <span class="chapter-title">9. Probability & Statistics (प्रायिकता)</span>
-        <div class="formula">
-            • \(P(A \cup B) = P(A) + P(B) - P(A \cap B)\)<br>
-            • Mean of 'n' natural numbers: \((n+1)/2\)<br>
-            • Variance (\(n^2-1\))/12
+    <div class="chapter-box">
+        <h2>5. Trigonometry (त्रिकोणमिति)</h2>
+        <div class="formula-list">
+            • \(\sin(A \pm B) = \sin A \cos B \pm \cos A \sin B\) <br>
+            • \(\cos(A \pm B) = \cos A \cos B \mp \sin A \sin B\) <br>
+            • \(\cos 2\theta = \cos^2 \theta - \sin^2 \theta = 2\cos^2 \theta - 1 = 1 - 2\sin^2 \theta\) <br>
+            • \(\sin 2\theta = 2\sin \theta \cos \theta = \frac{2\tan \theta}{1+\tan^2 \theta}\)
         </div>
+        <div class="trick-card">
+            <strong>EXAM TRICK:</strong> \(\sin \theta \cdot \sin(60-\theta) \cdot \sin(60+\theta) = \frac{1}{4} \sin 3\theta\) <br>
+            Isi tarah \(\cos\) ke liye bhi yahi rule lagta hai.
+        </div>
+        <div class="important-note">NOTE: Maximum value of \(a\sin\theta + b\cos\theta\) is \(\sqrt{a^2+b^2}\).</div>
     </div>
 
-    <footer>
-        © 2026 Airforce Success Mission - Saare Chapters Covered.
-    </footer>
 </div>
-
 </body>
 </html>
