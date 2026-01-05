@@ -2,99 +2,93 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Airforce Maths Brahmastra E-Book</title>
+    <title>Airforce Maths E-Book - Final Edition</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #0b0e14; color: #e0e0e0; line-height: 1.5; }
-        .page { width: 800px; margin: 20px auto; background: #1a1d23; padding: 40px; border-radius: 15px; border: 2px solid #3498db; box-shadow: 0 0 20px #3498db; }
-        h1 { text-align: center; color: #3498db; font-size: 35px; text-transform: uppercase; border-bottom: 3px solid #f1c40f; padding-bottom: 10px; }
-        h2 { background: #3498db; color: white; padding: 10px; border-radius: 5px; margin-top: 30px; font-size: 20px; }
-        .formula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .box { background: #252932; padding: 15px; border-radius: 8px; border-left: 4px solid #f1c40f; }
-        .trick-box { background: #27ae6033; border: 1px dashed #27ae60; color: #2ecc71; padding: 10px; margin-top: 10px; font-weight: bold; border-radius: 5px; }
-        .highlight { color: #f1c40f; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #f8fafc; padding: 20px; }
+        .ebook-page { max-width: 900px; margin: auto; background: #1e293b; border: 2px solid #38bdf8; border-radius: 15px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { text-align: center; color: #38bdf8; text-transform: uppercase; border-bottom: 4px solid #f59e0b; padding-bottom: 10px; font-size: 2.5em; }
+        h2 { color: #f59e0b; background: rgba(245, 158, 11, 0.1); padding: 10px; border-radius: 5px; border-left: 6px solid #f59e0b; margin-top: 40px; }
+        .formula-box { background: #334155; padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid #475569; font-size: 1.1em; }
+        .trick-tag { color: #22c55e; font-weight: bold; background: rgba(34, 197, 94, 0.1); padding: 5px 10px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+        .note { color: #f87171; font-style: italic; font-size: 0.9em; }
     </style>
 </head>
 <body>
 
-<div class="page">
-    <h1>✈️ AIRFORCE MATHS MASTER BOOK</h1>
-    <p style="text-align:center;">Complete Revision: Navy SSR | Airforce Group X | NDA</p>
+<div class="ebook-page">
+    <h1>🚀 AIRFORCE MATHS BRAHMASTRA</h1>
+    <p style="text-align:center;">Full Syllabus Revision | Shortcut Tricks | PDF Ready</p>
 
-    <h2>1. SETS, RELATIONS & FUNCTIONS</h2>
-    <div class="formula-grid">
-        <div class="box">
-            • Subsets = $2^n$ <br>
-            • Proper Subsets = $2^n - 1$ <br>
-            • $n(A \cup B) = n(A) + n(B) - n(A \cap B)$
-        </div>
-        <div class="trick-box">
-            TRICK: Agar Relation 'Reflexive, Symmetric aur Transitive' teeno ho, to wo "Equivalence Relation" hota hai.
-        </div>
+    <h2>1. Algebra (बीजगणित)</h2>
+    
+    <div class="formula-box">
+        <strong>Quadratic Equations:</strong><br>
+        Roots: \(x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}\)<br>
+        Sum of roots: \(\alpha + \beta = -b/a\)<br>
+        Product: \(\alpha\beta = c/a\)
     </div>
 
-    <h2>2. LOGARITHM (लघुगणक)</h2>
-    <div class="box">
-        • $\log(mn) = \log m + \log n$ <br>
-        • $\log(m/n) = \log m - \log n$ <br>
-        • $\log_a b = \frac{\log_c b}{\log_c a}$ (Base change formula)
+    <div class="formula-box">
+        <span class="trick-tag">TRICK:</span> Agar \(a+b+c=0\) ho, toh roots hamesha \(1\) aur \(c/a\) honge.
     </div>
 
-    <h2>3. COMPLEX NUMBERS</h2>
-    <div class="formula-grid">
-        <div class="box">
-            • $i = \sqrt{-1}, i^2 = -1, i^3 = -i, i^4 = 1$ <br>
-            • Cube roots of unity: $1, \omega, \omega^2$ <br>
-            • $1 + \omega + \omega^2 = 0, \omega^3 = 1$
-        </div>
-        <div class="trick-box">
-            TRICK: $(1+i)^2 = 2i$ aur $(1-i)^2 = -2i$. Ye exams mein seedha aata hai!
-        </div>
+    <div class="formula-box">
+        <strong>Complex Numbers:</strong><br>
+        Cube roots of unity: \(1, \omega, \omega^2\)<br>
+        Sum: \(1 + \omega + \omega^2 = 0\)<br>
+        Square root of \(i\): \(\pm\frac{1}{\sqrt{2}}(1+i)\)
     </div>
 
-    <h2>4. SEQUENCE & SERIES (AP, GP, HP)</h2>
-    <div class="box">
-        • AP: $T_n = a + (n-1)d$ | $S_n = \frac{n}{2}[2a + (n-1)d]$ <br>
-        • GP: $T_n = ar^{n-1}$ | $S_\infty = \frac{a}{1-r}$ (agar $|r| < 1$) <br>
-        <span class="highlight">Relation: $AM \ge GM \ge HM$</span>
+    <h2>2. Trigonometry (त्रिकोणमिति)</h2>
+    
+    <div class="formula-box">
+        <strong>Multiple Angles:</strong><br>
+        \(\sin 2\theta = 2\sin\theta\cos\theta = \frac{2\tan\theta}{1+\tan^2\theta}\)<br>
+        \(\cos 2\theta = \cos^2\theta - \sin^2\theta = 1-2\sin^2\theta = 2\cos^2\theta-1\)
     </div>
 
-    <h2>5. TRIGONOMETRY (Most Important)</h2>
-    <div class="box">
-        • $\sin 2\theta = 2\sin \theta \cos \theta$ <br>
-        • $\cos 2\theta = 2\cos^2 \theta - 1 = 1 - 2\sin^2 \theta$ <br>
-        • $\tan(A+B) = \frac{\tan A + \tan B}{1 - \tan A \tan B}$
-    </div>
-    <div class="trick-box">
-        TRICK: $\sin\theta \cdot \sin(60-\theta) \cdot \sin(60+\theta) = \frac{1}{4} \sin 3\theta$
+    <div class="formula-box">
+        <span class="trick-tag">TRICK:</span> \(\tan(45^\circ + \theta) = \frac{1+\tan\theta}{1-\tan\theta}\) <br>
+        Ye sawal Exams mein baar-baar pucha jata hai!
     </div>
 
-    <h2>6. CALCULUS (Differentiation & Integration)</h2>
-    <div class="formula-grid">
-        <div class="box">
-            • $\frac{d}{dx}(\tan x) = \sec^2 x$ <br>
-            • $\int \frac{1}{\sqrt{a^2-x^2}} dx = \sin^{-1}(x/a) + C$
-        </div>
-        <div class="box">
-            • $\int e^x[f(x) + f'(x)] dx = e^x f(x) + C$ <br>
-            • $\lim_{x \to 0} \frac{e^x - 1}{x} = 1$
-        </div>
+    <h2>3. Calculus (कलन शास्त्र)</h2>
+    
+    <div class="formula-box">
+        <strong>Integration (समाकलन):</strong><br>
+        \(\int \frac{1}{\sqrt{a^2-x^2}} dx = \sin^{-1}(\frac{x}{a}) + C\)<br>
+        \(\int e^x [f(x) + f'(x)] dx = e^x f(x) + C\)
     </div>
 
-    <h2>7. CONIC SECTIONS</h2>
-    <div class="box">
-        • Parabola: $y^2 = 4ax$ (Focus: $a,0$) <br>
-        • Ellipse: $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ | $e = \sqrt{1 - \frac{b^2}{a^2}}$ <br>
-        • Hyperbola: $e = \sqrt{1 + \frac{b^2}{a^2}}$
+    <div class="formula-box">
+        <span class="trick-tag">CALCULUS TRICK:</span> \(\int_0^{\pi/2} \frac{\sin^n x}{\sin^n x + \cos^n x} dx = \frac{\pi}{4}\) (Hamesha!)
     </div>
 
-    <h2>8. PROBABILITY (प्रायिकता)</h2>
-    <div class="box">
-        • $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ <br>
-        • Independent Events: $P(A \cap B) = P(A) \cdot P(B)$ <br>
-        • Bayes' Theorem: Reverse probability find karne ke liye.
+    <h2>4. Coordinate Geometry (निर्देशांक ज्यामिति)</h2>
+    
+    <div class="formula-box">
+        <strong>Circle:</strong> \(x^2 + y^2 + 2gx + 2fy + c = 0\)<br>
+        Center: \((-g, -f)\) | Radius: \(\sqrt{g^2+f^2-c}\)
     </div>
 
-    <p style="text-align:center; color:#7f8c8d; margin-top:50px;">© 2026 Airforce Success Guide | Taiyari Jeet Ki!</p>
+    <div class="formula-box">
+        <strong>Eccentricity (e):</strong><br>
+        Parabola: \(e = 1\)<br>
+        Ellipse: \(e < 1\) | Hyperbola: \(e > 1\)
+    </div>
+
+    <h2>5. Probability (प्रायिकता)</h2>
+    <div class="formula-box">
+        \(P(A|B) = \frac{P(A \cap B)}{P(B)}\)<br>
+        Variance of first 'n' natural numbers: \(\frac{n^2-1}{12}\)
+    </div>
+
+    <p style="text-align: center; margin-top: 50px; opacity: 0.5;">
+        Complete Airforce Revision Material © 2026
+    </p>
 </div>
 
 </body>
