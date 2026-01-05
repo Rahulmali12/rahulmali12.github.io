@@ -5,25 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NDA UPSC Daily 20 Quiz</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; user-select: none; }
-        .container { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h1 { color: #1a237e; text-align: center; border-bottom: 3px solid #ff9800; }
-        .notes-section { background: #fff8e1; padding: 15px; border-radius: 8px; border-left: 5px solid #ff9800; margin-bottom: 20px; }
-        .quiz-section { background: #e8eaf6; padding: 20px; border-radius: 8px; }
-        .option { display: block; background: white; margin: 10px 0; padding: 12px; border-radius: 5px; cursor: pointer; border: 1px solid #ddd; }
-        .nav-btns { display: flex; justify-content: space-between; margin-top: 20px; }
-        button { background: #1a237e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        #result { font-weight: bold; text-align: center; margin-top: 15px; }
-        #pageNo { font-weight: bold; align-self: center; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; user-select: none; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h1 { color: #1a237e; text-align: center; font-size: 22px; border-bottom: 3px solid #ff9800; padding-bottom: 5px; }
+        .notes-section { background: #fff8e1; padding: 15px; border-radius: 8px; border-left: 5px solid #ff9800; margin-bottom: 15px; font-size: 16px; line-height: 1.5; }
+        .quiz-section { background: #e8eaf6; padding: 15px; border-radius: 8px; }
+        .option { display: block; background: white; margin: 8px 0; padding: 10px; border-radius: 5px; cursor: pointer; border: 1px solid #ddd; font-size: 15px; }
+        .nav-btns { display: flex; justify-content: space-between; margin-top: 15px; }
+        button { background: #1a237e; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        #result { font-weight: bold; text-align: center; margin-top: 10px; font-size: 17px; }
+        #pageNo { font-weight: bold; align-self: center; color: #555; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div class="container">
-        <h1>NDA/UPSC Daily 20</h1>
+<body oncontextmenu="return false;">
+    <div class="container">
+        <h1>NDA UPSC डेली 20 अभ्यास</h1>
         <div id="quiz-wrapper">
-            <div id="content">लोड हो रहा है...</div>
+            <div id="content">डेटा लोड हो रहा है... कृपया इंतज़ार करें।</div>
             <div class="nav-btns">
                 <button onclick="changePage(-1)">← पिछला</button>
-                <span id="pageNo">1 / 20</span>
+                <span id="pageNo">0 / 0</span>
                 <button onclick="changePage(1)">अगला →</button>
             </div>
             <div id="result"></div>
@@ -34,19 +35,28 @@
         let currentIdx = 0;
         let quizData = [];
 
-        fetch('data.json')
-            .then(res => res.json())
-            .then(data => {
+        async function fetchData() {
+            try {
+                const res = await fetch('data.json');
+                if (!res.ok) throw new Error("data.json फाइल नहीं मिली");
+                const data = await res.json();
                 quizData = data.articles;
-                showQuestion(0);
-            });
+                if (quizData && quizData.length > 0) {
+                    showQuestion(0);
+                } else {
+                    document.getElementById('content').innerText = "अभी कोई प्रश्न उपलब्ध नहीं हैं।";
+                }
+            } catch (err) {
+                document.getElementById('content').innerHTML = "<b style='color:red;'>त्रुटि:</b> डेटा लोड नहीं हो सका। कृपया 'Actions' में जाकर चेक करें कि स्क्रिप्ट चली या नहीं।";
+            }
+        }
 
         function showQuestion(idx) {
             const item = quizData[idx];
             document.getElementById('result').innerText = "";
             document.getElementById('content').innerHTML = `
                 <div class="notes-section">
-                    <h3>${idx + 1}. ${item.topic}</h3>
+                    <h3 style="margin-top:0;">${idx + 1}. ${item.topic}</h3>
                     <p>${item.notes}</p>
                 </div>
                 <div class="quiz-section">
@@ -69,6 +79,8 @@
                 showQuestion(currentIdx);
             }
         }
+
+        fetchData();
     </script>
 </body>
 </html>
