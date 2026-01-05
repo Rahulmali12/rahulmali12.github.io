@@ -1,19 +1,27 @@
 import json
-from datetime import datetime
+import datetime
+import feedparser # इसे चलाने के लिए 'pip install feedparser' चाहिए होगा
 
-def generate_content():
-    # यह डेटा हर रोज अपडेट होगा
-    today_data = {
-        "date": datetime.now().strftime("%d %B %Y"),
-        "topic": "ब्रह्मोस मिसाइल निर्यात समझौता",
-        "notes": "भारत ने फिलीपींस को ब्रह्मोस सुपरसोनिक क्रूज मिसाइलों की पहली खेप सौंपी है। यह भारत के रक्षा निर्यात के लिए एक बड़ा मील का पत्थर है। ब्रह्मोस को भारत (DRDO) और रूस ने मिलकर बनाया है।",
-        "question": "ब्रह्मोस मिसाइल को किन दो देशों ने संयुक्त रूप से विकसित किया है?",
-        "options": ["A. भारत और इजराइल", "B. भारत और अमेरिका", "C. भारत और रूस", "D. भारत और फ्रांस"],
-        "answer": "C"
-    }
+def get_live_news():
+    # Google News RSS for Defense and India News
+    feed = feedparser.parse("https://news.google.com/rss/search?q=Indian+Defense+UPSC&hl=hi&gl=IN&ceid=IN:hi")
+    articles = []
     
-    with open('data.json', 'w', encoding='utf-8') as f:
-        json.dump(today_data, f, ensure_full_ascii=False, indent=4)
+    # टॉप 5 खबरें चुनना
+    for entry in feed.entries[:5]:
+        articles.append({
+            "topic": entry.title,
+            "notes": "विस्तृत जानकारी के लिए आज के समाचार पत्र पढ़ें। यह समाचार रक्षा/यूपीएससी के लिए महत्वपूर्ण है।",
+            "question": "उपरोक्त समाचार किस क्षेत्र से संबंधित है?",
+            "options": ["A. रक्षा", "B. खेल", "C. नियुक्तियां", "D. पुरस्कार"],
+            "answer": "A"
+        })
+    
+    return {
+        "date": str(datetime.date.today()),
+        "articles": articles
+    }
 
-if __name__ == "__main__":
-    generate_content()
+data = get_live_news()
+with open('data.json', 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_full_ascii=False, indent=4)
