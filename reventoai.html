@@ -3,256 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REVENTO DEFENCE INTELLIGENCE</title>
+    <title>NDA WAR ROOM | REVENTO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- MILITARY THEME --- */
         :root {
-            --neon: #00ff41; /* Hacker Green */
-            --dark: #050505; /* Deep Black */
-            --glass: rgba(0, 59, 0, 0.2);
-            --border: 1px solid var(--neon);
+            --danger: #ff0000;    /* Bright Red */
+            --dark: #0a0a0a;      /* Deep Black */
+            --panel: #1a0505;     /* Dark Redish Black */
+            --text: #ffffff;
+            --neon-glow: 0 0 10px rgba(255, 0, 0, 0.7);
         }
 
         body {
             background-color: var(--dark);
-            color: #fff;
-            font-family: 'Courier New', Courier, monospace;
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif; /* Tech/Sci-fi font */
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(50, 0, 0, 0.5), transparent 70%),
+                linear-gradient(0deg, rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+        }
+
+        /* --- SCROLLING TICKER (जोश वाली पट्टी) --- */
+        .ticker-wrap {
+            width: 100%;
+            background-color: var(--danger);
+            overflow: hidden;
+            height: 35px;
+            border-bottom: 2px solid #fff;
+            box-shadow: 0 5px 15px rgba(255,0,0,0.5);
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            padding-right: 100%;
+            animation: ticker-scroll 20s linear infinite;
+            font-family: 'Black Ops One', cursive; /* Army Stencil Font */
+            font-size: 1.2rem;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        @keyframes ticker-scroll {
+            0% { transform: translate3d(100%, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* --- MAIN HEADER --- */
+        header {
+            margin-top: 60px; /* Space for ticker */
+            text-align: center;
+            border-bottom: 1px solid var(--danger);
+            padding-bottom: 20px;
         }
 
         h1 {
-            text-align: center;
-            color: var(--neon);
+            font-family: 'Black Ops One', cursive;
+            font-size: 3rem;
+            color: var(--danger);
             text-transform: uppercase;
-            border-bottom: 2px solid var(--neon);
-            padding-bottom: 15px;
-            text-shadow: 0 0 10px var(--neon);
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 0px #fff, var(--neon-glow);
+            margin: 0;
+            animation: pulse 2s infinite;
         }
 
-        .status-bar {
-            text-align: center;
+        .sub-head {
             color: #aaa;
-            font-size: 0.8rem;
-            margin-bottom: 30px;
-            animation: blink 2s infinite;
-        }
-
-        /* CARD DESIGN */
-        .card {
-            background: var(--glass);
-            border: var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
-        }
-
-        .news-title {
-            color: #fff;
+            letter-spacing: 5px;
             font-size: 1.2rem;
             font-weight: bold;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 10px;
-        }
-        
-        .news-title:hover {
-            color: var(--neon);
-            text-decoration: underline;
         }
 
-        .source-tag {
-            background: var(--neon);
-            color: #000;
-            padding: 2px 8px;
+        /* --- NEWS CARDS --- */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(20, 0, 0, 0.8);
+            border: 2px solid #333;
+            border-left: 5px solid var(--danger);
+            margin-bottom: 30px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            border-color: var(--danger);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+            background: #1a0505;
+        }
+
+        .card h3 {
+            font-size: 1.8rem; /* Bigger Font */
+            margin: 0 0 10px 0;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .ai-badge {
+            background: var(--danger);
+            color: #fff;
+            padding: 3px 8px;
             font-weight: bold;
-            font-size: 0.7rem;
-            margin-right: 10px;
+            font-size: 0.8rem;
+            border-radius: 2px;
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            box-shadow: 0 0 10px var(--danger);
         }
 
-        /* AI QUESTION SECTION */
-        .ai-section {
+        /* --- QUESTION BOX --- */
+        .question-box {
+            background: #000;
+            border: 1px dashed #555;
+            padding: 15px;
             margin-top: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            border-left: 3px solid var(--neon);
-            padding: 10px;
+            border-radius: 5px;
         }
 
-        .ai-label {
-            color: var(--neon);
+        .question-text {
+            font-size: 1.3rem;
+            color: #ffd700; /* Gold color for question */
             font-weight: bold;
-            font-size: 0.9rem;
-            display: block;
-            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        button.reveal-btn {
+            background: linear-gradient(45deg, #800000, #ff0000);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid #fff;
+        }
+
+        button.reveal-btn:hover {
+            background: #fff;
+            color: #d00;
+            box-shadow: 0 0 20px #fff;
         }
 
         .hidden-answer {
             display: none;
-            margin-top: 10px;
-            color: yellow;
-            border-top: 1px dashed #555;
-            padding-top: 5px;
+            margin-top: 15px;
+            padding: 15px;
+            background: #0f2b0f; /* Green bg for correct answer */
+            border: 1px solid #0f0;
+            color: #fff;
+            font-size: 1.1rem;
         }
 
-        button {
-            background: transparent;
-            border: 1px solid var(--neon);
-            color: var(--neon);
-            padding: 5px 15px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-family: inherit;
-            font-weight: bold;
-            text-transform: uppercase;
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; text-shadow: 0 0 20px var(--danger); }
+            100% { opacity: 1; }
         }
 
-        button:hover {
-            background: var(--neon);
-            color: #000;
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .ticker { font-size: 0.9rem; }
         }
-
-        @keyframes blink { 50% { opacity: 0.5; } }
-        
-        .loader { text-align: center; padding: 20px; color: var(--neon); }
     </style>
 </head>
 <body>
 
-    <h1>Revento War-Room</h1>
-    <div class="status-bar">SYSTEM ONLINE | CONNECTED TO SATELLITE FEED</div>
-
-    <div id="news-feed">
-        <div class="loader">
-            [SCANNING GLOBAL DEFENCE NEWS...]<br>
-            Please wait...
+    <div class="ticker-wrap">
+        <div class="ticker">
+            ⚠ MISSION ALERT: NDA 2026 PREPARATION ACTIVE • UPSC LEVEL INTEL LOADED • TARGET: NATIONAL DEFENCE ACADEMY • JAI HIND • REVENTO WAR ROOM ONLINE • 
         </div>
     </div>
 
+    <header>
+        <h1>REVENTO WAR ROOM</h1>
+        <div class="sub-head">INTELLIGENCE & TACTICAL OPERATIONS</div>
+    </header>
+
+    <div class="container" id="feed">
+        <p style="text-align:center; color:var(--danger); font-size:1.5rem; animation: blink 1s infinite;">
+            <br><br>CONNECTING TO SATELLITE...
+        </p>
+    </div>
+
 <script>
-    // --- API KEYS (Inserted Successfully) ---
-    const NEWS_API_KEY = "7eed358766060404613f5e50f0532a02"; 
-    const GEMINI_API_KEY = "AIzaSyDJQIOJK7P_-nUWqoF6cuKdUEPNINQGL3M"; 
+    // ============================================
+    // 👇 यहाँ अपनी KEYS डालें (PASTE KEYS HERE) 👇
+    // ============================================
 
-    const feedContainer = document.getElementById('news-feed');
+    const NEWS_API_KEY = "YOUR_GNEWS_API_KEY";   // GNews Key
+    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; // Gemini Key
 
-    // 1. NEWS FETCH FUNCTION
-    async function startSystem() {
-        // Searching for Indian Defence News
-        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+DRDO+Army+Missile&lang=en&country=in&max=3&apikey=${NEWS_API_KEY}`;
+    // ============================================
+
+    const newsContainer = document.getElementById('feed');
+
+    async function fetchIntel() {
+        if(NEWS_API_KEY.includes("YOUR")) {
+            alert("⚠️ WARNING: API Keys not found! Please edit the code.");
+            return;
+        }
+
+        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+Army+DRDO+Missile&lang=en&country=in&max=5&apikey=${NEWS_API_KEY}`;
         
         try {
-            const response = await fetch(url);
-            const data = await response.json();
-
-            if(!data.articles) {
-                feedContainer.innerHTML = "<p style='color:red; text-align:center'>ERROR: API LIMIT REACHED OR INVALID KEY</p>";
-                return;
-            }
-
-            feedContainer.innerHTML = ""; // Clear loader
-
-            // Process top 3 articles
-            data.articles.slice(0, 3).forEach((article, index) => {
-                createCard(article, index);
+            const res = await fetch(url);
+            const data = await res.json();
+            newsContainer.innerHTML = ""; 
+            
+            data.articles.forEach(article => {
+                generateCard(article);
             });
+        } catch (e) {
+            console.error(e);
+            newsContainer.innerHTML = "<h2 style='text-align:center;color:red'>SYSTEM OFFLINE: CHECK INTERNET</h2>";
+        }
+    }
+
+    async function generateCard(article) {
+        const cardId = Math.random().toString(36).substr(2, 9);
+        
+        const cardHTML = `
+            <div class="card" id="card-${cardId}">
+                <span class="ai-badge">TOP SECRET</span>
+                <h3>${article.title}</h3>
+                <p style="color:#ccc; font-size:1.1rem;">${article.description}</p>
+                
+                <div class="question-box" id="q-${cardId}">
+                    <div style="color:var(--danger); font-weight:bold;">
+                        [⚠ ANALYZING INTEL...] AI is generating a question...
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = cardHTML;
+        newsContainer.appendChild(tempDiv.firstChild);
+
+        askGemini(article.title + " " + article.description, cardId);
+    }
+
+    async function askGemini(text, id) {
+        const prompt = `
+            Based on this news: "${text}", create 1 hard UPSC-NDA style MCQ question.
+            Format exactly like this:
+            QUESTION: [Question Text]
+            (A) [Option A]
+            (B) [Option B]
+            (C) [Option C]
+            (D) [Option D]
+            CORRECT ANSWER: [Option] - [Explanation]
+        `;
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+
+            const data = await response.json();
+            const aiText = data.candidates[0].content.parts[0].text;
+            renderQuestion(id, aiText);
 
         } catch (error) {
             console.error(error);
-            feedContainer.innerHTML = "<p style='color:red; text-align:center'>SYSTEM OFFLINE: CHECK INTERNET</p>";
         }
     }
 
-    // 2. CREATE CARD & CALL AI
-    function createCard(article, index) {
-        const cardId = `intel-${index}`;
-        
-        const cardHTML = `
-            <div class="card">
-                <div>
-                    <span class="source-tag">INTEL</span>
-                    <span style="font-size:0.8rem; color:#aaa;">${article.source.name}</span>
-                </div>
-                <h3 style="margin: 10px 0;">${article.title}</h3>
-                <p style="color:#ddd; font-size:0.9rem;">${article.description}</p>
-                <a href="${article.url}" target="_blank" style="color:var(--neon); font-size:0.8rem;">[READ FULL REPORT]</a>
-
-                <div class="ai-section" id="${cardId}">
-                    <span class="ai-label">🤖 AI MISSION OBJECTIVE:</span>
-                    <span class="loading-text" style="color:#fff; animation:blink 1s infinite;">Generating UPSC Question...</span>
-                </div>
-            </div>
-        `;
-
-        const div = document.createElement('div');
-        div.innerHTML = cardHTML;
-        feedContainer.appendChild(div);
-
-        // Call Gemini for this specific news
-        generateQuiz(article.title + " " + article.description, cardId);
-    }
-
-    // 3. GEMINI AI FUNCTION
-    async function generateQuiz(text, elementId) {
-        const aiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-        
-        const prompt = `
-            Act as a UPSC NDA Exam paper setter.
-            Read this news: "${text}".
-            Create 1 tough Multiple Choice Question (MCQ) based on it.
-            Format exactly like this:
-            Q: [Question]
-            A) [Option 1]
-            B) [Option 2]
-            C) [Option 3]
-            D) [Option 4]
-            ANS: [Correct Option] - [One line explanation]
-        `;
-
-        try {
-            const response = await fetch(aiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }]
-                })
-            });
-
-            const data = await response.json();
-            const aiResult = data.candidates[0].content.parts[0].text;
-            
-            // Show result
-            renderQuiz(elementId, aiResult);
-
-        } catch (error) {
-            document.getElementById(elementId).innerHTML = "<span style='color:red'>AI CONNECTION FAILED.</span>";
-        }
-    }
-
-    // 4. DISPLAY QUIZ
-    function renderQuiz(elementId, text) {
+    function renderQuestion(id, text) {
         // Splitting Question and Answer
-        let parts = text.split("ANS:");
-        let question = parts[0];
-        let answer = parts[1] ? parts[1] : "Check full details online.";
+        let parts = text.split("CORRECT ANSWER:");
+        let questionPart = parts[0].replace("QUESTION:", "").trim();
+        let answerPart = parts[1] ? parts[1].trim() : "See details.";
 
-        const finalHTML = `
-            <span class="ai-label">⚔️ MISSION OBJECTIVE (QUESTION):</span>
-            <pre style="white-space: pre-wrap; font-family:inherit; color:#e0e0e0; margin:0;">${question}</pre>
-            
-            <button onclick="this.nextElementSibling.style.display='block'">REVEAL INTEL</button>
-            <div class="hidden-answer">
-                > CORRECT: ${answer}
+        const html = `
+            <div class="question-text">Q: ${questionPart}</div>
+            <button class="reveal-btn" onclick="document.getElementById('ans-${id}').style.display='block'">
+                🔓 DECLASSIFY ANSWER
+            </button>
+            <div id="ans-${id}" class="hidden-answer">
+                ✅ <b>CORRECT:</b> ${answerPart}
             </div>
         `;
-        
-        document.getElementById(elementId).innerHTML = finalHTML;
+        document.getElementById(`q-${id}`).innerHTML = html;
     }
 
-    // START
-    startSystem();
+    fetchIntel();
 
 </script>
-
 </body>
 </html>
