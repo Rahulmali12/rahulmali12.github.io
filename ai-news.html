@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVENTO AI INTELLIGENCE</title>
+    <style>
+        :root {
+            --neon: #00ff41;
+            --dark: #0d0208;
+            --panel: #003b00;
+        }
+        body {
+            background-color: var(--dark);
+            color: var(--neon);
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            border-bottom: 2px solid var(--neon);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        .ai-status {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .card {
+            border: 1px solid var(--neon);
+            background: rgba(0, 59, 0, 0.3);
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .ai-badge {
+            background: var(--neon);
+            color: #000;
+            padding: 2px 6px;
+            font-weight: bold;
+            font-size: 0.7rem;
+        }
+        .question-box {
+            margin-top: 15px;
+            border-top: 1px dashed var(--neon);
+            padding-top: 10px;
+            color: #fff;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .options li {
+            padding: 5px;
+            background: #222;
+            margin: 5px 0;
+            border-left: 3px solid #555;
+            cursor: pointer;
+        }
+        .options li:hover {
+            border-left: 3px solid var(--neon);
+        }
+        .hidden-answer {
+            display: none;
+            margin-top: 10px;
+            color: yellow;
+            font-weight: bold;
+        }
+        button {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        button:hover {
+            background: var(--neon);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Revento AI War-Room</h1>
+    <div class="ai-status">SYSTEM: CONNECTED TO NEURAL NETWORK...</div>
+
+    <div id="feed">
+        <p style="text-align:center;">INITIALIZING AI SCANNERS...</p>
+    </div>
+
+<script type="module">
+    /* =========================================
+       CONFIGURATION ZONE - CHANGE KEYS HERE
+       =========================================
+    */
+    
+    // 1. GNews API Key (News लाने के लिए)
+    const NEWS_API_KEY = "YOUR_GNEWS_API_KEY"; 
+
+    // 2. GEMINI API KEY (Question बनाने के लिए)
+    // यहाँ से फ्री में लें: https://aistudio.google.com/app/apikey
+    const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; 
+
+    const newsContainer = document.getElementById('feed');
+
+    // --- STEP 1: Fetch News ---
+    async function fetchIntel() {
+        // Demo Mode for testing if keys are missing
+        if(NEWS_API_KEY === "YOUR_GNEWS_API_KEY") {
+            generateCard({
+                title: "India successfully test-fires Agni-Prime Missile",
+                description: "The new generation ballistic missile was flight-tested from Dr APJ Abdul Kalam Island off the coast of Odisha.",
+                source: { name: "Defence Ministry" }
+            });
+            return;
+        }
+
+        const url = `https://gnews.io/api/v4/search?q=Indian+Defence+DRDO+Army&lang=en&country=in&max=3&apikey=${NEWS_API_KEY}`;
+        
+        try {
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            newsContainer.innerHTML = ""; // Clear loader
+            
+            // Process only the top 3 news to save AI limits
+            data.articles.slice(0, 3).forEach(article => {
+                generateCard(article);
+            });
+        } catch (e) {
+            console.error(e);
+            newsContainer.innerHTML = "CONNECTION FAILED. CHECK CONSOLE.";
+        }
+    }
+
+    // --- STEP 2: Display News & Trigger AI ---
+    async function generateCard(article) {
+        const cardId = Math.random().toString(36).substr(2, 9);
+        
+        const cardHTML = `
+            <div class="card" id="card-${cardId}">
+                <span class="ai-badge">INTEL RECEIVED</span>
+                <h3>${article.title}</h3>
+                <p style="font-size:0.9rem; opacity:0.8">${article.description}</p>
+                <div class="question-box" id="q-${cardId}">
+                    <span style="color:var(--neon)">[AI PROCESSING...] Generating UPSC Level Question...</span>
+                </div>
+            </div>
+        `;
+        
+        // Append card to body
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = cardHTML;
+        newsContainer.appendChild(tempDiv.firstChild);
+
+        // Call AI to make a question
+        askGemini(article.title + " " + article.description, cardId);
+    }
+
+    // --- STEP 3: The AI Logic (Gemini) ---
+    async function askGemini(text, id) {
+        if(GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") {
+            document.getElementById(`q-${id}`).innerHTML = "<br><i>(AI Key Missing - Add Key in Code to generate Question)</i>";
+            return;
+        }
+
+        const prompt = `
+            Act as a strict UPSC NDA Exam paper setter. 
+            Based on this news text: "${text}", 
+            create 1 difficult Multiple Choice Question (MCQ).
+            Format:
+            Q: [Question text]
+            A) [Option]
+            B) [Option]
+            C) [Option]
+            D) [Option]
+            Correct Answer: [Option Letter] - [Short Explanation]
+            
+            Keep the output plain text, no markdown.
+        `;
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }]
+                })
+            });
+
+            const data = await response.json();
+            const aiText = data.candidates[0].content.parts[0].text;
+            
+            // Formatting the result nicely
+            renderQuestion(id, aiText);
+
+        } catch (error) {
+            console.error("AI Error:", error);
+            document.getElementById(`q-${id}`).innerHTML = "AI SYSTEM OVERLOAD (Try again later)";
+        }
+    }
+
+    function renderQuestion(id, text) {
+        // Simple parsing to hide answer
+        const parts = text.split("Correct Answer:");
+        const questionPart = parts[0];
+        const answerPart = parts[1] ? parts[1] : "Check detailed analysis.";
+
+        const html = `
+            <div style="font-weight:bold; margin-bottom:10px;">🛡️ MISSION OBJECTIVE (QUESTION):</div>
+            <pre style="white-space: pre-wrap; font-family:inherit;">${questionPart}</pre>
+            <button onclick="document.getElementById('ans-${id}').style.display='block'">REVEAL ANSWER</button>
+            <div id="ans-${id}" class="hidden-answer">
+                > CORRECT: ${answerPart}
+            </div>
+        `;
+        document.getElementById(`q-${id}`).innerHTML = html;
+    }
+
+    // Start System
+    fetchIntel();
+
+</script>
+</body>
+</html>
