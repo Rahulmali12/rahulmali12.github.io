@@ -123,12 +123,611 @@
 
     // QUESTIONS
     const PHYSICS_QS = [
-        { q: "Unit of Force?", a: "Joule", b: "Newton", c: "Watt", d: "Volt", ans: "b" },
-        { q: "Vector Quantity?", a: "Speed", b: "Mass", c: "Velocity", d: "Time", ans: "c" },
-        { q: "Light year unit?", a: "Time", b: "Distance", c: "Light", d: "Mass", ans: "b" },
-    ];
-    const MATH_QS = [ { q: "Value of sin(0)?", a: "0", b: "1", c: "-1", d: "Inf", ans: "a" } ];
-    const ENG_QS = [ { q: "Synonym of FAST?", a: "Slow", b: "Quick", c: "Lazy", d: "Calm", ans: "b" } ];
+    { 
+        q: "Q1. किसी वस्तु का वेग दोगुना कर दिया जाए तो उसकी गतिज ऊर्जा पर क्या प्रभाव पड़ेगा?", 
+        a: "आधी हो जाएगी", 
+        b: "दोगुनी हो जाएगी", 
+        c: "चार गुनी हो जाएगी", 
+        d: "समान रहेगी", 
+        ans: "c" 
+    },
+    { 
+        q: "Q2. किस स्थिति में कार्य शून्य होता है?", 
+        a: "बल एवं विस्थापन शून्य हों", 
+        b: "बल हो पर विस्थापन न हो", 
+        c: "विस्थापन हो पर बल न हो", 
+        d: "सभी सही हैं", 
+        ans: "d" 
+    },
+    { 
+        q: "Q3. चाल एक किस प्रकार की राशि है?", 
+        a: "सदिश", 
+        b: "अदिश", 
+        c: "दोनों", 
+        d: "कोई नहीं", 
+        ans: "b" 
+    },
+    { 
+        q: "Q4. ध्वनि तरंगों का संचरण किसमें नहीं होता?", 
+        a: "ठोस में", 
+        b: "द्रव में", 
+        c: "वायु में", 
+        d: "निर्वात में", 
+        ans: "d" 
+    },
+    { 
+        q: "Q5. ओम का नियम किस रूप में व्यक्त किया जाता है?", 
+        a: "V = IR", 
+        b: "P = VI", 
+        c: "Q = It", 
+        d: "F = qE", 
+        ans: "a" 
+    },
+    { 
+        q: "Q6. शक्ति का SI मात्रक क्या है?", 
+        a: "जूल", 
+        b: "वाट", 
+        c: "न्यूटन", 
+        d: "कूलॉम", 
+        ans: "b" 
+    },
+    { 
+        q: "Q7. पलन (Momentum) किसका गुणनफल है?", 
+        a: "वेग और त्वरण", 
+        b: "द्रव्यमान और वेग", 
+        c: "बल और समय", 
+        d: "ऊर्जा और समय", 
+        ans: "b" 
+    },
+    { 
+        q: "Q8. गुरुत्वीय त्वरण का मान पृथ्वी पर लगभग कितना होता है?", 
+        a: "8.8 m/s²", 
+        b: "9.2 m/s²", 
+        c: "9.8 m/s²", 
+        d: "10.2 m/s²", 
+        ans: "c" 
+    },
+    { 
+        q: "Q9. किस दर्पण में पीछे की ओर देखने के लिए वाहनों में प्रयोग किया जाता है?", 
+        a: "उत्तल दर्पण", 
+        b: "अवतल दर्पण", 
+        c: "समतल दर्पण", 
+        d: "इनमें से कोई नहीं", 
+        ans: "a" 
+    },
+    { 
+        q: "Q10. विद्युत आवेश की SI इकाई क्या है?", 
+        a: "एम्पियर", 
+        b: "कूलॉम", 
+        c: "वाट", 
+        d: "टेस्ला", 
+        ans: "b" 
+    },
+    { 
+        q: "Q11. धारा किसके कारण बहती है?", 
+        a: "दाब के कारण", 
+        b: "विद्युत विभवांतर के कारण", 
+        c: "घनत्व के कारण", 
+        d: "ऊर्जा के कारण", 
+        ans: "b" 
+    },
+    { 
+        q: "Q12. यदि किसी तरंग की आवृत्ति बढ़ा दी जाए तो उसकी तरंगदैर्घ्य पर क्या प्रभाव पड़ेगा?", 
+        a: "बढ़ेगी", 
+        b: "घटेगी", 
+        c: "समान रहेगी", 
+        d: "शून्य हो जाएगी", 
+        ans: "b" 
+    },
+    { 
+        q: "Q13. रैखिक संवेग का संरक्षण कब होता है?", 
+        a: "केवल घर्षण रहित स्थिति में", 
+        b: "केवल बंद तंत्र में", 
+        c: "हमेशा", 
+        d: "केवल ठोस में", 
+        ans: "b" 
+    },
+    { 
+        q: "Q14. दाब का SI मात्रक क्या है?", 
+        a: "पास्कल", 
+        b: "न्यूटन", 
+        c: "जूल", 
+        d: "टेस्ला", 
+        ans: "a" 
+    },
+    { 
+        q: "Q15. उष्मा किसका स्थानांतरण है?", 
+        a: "ऊर्जा", 
+        b: "द्रव्यमान", 
+        c: "वेग", 
+        d: "सामर्थ्य", 
+        ans: "a" 
+    },
+    { 
+        q: "Q16. प्रकाश का अपवर्तन किस कारण होता है?", 
+        a: "घनत्व परिवर्तन", 
+        b: "चाल परिवर्तन", 
+        c: "माध्यम परिवर्तन", 
+        d: "इनमें से सभी", 
+        ans: "d" 
+    },
+    { 
+        q: "Q17. धारा की SI इकाई क्या है?", 
+        a: "एम्पियर", 
+        b: "वोल्ट", 
+        c: "ओम", 
+        d: "जूल", 
+        ans: "a" 
+    },
+    { 
+        q: "Q18. प्रत्यास्थ टक्कर में क्या संरक्षित रहता है?", 
+        a: "केवल संवेग", 
+        b: "केवल ऊर्जा", 
+        c: "संवेग और ऊर्जा दोनों", 
+        d: "कुछ भी नहीं", 
+        ans: "c" 
+    },
+    { 
+        q: "Q19. कोणीय वेग का SI मात्रक क्या है?", 
+        a: "rad/s", 
+        b: "m/s", 
+        c: "rad", 
+        d: "s⁻²", 
+        ans: "a" 
+    },
+    { 
+        q: "Q20. आर्किमिडीज का सिद्धांत किस पर आधारित है?", 
+        a: "उत्थान बल", 
+        b: "घर्षण बल", 
+        c: "गुरुत्व बल", 
+        d: "चुंबकीय बल", 
+        ans: "a" 
+    },
+    { 
+        q: "Q21. EM तरंगें कैसी होती हैं?", 
+        a: "अनुदैर्ध्य", 
+        b: "अनुप्रस्थ", 
+        c: "दोनों", 
+        d: "कोई नहीं", 
+        ans: "b" 
+    },
+    { 
+        q: "Q22. प्रकाश वर्ष किसका मात्रक है?", 
+        a: "समय", 
+        b: "दूरी", 
+        c: "वेग", 
+        d: "ऊर्जा", 
+        ans: "b" 
+    },
+    { 
+        q: "Q23. किसी चालक का प्रतिरोध किस पर निर्भर करता है?", 
+        a: "लंबाई पर", 
+        b: "क्षेत्रफल पर", 
+        c: "पदार्थ पर", 
+        d: "इन सभी पर", 
+        ans: "d" 
+    },
+    { 
+        q: "Q24. तापमान किसे नहीं बदलता?", 
+        a: "ध्वनि की चाल", 
+        b: "प्रकाश की चाल", 
+        c: "श्यानता", 
+        d: "घनत्व", 
+        ans: "b" 
+    },
+    { 
+        q: "Q25. न्यूटन का तीसरा नियम क्या बताता है?", 
+        a: "जड़त्व", 
+        b: "संवेग संरक्षण", 
+        c: "क्रिया–प्रतिक्रिया", 
+        d: "गुरुत्वाकर्षण", 
+        ans: "c" 
+    }
+];
+    const MATH_QS =[
+    {
+        q: "Q1. यदि A = {1, 2} है, तो इसके घात समुच्चय (Power Set) में कुल कितने अवयव होंगे?",
+        a: "2",
+        b: "4",
+        c: "8",
+        d: "0",
+        ans: "b"
+    },
+    {
+        q: "Q2. यदि f(x) = x + 2 और g(x) = x² हो, तो fog(x) का मान क्या होगा?",
+        a: "x² + 2",
+        b: "x² + 4",
+        c: "(x + 2)²",
+        d: "x² - 2",
+        ans: "a"
+    },
+    {
+        q: "Q3. i⁴ⁿ⁺¹ का मान क्या होगा, जहाँ n एक धनात्मक पूर्णांक है?",
+        a: "1",
+        b: "-1",
+        c: "i",
+        d: "-i",
+        ans: "c"
+    },
+    {
+        q: "Q4. द्विघात समीकरण x² - 5x + 6 = 0 के मूल (Roots) क्या हैं?",
+        a: "2, 3",
+        b: "-2, -3",
+        c: "1, 6",
+        d: "2, -3",
+        ans: "a"
+    },
+    {
+        q: "Q5. श्रेणी 2, 4, 8, 16, ... का 10वाँ पद क्या होगा?",
+        a: "512",
+        b: "1024",
+        c: "256",
+        d: "2048",
+        ans: "b"
+    },
+    {
+        q: "Q6. sin(765°) का मान क्या है?",
+        a: "0",
+        b: "1",
+        c: "1/√2",
+        d: "√3/2",
+        ans: "c"
+    },
+    {
+        q: "Q7. tan⁻¹(1) + tan⁻¹(2) + tan⁻¹(3) का मान क्या होगा?",
+        a: "π",
+        b: "π/2",
+        c: "π/4",
+        d: "0",
+        ans: "a"
+    },
+    {
+        q: "Q8. यदि मैट्रिक्स A = [[1, 2], [3, 4]] है, तो |A| (Determinant) का मान क्या होगा?",
+        a: "-2",
+        b: "2",
+        c: "10",
+        d: "0",
+        ans: "a"
+    },
+    {
+        q: "Q9. एक अव्युत्क्रमणीय (Singular) मैट्रिक्स के लिए डिटर्मिनेंट का मान होता है:",
+        a: "1",
+        b: "-1",
+        c: "0",
+        d: "अनंत",
+        ans: "c"
+    },
+    {
+        q: "Q10. शब्द 'BIHAR' के अक्षरों को कितने अलग-अलग तरीकों से व्यवस्थित किया जा सकता है?",
+        a: "24",
+        b: "120",
+        c: "60",
+        d: "720",
+        ans: "b"
+    },
+    {
+        q: "Q11. (1 + x)ⁿ के विस्तार में कुल पदों की संख्या कितनी होती है?",
+        a: "n",
+        b: "n - 1",
+        c: "n + 1",
+        d: "2n",
+        ans: "c"
+    },
+    {
+        q: "Q12. रेखा 3x + 4y - 12 = 0 की प्रवणता (Slope) क्या है?",
+        a: "3/4",
+        b: "-3/4",
+        c: "4/3",
+        d: "-4/3",
+        ans: "b"
+    },
+    {
+        q: "Q13. उस वृत (Circle) की त्रिज्या क्या है जिसका समीकरण x² + y² = 49 है?",
+        a: "49",
+        b: "7",
+        c: "14",
+        d: "24.5",
+        ans: "b"
+    },
+    {
+        q: "Q14. लिमिट lim (x→0) (sin 3x / x) का मान क्या है?",
+        a: "1",
+        b: "0",
+        c: "3",
+        d: "1/3",
+        ans: "c"
+    },
+    {
+        q: "Q15. d/dx (log x) का मान क्या है?",
+        a: "1/x",
+        b: "e^x",
+        c: "1",
+        d: "log x",
+        ans: "a"
+    },
+    {
+        q: "Q16. यदि y = sin(x²) हो, तो dy/dx क्या होगा?",
+        a: "cos(x²)",
+        b: "2x cos(x²)",
+        c: "cos(2x)",
+        d: "2x sin(x²)",
+        ans: "b"
+    },
+    {
+        q: "Q17. वक्र y = x² के बिंदु (1, 1) पर स्पर्श रेखा की प्रवणता (Slope) क्या होगी?",
+        a: "1",
+        b: "2",
+        c: "0",
+        d: "4",
+        ans: "b"
+    },
+    {
+        q: "Q18. ∫ x⁵ dx का मान क्या है?",
+        a: "5x⁴ + c",
+        b: "x⁶/6 + c",
+        c: "x⁴/4 + c",
+        d: "6x⁶ + c",
+        ans: "b"
+    },
+    {
+        q: "Q19. ∫ (0 से π/2) sin x dx का मान क्या होगा?",
+        a: "0",
+        b: "1",
+        c: "-1",
+        d: "2",
+        ans: "b"
+    },
+    {
+        q: "Q20. अवकल समीकरण (Differential Equation) d²y/dx² + y = 0 की कोटि (Order) क्या है?",
+        a: "1",
+        b: "2",
+        c: "0",
+        d: "परिभाषित नहीं",
+        ans: "b"
+    },
+    {
+        q: "Q21. यदि सदिश (Vector) a = 2i + 3j और b = i + j हो, तो a . b (Dot Product) क्या होगा?",
+        a: "5",
+        b: "6",
+        c: "1",
+        d: "0",
+        ans: "a"
+    },
+    {
+        q: "Q22. Z-अक्ष की दिक्-कोज्याएँ (Direction Cosines) क्या हैं?",
+        a: "(1, 0, 0)",
+        b: "(0, 1, 0)",
+        c: "(0, 0, 1)",
+        d: "(1, 1, 1)",
+        ans: "c"
+    },
+    {
+        q: "Q23. एक लीप वर्ष (Leap Year) में 53 रविवार होने की प्रायिकता (Probability) क्या है?",
+        a: "1/7",
+        b: "2/7",
+        c: "5/7",
+        d: "6/7",
+        ans: "b"
+    },
+    {
+        q: "Q24. P(A) = 0.3 और P(B) = 0.4 है। यदि A और B परस्पर अपवर्जी (Mutually Exclusive) हैं, तो P(A ∪ B) क्या होगा?",
+        a: "0.12",
+        b: "0.7",
+        c: "0.1",
+        d: "0.5",
+        ans: "b"
+    },
+    {
+        q: "Q25. 1 से 100 तक की संख्याओं में से एक संख्या चुनने पर उसके अभाज्य (Prime) होने की प्रायिकता क्या होगी?",
+        a: "1/4",
+        b: "1/2",
+        c: "1/5",
+        d: "1/3",
+        ans: "a"
+    }
+];
+    const ENG_QS =[
+    {
+        q: "Q1. He died _______ cancer. (Choose correct preposition)",
+        a: "by",
+        b: "of",
+        c: "from",
+        d: "with",
+        ans: "b"
+    },
+    {
+        q: "Q2. Synonym of 'ABANDON' is:",
+        a: "Keep",
+        b: "Join",
+        c: "Forsake",
+        d: "Create",
+        ans: "c"
+    },
+    {
+        q: "Q3. Choose the correctly spelt word.",
+        a: "Lieutenant",
+        b: "Leutenant",
+        c: "Liutenant",
+        d: "Leiutenant",
+        ans: "a"
+    },
+    {
+        q: "Q4. Antonym of 'OPTIMIST' is:",
+        a: "Pessimist",
+        b: "Idealist",
+        c: "Realist",
+        d: "Dreamer",
+        ans: "a"
+    },
+    {
+        q: "Q5. I prefer coffee _______ tea.",
+        a: "than",
+        b: "to",
+        c: "over",
+        d: "from",
+        ans: "b"
+    },
+    {
+        q: "Q6. One word for 'A person who does not believe in God':",
+        a: "Theist",
+        b: "Atheist",
+        c: "Ascetic",
+        d: "Fanatic",
+        ans: "b"
+    },
+    {
+        q: "Q7. Change the voice: 'The cat killed the snake.'",
+        a: "The snake was killed by the cat",
+        b: "The snake is killed by the cat",
+        c: "The snake has killed the cat",
+        d: "The snake killed the cat",
+        ans: "a"
+    },
+    {
+        q: "Q8. He is _______ NCC cadet.",
+        a: "a",
+        b: "an",
+        c: "the",
+        d: "No article",
+        ans: "b"
+    },
+    {
+        q: "Q9. Plural form of 'Deer' is:",
+        a: "Deers",
+        b: "Deeres",
+        c: "Deer",
+        d: "None of these",
+        ans: "c"
+    },
+    {
+        q: "Q10. The adjective of 'Sun' is:",
+        a: "Sunny",
+        b: "Solar",
+        c: "Sunlike",
+        d: "Suna",
+        ans: "b"
+    },
+    {
+        q: "Q11. Idiom 'A Red letter day' means:",
+        a: "A dangerous day",
+        b: "A rainy day",
+        c: "An important day",
+        d: "A sad day",
+        ans: "c"
+    },
+    {
+        q: "Q12. Ram is senior _______ Shyam.",
+        a: "than",
+        b: "from",
+        c: "to",
+        d: "by",
+        ans: "c"
+    },
+    {
+        q: "Q13. Change into Indirect Speech: He said, 'I am busy now.'",
+        a: "He said that he was busy then",
+        b: "He said that he is busy now",
+        c: "He says that he was busy then",
+        d: "He asked that he is busy then",
+        ans: "a"
+    },
+    {
+        q: "Q14. Synonym of 'BRIEF' is:",
+        a: "Long",
+        b: "Short",
+        c: "Small",
+        d: "Large",
+        ans: "b"
+    },
+    {
+        q: "Q15. She _______ to the market yesterday.",
+        a: "go",
+        b: "gone",
+        c: "went",
+        d: "going",
+        ans: "c"
+    },
+    {
+        q: "Q16. Identify the Noun in the sentence: 'Honesty is the best policy.'",
+        a: "Best",
+        b: "Is",
+        c: "Policy",
+        d: "Honesty",
+        ans: "d"
+    },
+    {
+        q: "Q17. A group of Lions is called a:",
+        a: "Herd",
+        b: "Flock",
+        c: "Pride",
+        d: "Pack",
+        ans: "c"
+    },
+    {
+        q: "Q18. Antonym of 'BARREN' is:",
+        a: "Fertile",
+        b: "Dry",
+        c: "Empty",
+        d: "Rough",
+        ans: "a"
+    },
+    {
+        q: "Q19. Unless you work hard, you _______ pass.",
+        a: "will",
+        b: "will not",
+        c: "can",
+        d: "must",
+        ans: "b"
+    },
+    {
+        q: "Q20. Choose the correct spelling:",
+        a: "Committee",
+        b: "Comittee",
+        c: "Commite",
+        d: "Comite",
+        ans: "a"
+    },
+    {
+        q: "Q21. Past participle of 'Write' is:",
+        a: "Wrote",
+        b: "Written",
+        c: "Writing",
+        d: "Writes",
+        ans: "b"
+    },
+    {
+        q: "Q22. Choose the correct Conjunction: 'Run fast _______ you will miss the train.'",
+        a: "and",
+        b: "but",
+        c: "otherwise",
+        d: "because",
+        ans: "c"
+    },
+    {
+        q: "Q23. One who knows everything is called:",
+        a: "Omnipotent",
+        b: "Omniscient",
+        c: "Omnipresent",
+        d: "Optimist",
+        ans: "b"
+    },
+    {
+        q: "Q24. Neither he _______ his friend was present.",
+        a: "or",
+        b: "nor",
+        c: "and",
+        d: "but",
+        ans: "b"
+    },
+    {
+        q: "Q25. Feminine gender of 'Horse' is:",
+        a: "Bitch",
+        b: "Cow",
+        c: "Mare",
+        d: "Hen",
+        ans: "c"
+    }
+];
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
