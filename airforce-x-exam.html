@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Revento Academy - Professional CBT</title>
+    <title>Rivento Academy - Air Force X</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -12,50 +12,34 @@
         
         body { font-family: 'Roboto', sans-serif; background: var(--bg-gray); margin: 0; padding: 0; user-select: none; height: 100vh; overflow: hidden; }
 
-    /* --- 1. HEADER (FIXED FOR MOBILE & PC) --- */
-.cbt-header {
-    height: 60px;
-    background: var(--af-blue);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 15px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-    box-sizing: border-box; /* यह जरुरी है ताकि साइड से कटे नहीं */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
+        /* --- HEADER (FIXED FOR MOBILE & PC) --- */
+        .cbt-header {
+            height: 60px;
+            background: var(--af-blue);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .brand {
+            font-weight: 900; letter-spacing: 1px; font-size: 1.2rem;
+            flex-shrink: 0; margin-right: 10px; white-space: nowrap;
+        }
+        .exam-name {
+            font-size: 0.95rem; opacity: 0.9; text-align: right; line-height: 1.2;
+            display: flex; flex-direction: column; justify-content: center;
+            max-width: 60%;
+        }
 
-.brand {
-    font-weight: 900;
-    letter-spacing: 1px;
-    font-size: 1.2rem;
-    flex-shrink: 0; /* लोगो कभी दबेगा नहीं */
-    margin-right: 10px;
-    white-space: nowrap;
-}
-
-.exam-name {
-    font-size: 0.95rem; 
-    opacity: 0.9;
-    text-align: right;
-    line-height: 1.2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 60%; /* नाम लोगो के ऊपर नहीं चढ़ेगा */
-}
-
-/* मोबाइल के लिए स्पेशल सेटिंग */
-@media (max-width: 480px) {
-    .brand { font-size: 1rem; }
-    .exam-name { font-size: 0.75rem; white-space: normal; }
-}
-        /* --- 2. MAIN LAYOUT (Split Screen) --- */
+        /* --- MAIN LAYOUT --- */
         .main-wrapper {
             display: flex;
             margin-top: 60px; /* Header height */
@@ -64,34 +48,23 @@
 
         /* LEFT SIDE: QUESTIONS */
         .left-panel {
-            flex: 3; /* 75% width */
-            padding: 20px;
-            overflow-y: auto;
-            border-right: 1px solid #ddd;
+            flex: 3; padding: 20px; overflow-y: auto; border-right: 1px solid #ddd;
         }
 
-        /* RIGHT SIDE: PROFILE & PALETTE (The Sidebar) */
+        /* RIGHT SIDE: PROFILE & PALETTE */
         .right-panel {
-            flex: 1; /* 25% width */
-            background: white;
-            display: flex; flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.05);
-            max-width: 250px;
-            min-width: 200px;
+            flex: 1; background: white; display: flex; flex-direction: column;
+            align-items: center; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+            max-width: 250px; min-width: 200px;
         }
 
-        /* PROFILE SECTION (Photo) */
         .profile-box {
-            text-align: center; width: 100%;
-            border-bottom: 2px solid #f1f1f1; padding-bottom: 20px; margin-bottom: 20px;
+            text-align: center; width: 100%; border-bottom: 2px solid #f1f1f1;
+            padding-bottom: 20px; margin-bottom: 20px;
         }
         .candidate-img {
-            width: 100px; height: 100px;
-            border-radius: 8px; /* Square with round corners like exams */
-            border: 3px solid var(--af-blue);
-            object-fit: cover; margin-bottom: 10px;
+            width: 100px; height: 100px; border-radius: 8px;
+            border: 3px solid var(--af-blue); object-fit: cover; margin-bottom: 10px;
         }
         .candidate-name { font-weight: bold; color: var(--text-dark); display: block; }
         .candidate-id { font-size: 0.8rem; color: #777; }
@@ -99,10 +72,8 @@
         /* TIMER BOX */
         .timer-display {
             background: #2c3e50; color: #00ff00;
-            font-family: 'Courier New', monospace;
-            font-size: 1.5rem; font-weight: bold;
-            padding: 10px 20px; border-radius: 5px;
-            margin-bottom: 20px; border: 2px solid #555;
+            font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: bold;
+            padding: 10px 20px; border-radius: 5px; margin-bottom: 20px; border: 2px solid #555;
         }
 
         /* TABS (Strict) */
@@ -121,25 +92,27 @@
         .options input { margin-right: 15px; transform: scale(1.2); }
 
         /* FOOTER ACTIONS */
-        .footer-bar {
-            margin-top: auto; width: 100%; display: flex; gap: 10px;
-        }
+        .footer-bar { margin-top: auto; width: 100%; display: flex; gap: 10px; }
         .btn { padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; flex: 1; }
         .btn-green { background: #2e7d32; color: white; }
         .btn-gray { background: #cfd8dc; color: #333; }
 
-        /* MOBILE RESPONSIVE (Adjustments) */
+        /* MOBILE RESPONSIVE TWEAKS */
         @media (max-width: 768px) {
+            .brand { font-size: 1rem; }
+            .exam-name { font-size: 0.75rem; white-space: normal; }
+            
             .main-wrapper { flex-direction: column; height: auto; overflow: visible; padding-bottom: 80px; }
             .left-panel { order: 2; width: 100%; border: none; padding: 10px; box-sizing: border-box; }
             .right-panel { 
                 order: 1; width: 100%; max-width: none; flex-direction: row; 
                 justify-content: space-between; padding: 10px; min-height: auto;
             }
-            .profile-box { border: none; margin: 0; padding: 0; text-align: left; display: flex; align-items: center; gap: 10px; width: auto; }
+            .profile-box { border: none; margin: 0; padding: 0; text-align: left; display: flex; align-items: center; gap: 10px; width: auto; margin-left: 5px; }
             .candidate-img { width: 50px; height: 50px; margin: 0; }
-            .timer-display { margin: 0; font-size: 1.2rem; padding: 5px 10px; }
-            .footer-bar { position: fixed; bottom: 0; left: 0; padding: 10px; background: white; border-top: 1px solid #ddd; z-index: 200; }
+            .timer-display { margin: 0; font-size: 1.1rem; padding: 5px 10px; margin-right: 15px; } /* Timer fix */
+            .candidate-id { display: none; }
+            .footer-bar { position: fixed; bottom: 0; left: 0; padding: 10px; background: white; border-top: 1px solid #ddd; z-index: 200; box-sizing: border-box; }
         }
 
         /* LOGIN SCREEN */
@@ -154,9 +127,8 @@
 
 <div id="login-overlay">
     <div style="background: white; padding: 40px; border-radius: 15px; text-align: center; max-width: 350px; width: 90%;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" width="50" style="margin-bottom:20px;">
-        <h2 style="margin:0; color:#0d1b42;">Rivento Academy</h2>
-        <p>Air Force X Group Mock Test</p>
+        <h2 style="margin:0; color:#0d1b42;">RIVENTO ACADEMY</h2>
+        <p>Air Force X Group (Technical)</p>
         <button onclick="signInWithGoogle()" style="background:#1a237e; color:white; border:none; padding:12px 30px; border-radius:30px; font-weight:bold; cursor:pointer; margin-top:10px;">
             Login with Google
         </button>
@@ -164,14 +136,13 @@
 </div>
 
 <div class="cbt-header">
-    <div class="brand">REVENTO ACADEMY</div>
+    <div class="brand">RIVENTO</div>
     <div class="exam-name">Group X (Technical)</div>
 </div>
 
 <div class="main-wrapper" id="exam-ui" style="display:none;">
     
     <div class="left-panel">
-        
         <div class="tabs-container">
             <div id="tab-0" class="tab active">PHYSICS</div>
             <div id="tab-1" class="tab">MATHS</div>
@@ -180,69 +151,69 @@
 
         <form id="quizForm">
             <div id="sec-0" style="display:block;">
-                <h3 style="color:var(--af-blue); border-bottom:1px solid #ddd; padding-bottom:10px;">Physics Question</h3>
+                <h3 style="color:var(--af-blue); border-bottom:1px solid #ddd; padding-bottom:10px;">Physics Section</h3>
+                
                 <div class="question-card">
-                    <p><span class="q-badge">Q1</span> Which is a vector quantity?</p>
+                    <p><span class="q-badge">Q1</span> Which is a scalar quantity?</p>
                     <div class="options">
-                        <label><input type="radio" name="p1" value="a"> Speed</label>
-                        <label><input type="radio" name="p1" value="b"> Velocity</label> <label><input type="radio" name="p1" value="c"> Mass</label>
-                        <label><input type="radio" name="p1" value="d"> Time</label>
+                        <label><input type="radio" name="p1" value="a"> Force</label>
+                        <label><input type="radio" name="p1" value="b"> Velocity</label>
+                        <label><input type="radio" name="p1" value="c"> Speed</label> <label><input type="radio" name="p1" value="d"> Displacement</label>
                     </div>
                 </div>
-                </div>
+            </div>
 
             <div id="sec-1" style="display:none;">
-                <h3 style="color:var(--af-blue); border-bottom:1px solid #ddd; padding-bottom:10px;">Mathematics Question</h3>
+                <h3 style="color:var(--af-blue); border-bottom:1px solid #ddd; padding-bottom:10px;">Mathematics Section</h3>
+                
                 <div class="question-card">
-                    <p><span class="q-badge">Q1</span> Derivative of sin(x)?</p>
+                    <p><span class="q-badge">Q1</span> Value of sin(0)?</p>
                     <div class="options">
-                        <label><input type="radio" name="m1" value="a"> cos(x)</label> <label><input type="radio" name="m1" value="b"> -cos(x)</label>
-                        <label><input type="radio" name="m1" value="c"> tan(x)</label>
-                        <label><input type="radio" name="m1" value="d"> sec²(x)</label>
+                        <label><input type="radio" name="m1" value="a"> 0</label> <label><input type="radio" name="m1" value="b"> 1</label>
+                        <label><input type="radio" name="m1" value="c"> -1</label>
+                        <label><input type="radio" name="m1" value="d"> Infinity</label>
                     </div>
                 </div>
             </div>
 
             <div id="sec-2" style="display:none;">
-                <h3 style="color:var(--af-blue); border-bottom:1px solid #ddd; padding-bottom:10px;">English Question</h3>
+                <h3 style="color:var(--af-blue); border-bottom:1px solid #ddd; padding-bottom:10px;">English Section</h3>
+                
                 <div class="question-card">
-                    <p><span class="q-badge">Q1</span> Plural of 'Ox'?</p>
+                    <p><span class="q-badge">Q1</span> Synonym of 'HAPPY'?</p>
                     <div class="options">
-                        <label><input type="radio" name="e1" value="a"> Oxes</label>
-                        <label><input type="radio" name="e1" value="b"> Oxen</label> <label><input type="radio" name="e1" value="c"> Oxies</label>
-                        <label><input type="radio" name="e1" value="d"> None</label>
+                        <label><input type="radio" name="e1" value="a"> Sad</label>
+                        <label><input type="radio" name="e1" value="b"> Joyful</label> <label><input type="radio" name="e1" value="c"> Angry</label>
+                        <label><input type="radio" name="e1" value="d"> Cry</label>
                     </div>
                 </div>
             </div>
         </form>
-
-        <br><br><br> </div>
+        <br><br><br>
+    </div>
 
     <div class="right-panel">
-        
         <div class="profile-box">
             <img id="user-photo" class="candidate-img" src="" alt="Candidate">
             <span id="user-name" class="candidate-name">Loading...</span>
             <span class="candidate-id">ID: AF-2026-X</span>
         </div>
-
         <div class="timer-display" id="timer">20:00</div>
-
         <div class="footer-bar">
             <button class="btn btn-gray" onclick="document.getElementById('quizForm').reset()">Clear</button>
             <button class="btn btn-green" id="next-btn" onclick="nextSection()">Save & Next</button>
         </div>
-
     </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  
-  // 👇 YOUR FIREBASE CONFIG 👇
+  import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // 🔴🔴🔴 अपनी FIREBASE KEY नीचे डालें 🔴🔴🔴
   const firebaseConfig = {
-     apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+   apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
   authDomain: "revento-academy.firebaseapp.com",
   databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
   projectId: "revento-academy",
@@ -250,28 +221,42 @@
   messagingSenderId: "384071300366",
   appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
   measurementId: "G-4L8YC6J095"
+
+  // ✅ ANSWER KEY 
+  const KEY = {
+      p1: 'c', // Physics Answers
+      m1: 'a', // Math Answers
+      e1: 'b'  // English Answers
   };
 
+  // --- DO NOT TOUCH BELOW ---
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const db = getFirestore(app);
   const provider = new GoogleAuthProvider();
 
   let currentSec = 0;
   let timerInt;
-  let time = 20 * 60; // 20 Minutes
+  let time = 20 * 60; 
+  let currentUser = null;
 
-  window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e => alert(e));
+  window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e => alert(e.message));
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
       if(user) {
+          currentUser = user;
           document.getElementById('login-overlay').style.display = 'none';
-          document.getElementById('exam-ui').style.display = 'flex'; // Show main layout
           
-          // Set Photo and Name in Sidebar
-          document.getElementById('user-name').innerText = user.displayName;
-          document.getElementById('user-photo').src = user.photoURL;
-
-          startTimer();
+          // Check if already taken
+          const snap = await getDoc(doc(db, "airforce_final_results", user.uid));
+          if(snap.exists()) {
+              showFinalResult(snap.data());
+          } else {
+              document.getElementById('exam-ui').style.display = 'flex';
+              document.getElementById('user-name').innerText = user.displayName;
+              document.getElementById('user-photo').src = user.photoURL;
+              startTimer();
+          }
       }
   });
 
@@ -288,29 +273,73 @@
   }
 
   window.nextSection = (auto = false) => {
-      if(!auto && !confirm("Move to next section? Cannot go back.")) return;
+      if(!auto && !confirm("Save & Next Section?")) return;
       
       if(currentSec < 2) {
-          // Hide current
           document.getElementById(`sec-${currentSec}`).style.display = 'none';
           document.getElementById(`tab-${currentSec}`).classList.remove('active');
-          document.getElementById(`tab-${currentSec}`).style.background = '#e8f5e9'; // Mark done
+          document.getElementById(`tab-${currentSec}`).style.background = '#e8f5e9';
           
           currentSec++;
           
-          // Show next
           document.getElementById(`sec-${currentSec}`).style.display = 'block';
           document.getElementById(`tab-${currentSec}`).classList.add('active');
           
           if(currentSec === 2) document.getElementById('next-btn').innerText = "Submit Exam";
-          
-          startTimer(); // Reset timer for new section
+          startTimer();
       } else {
-          alert("Exam Submitted Successfully! (This is a demo)");
-          location.reload();
+          submitExamToCloud();
       }
   }
-</script>
 
+  async function submitExamToCloud() {
+      clearInterval(timerInt);
+      document.getElementById('exam-ui').style.display='none';
+      
+      let score=0, correct=0, wrong=0;
+      const form = document.getElementById('quizForm');
+      const formData = new FormData(form);
+
+      for(let q in KEY){
+          let val = formData.get(q);
+          if(val === KEY[q]) { score+=1; correct++; }
+          else if(val) { score-=0.25; wrong++; }
+      }
+
+      const data = {
+          name: currentUser.displayName,
+          score, correct, wrong,
+          timestamp: new Date()
+      };
+
+      await setDoc(doc(db, "airforce_final_results", currentUser.uid), data);
+      showFinalResult(data);
+  }
+
+  async function showFinalResult(data) {
+      document.body.innerHTML = `
+          <div style="padding:40px; text-align:center; font-family:Roboto;">
+              <h1 style="color:#00308F">RESULT DECLARED</h1>
+              <div style="font-size:4rem; font-weight:900; color:#00308F;">${data.score}</div>
+              <p>Total Score</p>
+              <div style="margin:20px 0;">
+                <span style="color:green; font-weight:bold; margin-right:15px;">Correct: ${data.correct}</span>
+                <span style="color:red; font-weight:bold;">Wrong: ${data.wrong}</span>
+              </div>
+              <h3>Leaderboard Loading...</h3>
+              <table id="lb" style="width:100%; max-width:500px; margin:20px auto; border-collapse:collapse; text-align:left;"></table>
+          </div>
+      `;
+
+      const q = query(collection(db, "airforce_final_results"), orderBy("score", "desc"), limit(10));
+      const snap = await getDocs(q);
+      let html = `<tr style="background:#00308F; color:white;"><th style="padding:10px;">Rank</th><th>Name</th><th>Score</th></tr>`;
+      let r = 1;
+      snap.forEach(d => {
+          html += `<tr><td style="padding:10px;">#${r++}</td><td>${d.data().name}</td><td>${d.data().score}</td></tr>`;
+      });
+      document.getElementById('lb').innerHTML = html;
+  }
+</script>
 </body>
 </html>
