@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>INDIAN AIR FORCE - STAR EXAM</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        /* --- AIR FORCE THEME (Deep Blue & White) --- */
+        :root { --af-blue: #003366; --af-light: #6699cc; --white: #ffffff; --grey: #f2f2f2; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Arial', sans-serif; background: var(--grey); user-select: none; overflow: hidden; }
+
+        /* SCREENS */
+        .screen { display: none; height: 100vh; flex-direction: column; }
+        #login-screen { display: flex; align-items: center; justify-content: center; background: linear-gradient(to bottom, var(--af-blue), #001a33); color: white; text-align: center; }
+        #active-screen { display: flex; }
+
+        /* LOGIN CARD */
+        .login-card { background: rgba(255,255,255,0.1); padding: 40px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(5px); }
+        .af-logo { width: 80px; margin-bottom: 20px; }
+        .btn-google { background: white; color: #333; padding: 12px 24px; border: none; font-weight: bold; cursor: pointer; border-radius: 4px; display: flex; align-items: center; gap: 10px; font-size: 16px; }
+
+        /* EXAM HEADER */
+        .top-bar { background: var(--af-blue); color: white; padding: 0 15px; height: 60px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .logo-area { font-weight: bold; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .timer-box { background: white; color: red; padding: 5px 15px; font-weight: bold; border-radius: 3px; font-size: 18px; }
+
+        /* MAIN LAYOUT */
+        .exam-container { display: flex; flex: 1; overflow: hidden; }
+        
+        /* QUESTION AREA */
+        .q-area { flex: 3; padding: 20px; background: white; overflow-y: auto; display: flex; flex-direction: column; }
+        .subject-tag { background: var(--af-blue); color: white; padding: 5px 10px; border-radius: 3px; display: inline-block; font-size: 12px; margin-bottom: 10px; }
+        .q-text { font-size: 18px; font-weight: 500; margin-bottom: 20px; line-height: 1.4; }
+        
+        .opt-label { display: flex; padding: 12px; border: 1px solid #ddd; margin-bottom: 10px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        .opt-label:hover { background: #f0f8ff; border-color: var(--af-blue); }
+        .opt-label input { margin-right: 15px; transform: scale(1.2); }
+
+        /* SIDEBAR / PALETTE */
+        .sidebar { flex: 1; background: #e6e6e6; border-left: 1px solid #ccc; display: flex; flex-direction: column; min-width: 260px; }
+        .student-profile { padding: 10px; background: white; border-bottom: 1px solid #ddd; display: flex; align-items: center; gap: 10px; }
+        .profile-pic { width: 40px; height: 40px; border-radius: 50%; background: #ccc; }
+        
+        .palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 10px; overflow-y: auto; }
+        .p-btn { aspect-ratio: 1; background: white; border: 1px solid #999; cursor: pointer; font-weight: bold; border-radius: 2px; }
+        .p-btn.answered { background: #28a745; color: white; border-color: #1e7e34; }
+        .p-btn.active { background: var(--af-blue); color: white; }
+        
+        .action-area { margin-top: auto; padding: 10px; background: white; border-top: 1px solid #ccc; }
+        .btn-action { width: 100%; padding: 12px; border: none; color: white; font-weight: bold; cursor: pointer; border-radius: 3px; margin-top: 5px; }
+        .bg-green { background: #28a745; } .bg-blue { background: var(--af-blue); }
+
+        /* SECURITY & ALERTS */
+        #cheat-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(200,0,0,0.95); color: white; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        
+        /* MOBILE ADJUSTMENTS */
+        @media (max-width: 768px) {
+            .exam-container { flex-direction: column; }
+            .sidebar { display: none; position: fixed; bottom: 0; width: 100%; height: 50vh; z-index: 100; border-top: 4px solid var(--af-blue); }
+            .sidebar.show { display: flex; }
+            .mobile-nav { display: flex; padding: 10px; background: white; border-top: 1px solid #ddd; justify-content: space-between; }
+        }
+
+        /* RESULT & CERTIFICATE */
+        #result-screen { background: white; text-align: center; padding: 20px; overflow-y: auto; }
+        .cert-btn { background: #d4af37; color: white; padding: 10px 20px; border:none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen" class="screen" style="display: flex;">
+        <div class="login-card">
+            <h1 style="margin:0;">INDIAN AIR FORCE</h1>
+            <p>Agniveer Vayu - Intake 01/2026</p>
+            <p id="attempt-msg" style="color: yellow; font-size: 14px;"></p>
+            <br>
+            <button class="btn-google" onclick="handleLogin()">
+                <span style="color:blue">G</span> Login with Google
+            </button>
+            <p style="font-size: 12px; margin-top: 20px; opacity: 0.7;">Secure Exam Portal • 2 Attempts/Day</p>
+        </div>
+    </div>
+
+    <div id="exam-screen" class="screen">
+        <div id="cheat-overlay">
+            <h1>⛔ EXAM TERMINATED ⛔</h1>
+            <p>Malpractice Detected: Tab Switching</p>
+            <button onclick="submitFinal(true)" style="padding:10px; margin-top:20px;">View Result</button>
+        </div>
+
+        <div class="top-bar">
+            <div class="logo-area">
+                <span>✈️ STAR EXAM</span>
+            </div>
+            <div class="timer-box" id="timer">20:00</div>
+            <div style="font-size: 12px;">ID: <span id="user-uid">...</span></div>
+        </div>
+
+        <div class="exam-container">
+            <div class="q-area">
+                <div style="display: flex; justify-content: space-between;">
+                    <span class="subject-tag" id="sub-badge">Physics</span>
+                    <span style="color:red; font-size:12px; font-weight:bold;">Neg. Marking: 0.25</span>
+                </div>
+                <div id="q-content">Loading...</div>
+                <div id="options-box"></div>
+            </div>
+
+            <div class="sidebar" id="sidebar">
+                <div class="student-profile">
+                    <img src="" id="user-img" class="profile-pic">
+                    <div>
+                        <div id="user-name" style="font-weight:bold; font-size:14px;">Student</div>
+                    </div>
+                </div>
+                <div style="padding:10px; font-weight:bold; font-size:12px; background:#eee;">Question Palette:</div>
+                <div class="palette-grid" id="palette"></div>
+                <div class="action-area">
+                    <button class="btn-action bg-green" onclick="submitSubject()">Submit Subject</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mobile-nav" style="display:none;" id="mob-nav">
+            <button onclick="toggleSidebar()">☰ Q-List</button>
+            <button onclick="saveAndNext()" style="background:var(--af-blue); color:white; border:none; padding:10px 20px; border-radius:3px;">Save & Next</button>
+        </div>
+    </div>
+
+    <div id="result-screen" class="screen">
+        <h1 style="color: var(--af-blue);">EXAM RESULT</h1>
+        <h3 id="final-score">Loading...</h3>
+        <p style="color: green;">Result has been sent to your Email.</p>
+        <div id="cert-area">
+            <button class="cert-btn" onclick="generateCertificate()">Download Certificate 🏅</button>
+        </div>
+        <br>
+        <button onclick="location.reload()">Back to Home</button>
+    </div>
+
+    <script>
+        // --- 1. CONFIGURATION (REPLACE WITH YOUR KEYS) ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+  authDomain: "revento-academy.firebaseapp.com",
+  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
+  projectId: "revento-academy",
+  storageBucket: "revento-academy.firebasestorage.app",
+  messagingSenderId: "384071300366",
+  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
+  measurementId: "G-4L8YC6J095"
+        };
+        
+        // EmailJS Config (Get from emailjs.com)
+        const EMAILJS_SERVICE_ID = "Yservice_fq2hycq";
+        const EMAILJS_TEMPLATE_ID = "template_l540i48";
+        const EMAILJS_PUBLIC_KEY = "YNZTKfPDbnzMR_H6z";
+
+        // Initialize
+        firebase.initializeApp(firebaseConfig);
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // --- 2. EXAM DATA ---
+        // Subject wise time in MINUTES
+        const subjectConfig = {
+            physics: { time: 20, qs: [
+                {q:"Dimension of 'G' (Gravitational Constant)?", o:["MLT-2", "M-1L3T-2", "ML2T-2", "None"], a:1},
+                {q:"Lens formula is?", o:["1/v - 1/u = 1/f", "1/v + 1/u = 1/f", "v-u=f", "None"], a:0}
+            ]},
+            math: { time: 20, qs: [
+                {q:"Integration of sec(x)tan(x)?", o:["sec x", "tan x", "cos x", "sin x"], a:0},
+                {q:"Value of i^4?", o:["1", "-1", "i", "-i"], a:0}
+            ]},
+            english: { time: 20, qs: [
+                {q:"Synonym of 'Candid'?", o:["Frank", "Shy", "Rude", "Sweet"], a:0},
+                {q:"He died ___ cancer.", o:["from", "of", "by", "with"], a:1}
+            ]}
+        };
+        const subjectsOrder = ['physics', 'math', 'english'];
+
+        // --- 3. STATE VARIABLES ---
+        let currentUser = null;
+        let currentSubIndex = 0; // 0=Phy, 1=Math, 2=Eng
+        let currentQ = 0;
+        let timerSeconds = 0;
+        let timerInterval = null;
+        let answers = { physics:{}, math:{}, english:{} };
+        let cheatCount = 0;
+
+        // --- 4. LOGIC START ---
+        
+        function handleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then(async (res) => {
+                currentUser = res.user;
+                // Check Attempt Limit
+                const today = new Date().toDateString();
+                const userRef = db.ref('users/' + currentUser.uid);
+                
+                userRef.get().then((snap) => {
+                    const data = snap.val() || {};
+                    if(data.lastDate === today && data.attempts >= 2) {
+                        document.getElementById('attempt-msg').innerText = "Limit Reached: You have used 2 attempts today.";
+                        auth.signOut();
+                    } else {
+                        // Setup Exam
+                        document.getElementById('user-name').innerText = currentUser.displayName;
+                        document.getElementById('user-img').src = currentUser.photoURL;
+                        document.getElementById('user-uid').innerText = currentUser.uid.slice(0,5);
+                        startExam();
+                    }
+                });
+            }).catch(e => alert(e.message));
+        }
+
+        function startExam() {
+            // Fullscreen
+            document.documentElement.requestFullscreen().catch(console.log);
+            
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'flex';
+            if(window.innerWidth < 768) document.getElementById('mob-nav').style.display = 'flex';
+
+            loadSubject(0);
+            monitorSecurity();
+        }
+
+        function loadSubject(index) {
+            currentSubIndex = index;
+            const subName = subjectsOrder[index];
+            currentQ = 0;
+            
+            // Set Timer
+            timerSeconds = subjectConfig[subName].time * 60;
+            document.getElementById('sub-badge').innerText = subName.toUpperCase();
+            
+            loadQuestion();
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if(timerSeconds > 0) {
+                    timerSeconds--;
+                    let m = Math.floor(timerSeconds/60);
+                    let s = timerSeconds%60;
+                    document.getElementById('timer').innerText = `${m}:${s<10?'0'+s:s}`;
+                } else {
+                    submitSubject(); // Auto submit when time up
+                }
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            const subName = subjectsOrder[currentSubIndex];
+            const data = subjectConfig[subName].qs[currentQ];
+            
+            document.getElementById('q-content').innerText = `Q${currentQ+1}. ${data.q}`;
+            const box = document.getElementById('options-box');
+            box.innerHTML = '';
+            
+            data.o.forEach((opt, i) => {
+                const checked = answers[subName][currentQ] === i ? 'checked' : '';
+                box.innerHTML += `
+                <label class="opt-label">
+                    <input type="radio" name="opt" value="${i}" ${checked} onchange="selectAns(${i})">
+                    ${opt}
+                </label>`;
+            });
+            renderPalette();
+        }
+
+        function selectAns(val) {
+            const subName = subjectsOrder[currentSubIndex];
+            answers[subName][currentQ] = val;
+            renderPalette();
+        }
+
+        function saveAndNext() {
+            const subName = subjectsOrder[currentSubIndex];
+            if(currentQ < subjectConfig[subName].qs.length - 1) {
+                currentQ++;
+                loadQuestion();
+            }
+        }
+
+        function renderPalette() {
+            const subName = subjectsOrder[currentSubIndex];
+            const p = document.getElementById('palette');
+            p.innerHTML = '';
+            subjectConfig[subName].qs.forEach((_, i) => {
+                let cls = 'p-btn';
+                if(answers[subName][i] !== undefined) cls += ' answered';
+                if(i === currentQ) cls += ' active';
+                p.innerHTML += `<button class="${cls}" onclick="currentQ=${i};loadQuestion()">${i+1}</button>`;
+            });
+        }
+
+        function submitSubject() {
+            clearInterval(timerInterval);
+            if(currentSubIndex < subjectsOrder.length - 1) {
+                if(!confirm(`Submit ${subjectsOrder[currentSubIndex]} and start next?`)) {
+                    startTimer(); // Resume if cancelled
+                    return;
+                }
+                loadSubject(currentSubIndex + 1);
+            } else {
+                submitFinal(false);
+            }
+        }
+
+        // --- 5. RESULT & EMAIL LOGIC ---
+        function submitFinal(isForced) {
+            document.exitFullscreen().catch(e=>{});
+            document.getElementById('exam-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'flex';
+
+            // Calc Score
+            let totalScore = 0;
+            let totalCorrect = 0;
+            let totalWrong = 0;
+            let report = "";
+
+            subjectsOrder.forEach(sub => {
+                let subScore = 0;
+                subjectConfig[sub].qs.forEach((q, i) => {
+                    const userAns = answers[sub][i];
+                    if(userAns === undefined) {
+                        // Unattempted = 0
+                    } else if(userAns === q.a) {
+                        subScore += 1;
+                        totalCorrect++;
+                    } else {
+                        subScore -= 0.25;
+                        totalWrong++;
+                    }
+                });
+                totalScore += subScore;
+                report += `${sub.toUpperCase()}: ${subScore} Marks\n`;
+            });
+
+            document.getElementById('final-score').innerText = `Total Score: ${totalScore} / ${Object.keys(subjectConfig).length * 2}`; // Assuming 2 Qs each for demo
+
+            // Update Database (Attempts)
+            const today = new Date().toDateString();
+            db.ref('users/' + currentUser.uid).transaction((currentData) => {
+                if(!currentData) return { attempts: 1, lastDate: today };
+                if(currentData.lastDate !== today) return { attempts: 1, lastDate: today };
+                return { attempts: currentData.attempts + 1, lastDate: today };
+            });
+
+            // Send Email
+            const emailParams = {
+                to_email: currentUser.email,
+                to_name: currentUser.displayName,
+                score: totalScore,
+                breakdown: report,
+                status: isForced ? "TERMINATED (Cheating)" : "COMPLETED"
+            };
+            
+            // emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams);
+            // ^ Uncomment above line after setting up EmailJS keys
+        }
+
+        // --- 6. CERTIFICATE GENERATOR ---
+        function generateCertificate() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'landscape' });
+
+            // Design
+            doc.setFillColor(0, 51, 102); // AF Blue
+            doc.rect(0, 0, 297, 210, 'F'); // Background
+            doc.setFillColor(255, 255, 255);
+            doc.rect(10, 10, 277, 190, 'F'); // Inner White
+
+            doc.setFontSize(30);
+            doc.setTextColor(0, 51, 102);
+            doc.text("CERTIFICATE OF COMPLETION", 148, 50, null, null, "center");
+            
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text("This is to certify that", 148, 80, null, null, "center");
+            
+            doc.setFontSize(24);
+            doc.setFont("helvetica", "bold");
+            doc.text(currentUser.displayName, 148, 95, null, null, "center");
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(16);
+            doc.text("Has successfully completed the Air Force Mock Test", 148, 110, null, null, "center");
+            
+            const score = document.getElementById('final-score').innerText;
+            doc.text(score, 148, 130, null, null, "center");
+
+            doc.save("AirForce_Certificate.pdf");
+        }
+
+        // --- 7. SECURITY ---
+        function monitorSecurity() {
+            document.addEventListener("visibilitychange", () => {
+                if(document.hidden) {
+                    cheatCount++;
+                    if(cheatCount >= 2) {
+                        document.getElementById('cheat-overlay').style.display = 'flex';
+                    } else {
+                        alert("⚠️ WARNING: Don't switch tabs! Next attempt will terminate exam.");
+                    }
+                }
+            });
+            
+            // Block Right Click
+            document.oncontextmenu = () => false;
+        }
+
+        // Mobile Sidebar Toggle
+        function toggleSidebar() {
+            const sb = document.getElementById('sidebar');
+            sb.classList.toggle('show');
+        }
+
+    </script>
+</body>
+</html>
