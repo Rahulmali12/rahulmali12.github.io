@@ -122,610 +122,610 @@
     // ==================================================
 
     // QUESTIONS
-    const PHYSICS_QS = [
+    const PHYSICS_QS =[
     { 
-        q: "Q1. किसी वस्तु का वेग दोगुना कर दिया जाए तो उसकी गतिज ऊर्जा पर क्या प्रभाव पड़ेगा?", 
-        a: "आधी हो जाएगी", 
-        b: "दोगुनी हो जाएगी", 
-        c: "चार गुनी हो जाएगी", 
-        d: "समान रहेगी", 
+        q: "Q1. यदि किसी कण का संवेग (Momentum) 100% बढ़ा दिया जाए, तो उसकी गतिज ऊर्जा में कितने प्रतिशत वृद्धि होगी?", 
+        a: "100%", 
+        b: "200%", 
+        c: "300%", 
+        d: "400%", 
         ans: "c" 
     },
     { 
-        q: "Q2. किस स्थिति में कार्य शून्य होता है?", 
-        a: "बल एवं विस्थापन शून्य हों", 
-        b: "बल हो पर विस्थापन न हो", 
-        c: "विस्थापन हो पर बल न हो", 
-        d: "सभी सही हैं", 
-        ans: "d" 
-    },
-    { 
-        q: "Q3. चाल एक किस प्रकार की राशि है?", 
-        a: "सदिश", 
-        b: "अदिश", 
-        c: "दोनों", 
-        d: "कोई नहीं", 
-        ans: "b" 
-    },
-    { 
-        q: "Q4. ध्वनि तरंगों का संचरण किसमें नहीं होता?", 
-        a: "ठोस में", 
-        b: "द्रव में", 
-        c: "वायु में", 
-        d: "निर्वात में", 
-        ans: "d" 
-    },
-    { 
-        q: "Q5. ओम का नियम किस रूप में व्यक्त किया जाता है?", 
-        a: "V = IR", 
-        b: "P = VI", 
-        c: "Q = It", 
-        d: "F = qE", 
-        ans: "a" 
-    },
-    { 
-        q: "Q6. शक्ति का SI मात्रक क्या है?", 
-        a: "जूल", 
-        b: "वाट", 
-        c: "न्यूटन", 
-        d: "कूलॉम", 
-        ans: "b" 
-    },
-    { 
-        q: "Q7. पलन (Momentum) किसका गुणनफल है?", 
-        a: "वेग और त्वरण", 
-        b: "द्रव्यमान और वेग", 
-        c: "बल और समय", 
-        d: "ऊर्जा और समय", 
-        ans: "b" 
-    },
-    { 
-        q: "Q8. गुरुत्वीय त्वरण का मान पृथ्वी पर लगभग कितना होता है?", 
-        a: "8.8 m/s²", 
-        b: "9.2 m/s²", 
-        c: "9.8 m/s²", 
-        d: "10.2 m/s²", 
+        q: "Q2. एक उपग्रह पृथ्वी के चारों ओर वृत्ताकार कक्षा में घूम रहा है। यदि इसकी गतिज ऊर्जा दोगुनी कर दी जाए, तो क्या होगा?", 
+        a: "कक्षा की त्रिज्या आधी हो जाएगी", 
+        b: "उपग्रह पृथ्वी पर गिर जाएगा", 
+        c: "उपग्रह कक्षा छोड़कर पलायन कर जाएगा", 
+        d: "कोई परिवर्तन नहीं होगा", 
         ans: "c" 
     },
     { 
-        q: "Q9. किस दर्पण में पीछे की ओर देखने के लिए वाहनों में प्रयोग किया जाता है?", 
-        a: "उत्तल दर्पण", 
-        b: "अवतल दर्पण", 
-        c: "समतल दर्पण", 
-        d: "इनमें से कोई नहीं", 
-        ans: "a" 
-    },
-    { 
-        q: "Q10. विद्युत आवेश की SI इकाई क्या है?", 
-        a: "एम्पियर", 
-        b: "कूलॉम", 
-        c: "वाट", 
-        d: "टेस्ला", 
+        q: "Q3. बरनौली का सिद्धांत (Bernoulli's Principle) किस संरक्षण नियम पर आधारित है?", 
+        a: "द्रव्यमान संरक्षण", 
+        b: "ऊर्जा संरक्षण", 
+        c: "संवेग संरक्षण", 
+        d: "आवेश संरक्षण", 
         ans: "b" 
     },
     { 
-        q: "Q11. धारा किसके कारण बहती है?", 
-        a: "दाब के कारण", 
-        b: "विद्युत विभवांतर के कारण", 
-        c: "घनत्व के कारण", 
-        d: "ऊर्जा के कारण", 
+        q: "Q4. पृष्ठ तनाव (Surface Tension) की विमा (Dimensions) क्या है?", 
+        a: "[MLT⁻²]", 
+        b: "[MT⁻²]", 
+        c: "[ML⁻¹T⁻²]", 
+        d: "[M¹L¹T⁻¹]", 
         ans: "b" 
     },
     { 
-        q: "Q12. यदि किसी तरंग की आवृत्ति बढ़ा दी जाए तो उसकी तरंगदैर्घ्य पर क्या प्रभाव पड़ेगा?", 
-        a: "बढ़ेगी", 
-        b: "घटेगी", 
-        c: "समान रहेगी", 
-        d: "शून्य हो जाएगी", 
+        q: "Q5. यदि किसी सरल लोलक की लंबाई 4% बढ़ा दी जाए, तो उसके आवर्तकाल में कितनी वृद्धि होगी?", 
+        a: "4%", 
+        b: "8%", 
+        c: "2%", 
+        d: "16%", 
+        ans: "c" 
+    },
+    { 
+        q: "Q6. कार्नो इंजन (Carnot Engine) की दक्षता 100% होने के लिए सिंक का तापमान कितना होना चाहिए?", 
+        a: "0°C", 
+        b: "100°C", 
+        c: "273 K", 
+        d: "0 K", 
+        ans: "d" 
+    },
+    { 
+        q: "Q7. पूर्ण आंतरिक परावर्तन (TIR) के लिए प्रकाश को किस माध्यम से किस माध्यम में जाना चाहिए?", 
+        a: "विरल से सघन", 
+        b: "सघन से विरल", 
+        c: "वायु से जल", 
+        d: "कांच से हीरा", 
         ans: "b" 
     },
     { 
-        q: "Q13. रैखिक संवेग का संरक्षण कब होता है?", 
-        a: "केवल घर्षण रहित स्थिति में", 
-        b: "केवल बंद तंत्र में", 
-        c: "हमेशा", 
-        d: "केवल ठोस में", 
+        q: "Q8. साबुन के बुलबुले के अंदर अतिरिक्त दाब (Excess Pressure) का सूत्र क्या है?", 
+        a: "2T/R", 
+        b: "4T/R", 
+        c: "T/R", 
+        d: "8T/R", 
         ans: "b" 
     },
     { 
-        q: "Q14. दाब का SI मात्रक क्या है?", 
-        a: "पास्कल", 
-        b: "न्यूटन", 
-        c: "जूल", 
-        d: "टेस्ला", 
-        ans: "a" 
-    },
-    { 
-        q: "Q15. उष्मा किसका स्थानांतरण है?", 
-        a: "ऊर्जा", 
+        q: "Q9. लेंज का नियम (Lenz's Law) किस संरक्षण सिद्धांत का पालन करता है?", 
+        a: "आवेश", 
         b: "द्रव्यमान", 
-        c: "वेग", 
-        d: "सामर्थ्य", 
-        ans: "a" 
-    },
-    { 
-        q: "Q16. प्रकाश का अपवर्तन किस कारण होता है?", 
-        a: "घनत्व परिवर्तन", 
-        b: "चाल परिवर्तन", 
-        c: "माध्यम परिवर्तन", 
-        d: "इनमें से सभी", 
-        ans: "d" 
-    },
-    { 
-        q: "Q17. धारा की SI इकाई क्या है?", 
-        a: "एम्पियर", 
-        b: "वोल्ट", 
-        c: "ओम", 
-        d: "जूल", 
-        ans: "a" 
-    },
-    { 
-        q: "Q18. प्रत्यास्थ टक्कर में क्या संरक्षित रहता है?", 
-        a: "केवल संवेग", 
-        b: "केवल ऊर्जा", 
-        c: "संवेग और ऊर्जा दोनों", 
-        d: "कुछ भी नहीं", 
+        c: "ऊर्जा", 
+        d: "संवेग", 
         ans: "c" 
     },
     { 
-        q: "Q19. कोणीय वेग का SI मात्रक क्या है?", 
-        a: "rad/s", 
-        b: "m/s", 
-        c: "rad", 
-        d: "s⁻²", 
-        ans: "a" 
-    },
-    { 
-        q: "Q20. आर्किमिडीज का सिद्धांत किस पर आधारित है?", 
-        a: "उत्थान बल", 
-        b: "घर्षण बल", 
-        c: "गुरुत्व बल", 
-        d: "चुंबकीय बल", 
-        ans: "a" 
-    },
-    { 
-        q: "Q21. EM तरंगें कैसी होती हैं?", 
-        a: "अनुदैर्ध्य", 
-        b: "अनुप्रस्थ", 
-        c: "दोनों", 
-        d: "कोई नहीं", 
-        ans: "b" 
-    },
-    { 
-        q: "Q22. प्रकाश वर्ष किसका मात्रक है?", 
-        a: "समय", 
-        b: "दूरी", 
-        c: "वेग", 
-        d: "ऊर्जा", 
-        ans: "b" 
-    },
-    { 
-        q: "Q23. किसी चालक का प्रतिरोध किस पर निर्भर करता है?", 
-        a: "लंबाई पर", 
-        b: "क्षेत्रफल पर", 
-        c: "पदार्थ पर", 
-        d: "इन सभी पर", 
-        ans: "d" 
-    },
-    { 
-        q: "Q24. तापमान किसे नहीं बदलता?", 
-        a: "ध्वनि की चाल", 
-        b: "प्रकाश की चाल", 
-        c: "श्यानता", 
-        d: "घनत्व", 
-        ans: "b" 
-    },
-    { 
-        q: "Q25. न्यूटन का तीसरा नियम क्या बताता है?", 
-        a: "जड़त्व", 
-        b: "संवेग संरक्षण", 
-        c: "क्रिया–प्रतिक्रिया", 
-        d: "गुरुत्वाकर्षण", 
+        q: "Q10. शुद्ध प्रेरकत्व (Pure Inductive) परिपथ में धारा और वोल्टेज के बीच कालांतर (Phase Difference) कितना होता है?", 
+        a: "0°", 
+        b: "45°", 
+        c: "90°", 
+        d: "180°", 
         ans: "c" 
+    },
+    { 
+        q: "Q11. यंग के द्वि-स्लिट प्रयोग में यदि प्रकाश की तरंगदैर्ध्य (Wavelength) दोगुनी कर दी जाए, तो फ्रिंज चौड़ाई पर क्या प्रभाव पड़ेगा?", 
+        a: "आधी हो जाएगी", 
+        b: "चार गुनी", 
+        c: "दोगुनी", 
+        d: "अपरिवर्तित", 
+        ans: "c" 
+    },
+    { 
+        q: "Q12. किसी गैस की विशिष्ट ऊष्माओं का अनुपात (Cp/Cv) परमाणुकता के साथ कैसे बदलता है? (Monoatomic के लिए)", 
+        a: "1.40", 
+        b: "1.67", 
+        c: "1.33", 
+        d: "1.00", 
+        ans: "b" 
+    },
+    { 
+        q: "Q13. प्लांक नियतांक (Planck's Constant) की विमा किसके समान होती है?", 
+        a: "बल", 
+        b: "कोणीय संवेग", 
+        c: "ऊर्जा", 
+        d: "रेखीय संवेग", 
+        ans: "b" 
+    },
+    { 
+        q: "Q14. भू-स्थिर उपग्रह (Geostationary Satellite) का आवर्तकाल कितना होता है?", 
+        a: "12 घंटे", 
+        b: "6 घंटे", 
+        c: "24 घंटे", 
+        d: "365 दिन", 
+        ans: "c" 
+    },
+    { 
+        q: "Q15. किस ताप पर फारेनहाइट और सेल्सियस पैमाने का मान समान होता है?", 
+        a: "40°", 
+        b: "-40°", 
+        c: "32°", 
+        d: "-32°", 
+        ans: "b" 
+    },
+    { 
+        q: "Q16. आकाश का नीला रंग किसके कारण दिखाई देता है?", 
+        a: "विवर्तन", 
+        b: "व्यतिकरण", 
+        c: "प्रकीर्णन (Scattering)", 
+        d: "अपवर्तन", 
+        ans: "c" 
+    },
+    { 
+        q: "Q17. फोटोइलेक्ट्रिक प्रभाव में उत्सर्जित इलेक्ट्रॉनों की अधिकतम गतिज ऊर्जा किस पर निर्भर करती है?", 
+        a: "प्रकाश की तीव्रता पर", 
+        b: "प्रकाश की आवृत्ति पर", 
+        c: "समय पर", 
+        d: "इनमें से कोई नहीं", 
+        ans: "b" 
+    },
+    { 
+        q: "Q18. एक आदर्श एमीटर (Ideal Ammeter) का प्रतिरोध कितना होना चाहिए?", 
+        a: "अनंत", 
+        b: "बहुत उच्च", 
+        c: "शून्य", 
+        d: "100 ओम", 
+        ans: "c" 
+    },
+    { 
+        q: "Q19. रेडियोएक्टिवता की इकाई क्या है?", 
+        a: "कैंडेला", 
+        b: "बेकुरल", 
+        c: "वेबर", 
+        d: "टेस्ला", 
+        ans: "b" 
+    },
+    { 
+        q: "Q20. जब एक प्रकाश किरण एक माध्यम से दूसरे माध्यम में जाती है, तो कौन सी राशि अपरिवर्तित रहती है?", 
+        a: "वेग", 
+        b: "तरंगदैर्ध्य", 
+        c: "आवृत्ति (Frequency)", 
+        d: "आयाम", 
+        ans: "c" 
+    },
+    { 
+        q: "Q21. एक समान चुंबकीय क्षेत्र में वृत्ताकार पथ पर घूमने वाले आवेशित कण के आवर्तकाल का मान किस पर निर्भर नहीं करता?", 
+        a: "द्रव्यमान", 
+        b: "आवेश", 
+        c: "वेग (Velocity)", 
+        d: "चुंबकीय क्षेत्र", 
+        ans: "c" 
+    },
+    { 
+        q: "Q22. ट्रांजिस्टर का उपयोग मुख्य रूप से किस रूप में किया जाता है?", 
+        a: "दिष्टकारी", 
+        b: "प्रवर्धक (Amplifier)", 
+        c: "फिल्टर", 
+        d: "वोल्टेज रेगुलेटर", 
+        ans: "b" 
+    },
+    { 
+        q: "Q23. श्यानता गुणांक (Coefficient of Viscosity) की SI इकाई क्या है?", 
+        a: "पास्कल", 
+        b: "प्वाइजुली (Poiseuille)", 
+        c: "वाट", 
+        d: "न्यूटन", 
+        ans: "b" 
+    },
+    { 
+        q: "Q24. डॉप्लर प्रभाव (Doppler Effect) किससे संबंधित है?", 
+        a: "ध्वनि", 
+        b: "प्रकाश", 
+        c: "दोनों a और b", 
+        d: "इनमें से कोई नहीं", 
+        ans: "c" 
+    },
+    { 
+        q: "Q25. संधारित्र (Capacitor) में ऊर्जा कहाँ संचित होती है?", 
+        a: "चालक प्लेटों पर", 
+        b: "वैद्युत क्षेत्र में", 
+        c: "चुंबकीय क्षेत्र में", 
+        d: "तारों में", 
+        ans: "b" 
     }
 ];
-    const MATH_QS =[
-    {
-        q: "Q1. यदि A = {1, 2} है, तो इसके घात समुच्चय (Power Set) में कुल कितने अवयव होंगे?",
-        a: "2",
-        b: "4",
-        c: "8",
-        d: "0",
-        ans: "b"
+   [
+    { 
+        q: "Q1. यदि $\\omega$ इकाई का सम्मिश्र घनमूल है, तो $(1-\\omega+\\omega^2)^5 + (1+\\omega-\\omega^2)^5$ का मान क्या होगा?", 
+        a: "16", 
+        b: "32", 
+        c: "-32", 
+        d: "64", 
+        ans: "b" 
     },
-    {
-        q: "Q2. यदि f(x) = x + 2 और g(x) = x² हो, तो fog(x) का मान क्या होगा?",
-        a: "x² + 2",
-        b: "x² + 4",
-        c: "(x + 2)²",
-        d: "x² - 2",
-        ans: "a"
+    { 
+        q: "Q2. $\\tan^{-1}(1/2) + \\tan^{-1}(1/3)$ का मान किसके बराबर है?", 
+        a: "\\pi/2", 
+        b: "\\pi/3", 
+        c: "\\pi/4", 
+        d: "\\pi/6", 
+        ans: "c" 
     },
-    {
-        q: "Q3. i⁴ⁿ⁺¹ का मान क्या होगा, जहाँ n एक धनात्मक पूर्णांक है?",
-        a: "1",
-        b: "-1",
-        c: "i",
-        d: "-i",
-        ans: "c"
+    { 
+        q: "Q3. यदि $|\\vec{a}| = 3, |\\vec{b}| = 4$ और $\\vec{a} \\cdot \\vec{b} = 6$, तो $|\\vec{a} \\times \\vec{b}|$ का मान क्या होगा?", 
+        a: "6\\sqrt{3}", 
+        b: "12", 
+        c: "6", 
+        d: "9", 
+        ans: "a" 
     },
-    {
-        q: "Q4. द्विघात समीकरण x² - 5x + 6 = 0 के मूल (Roots) क्या हैं?",
-        a: "2, 3",
-        b: "-2, -3",
-        c: "1, 6",
-        d: "2, -3",
-        ans: "a"
+    { 
+        q: "Q4. फलन $f(x) = \\frac{\\sin x + \\cos x}{\\sin x - \\cos x}$ का $x = 0$ पर अवकलज (Derivative) क्या है?", 
+        a: "1", 
+        b: "2", 
+        c: "-2", 
+        d: "0", 
+        ans: "c" 
     },
-    {
-        q: "Q5. श्रेणी 2, 4, 8, 16, ... का 10वाँ पद क्या होगा?",
-        a: "512",
-        b: "1024",
-        c: "256",
-        d: "2048",
-        ans: "b"
+    { 
+        q: "Q5. 10 व्यक्तियों को एक गोल मेज के चारों ओर कितने प्रकार से बैठाया जा सकता है?", 
+        a: "10!", 
+        b: "9!", 
+        c: "10! / 2", 
+        d: "9! / 2", 
+        ans: "b" 
     },
-    {
-        q: "Q6. sin(765°) का मान क्या है?",
-        a: "0",
-        b: "1",
-        c: "1/√2",
-        d: "√3/2",
-        ans: "c"
+    { 
+        q: "Q6. $\\int \\frac{1}{x(1+\\log x)} dx$ का मान क्या होगा?", 
+        a: "\\log(1+\\log x) + c", 
+        b: "\\log(\\log x) + c", 
+        c: "x \\log x + c", 
+        d: "\\frac{1}{(1+\\log x)^2} + c", 
+        ans: "a" 
     },
-    {
-        q: "Q7. tan⁻¹(1) + tan⁻¹(2) + tan⁻¹(3) का मान क्या होगा?",
-        a: "π",
-        b: "π/2",
-        c: "π/4",
-        d: "0",
-        ans: "a"
+    { 
+        q: "Q7. अतिपरवलय (Hyperbola) $x^2/9 - y^2/16 = 1$ की नाभियों (Foci) के बीच की दूरी क्या है?", 
+        a: "5", 
+        b: "8", 
+        c: "10", 
+        d: "12", 
+        ans: "c" 
     },
-    {
-        q: "Q8. यदि मैट्रिक्स A = [[1, 2], [3, 4]] है, तो |A| (Determinant) का मान क्या होगा?",
-        a: "-2",
-        b: "2",
-        c: "10",
-        d: "0",
-        ans: "a"
+    { 
+        q: "Q8. $\\lim_{x \\to \\infty} (1 + 1/x)^x$ का मान किसके बराबर है?", 
+        a: "0", 
+        b: "1", 
+        c: "e", 
+        d: "\\infty", 
+        ans: "c" 
     },
-    {
-        q: "Q9. एक अव्युत्क्रमणीय (Singular) मैट्रिक्स के लिए डिटर्मिनेंट का मान होता है:",
-        a: "1",
-        b: "-1",
-        c: "0",
-        d: "अनंत",
-        ans: "c"
+    { 
+        q: "Q9. श्रेणी $1^2 + 2^2 + 3^2 + ... + n^2$ का योगफल क्या है?", 
+        a: "[n(n+1)/2]^2", 
+        b: "n(n+1)(2n+1)/6", 
+        c: "n(n+1)/2", 
+        d: "n^2(n+1)/4", 
+        ans: "b" 
     },
-    {
-        q: "Q10. शब्द 'BIHAR' के अक्षरों को कितने अलग-अलग तरीकों से व्यवस्थित किया जा सकता है?",
-        a: "24",
-        b: "120",
-        c: "60",
-        d: "720",
-        ans: "b"
+    { 
+        q: "Q10. यदि $^nC_{12} = ^nC_8$, तो $^nC_{17}$ का मान क्या होगा?", 
+        a: "1140", 
+        b: "190", 
+        c: "114", 
+        d: "20", 
+        ans: "a" 
     },
-    {
-        q: "Q11. (1 + x)ⁿ के विस्तार में कुल पदों की संख्या कितनी होती है?",
-        a: "n",
-        b: "n - 1",
-        c: "n + 1",
-        d: "2n",
-        ans: "c"
+    { 
+        q: "Q11. समतल $2x - y + z + 8 = 0$ की मूल बिंदु से लंबवत दूरी क्या है?", 
+        a: "8/\\sqrt{6}", 
+        b: "8/6", 
+        c: "\\sqrt{6}/8", 
+        d: "2", 
+        ans: "a" 
     },
-    {
-        q: "Q12. रेखा 3x + 4y - 12 = 0 की प्रवणता (Slope) क्या है?",
-        a: "3/4",
-        b: "-3/4",
-        c: "4/3",
-        d: "-4/3",
-        ans: "b"
+    { 
+        q: "Q12. अवकल समीकरण $\\frac{dy}{dx} = e^{x-y} + x^2 e^{-y}$ का हल क्या है?", 
+        a: "e^y = e^x + x^3/3 + c", 
+        b: "e^x = e^y + x^3/3 + c", 
+        c: "e^y = e^x + x^2 + c", 
+        d: "e^{x+y} = x^3/3 + c", 
+        ans: "a" 
     },
-    {
-        q: "Q13. उस वृत (Circle) की त्रिज्या क्या है जिसका समीकरण x² + y² = 49 है?",
-        a: "49",
-        b: "7",
-        c: "14",
-        d: "24.5",
-        ans: "b"
+    { 
+        q: "Q13. $(\\sqrt{3} + i)^{12}$ का मान क्या होगा?", 
+        a: "2^{12}", 
+        b: "4^6", 
+        c: "2^{12}i", 
+        d: "4^{12}", 
+        ans: "a" 
     },
-    {
-        q: "Q14. लिमिट lim (x→0) (sin 3x / x) का मान क्या है?",
-        a: "1",
-        b: "0",
-        c: "3",
-        d: "1/3",
-        ans: "c"
+    { 
+        q: "Q14. एक थैले में 5 सफेद और 3 काली गेंदें हैं। दो गेंदें यादृच्छया निकालने पर दोनों के काले होने की प्रायिकता क्या है?", 
+        a: "3/28", 
+        b: "9/64", 
+        c: "1/14", 
+        d: "5/28", 
+        ans: "a" 
     },
-    {
-        q: "Q15. d/dx (log x) का मान क्या है?",
-        a: "1/x",
-        b: "e^x",
-        c: "1",
-        d: "log x",
-        ans: "a"
+    { 
+        q: "Q15. $\\int_0^1 \\frac{1}{1+x^2} dx$ का मान क्या है?", 
+        a: "\\pi/2", 
+        b: "\\pi/4", 
+        c: "1", 
+        d: "0", 
+        ans: "b" 
     },
-    {
-        q: "Q16. यदि y = sin(x²) हो, तो dy/dx क्या होगा?",
-        a: "cos(x²)",
-        b: "2x cos(x²)",
-        c: "cos(2x)",
-        d: "2x sin(x²)",
-        ans: "b"
+    { 
+        q: "Q16. फलन $f(x) = x^2 - 4x + 5$ का न्यूनतम मान (Minimum Value) क्या होगा?", 
+        a: "0", 
+        b: "1", 
+        c: "2", 
+        d: "-1", 
+        ans: "b" 
     },
-    {
-        q: "Q17. वक्र y = x² के बिंदु (1, 1) पर स्पर्श रेखा की प्रवणता (Slope) क्या होगी?",
-        a: "1",
-        b: "2",
-        c: "0",
-        d: "4",
-        ans: "b"
+    { 
+        q: "Q17. $\\sin 75^\\circ$ का मान क्या है?", 
+        a: "(\\sqrt{3}-1)/2\\sqrt{2}", 
+        b: "(\\sqrt{3}+1)/2\\sqrt{2}", 
+        c: "\\sqrt{3}/2", 
+        d: "1/\\sqrt{2}", 
+        ans: "b" 
     },
-    {
-        q: "Q18. ∫ x⁵ dx का मान क्या है?",
-        a: "5x⁴ + c",
-        b: "x⁶/6 + c",
-        c: "x⁴/4 + c",
-        d: "6x⁶ + c",
-        ans: "b"
+    { 
+        q: "Q18. आव्यूह (Matrix) $A$ के लिए यदि $A^2 - A + I = 0$, तो $A^{-1}$ किसके बराबर है?", 
+        a: "I - A", 
+        b: "A - I", 
+        c: "A + I", 
+        d: "A", 
+        ans: "a" 
     },
-    {
-        q: "Q19. ∫ (0 से π/2) sin x dx का मान क्या होगा?",
-        a: "0",
-        b: "1",
-        c: "-1",
-        d: "2",
-        ans: "b"
+    { 
+        q: "Q19. यदि $y = \\sin(\\log x)$, तो $d^2y/dx^2$ का मान क्या होगा?", 
+        a: "- [\\sin(\\log x) + \\cos(\\log x)] / x^2", 
+        b: "\\sin(\\log x) / x^2", 
+        c: "-\\cos(\\log x) / x^2", 
+        d: "0", 
+        ans: "a" 
     },
-    {
-        q: "Q20. अवकल समीकरण (Differential Equation) d²y/dx² + y = 0 की कोटि (Order) क्या है?",
-        a: "1",
-        b: "2",
-        c: "0",
-        d: "परिभाषित नहीं",
-        ans: "b"
+    { 
+        q: "Q20. रेखा $y = mx + 1$ वृत्त $x^2 + y^2 = 1$ की स्पर्श रेखा है, तो $m$ का मान क्या होगा?", 
+        a: "0", 
+        b: "1", 
+        c: "2", 
+        d: "अनंत", 
+        ans: "a" 
     },
-    {
-        q: "Q21. यदि सदिश (Vector) a = 2i + 3j और b = i + j हो, तो a . b (Dot Product) क्या होगा?",
-        a: "5",
-        b: "6",
-        c: "1",
-        d: "0",
-        ans: "a"
+    { 
+        q: "Q21. गुणोत्तर श्रेणी (G.P.) $5, 10, 20, ...$ के प्रथम 10 पदों का योगफल क्या है?", 
+        a: "5(2^{10} - 1)", 
+        b: "10(2^5 - 1)", 
+        c: "5(2^9 - 1)", 
+        d: "2^{10} - 5", 
+        ans: "a" 
     },
-    {
-        q: "Q22. Z-अक्ष की दिक्-कोज्याएँ (Direction Cosines) क्या हैं?",
-        a: "(1, 0, 0)",
-        b: "(0, 1, 0)",
-        c: "(0, 0, 1)",
-        d: "(1, 1, 1)",
-        ans: "c"
+    { 
+        q: "Q22. $\\vec{i} \\cdot (\\vec{j} \\times \\vec{k}) + \\vec{j} \\cdot (\\vec{i} \\times \\vec{k}) + \\vec{k} \\cdot (\\vec{i} \\times \\vec{j})$ का मान क्या है?", 
+        a: "1", 
+        b: "3", 
+        c: "0", 
+        d: "-1", 
+        ans: "a" 
     },
-    {
-        q: "Q23. एक लीप वर्ष (Leap Year) में 53 रविवार होने की प्रायिकता (Probability) क्या है?",
-        a: "1/7",
-        b: "2/7",
-        c: "5/7",
-        d: "6/7",
-        ans: "b"
+    { 
+        q: "Q23. $(1+x)^{20}$ के प्रसार में $x^{10}$ का गुणांक (Coefficient) क्या है?", 
+        a: "^{20}C_{10}", 
+        b: "^{20}C_{9}", 
+        c: "^{19}C_{10}", 
+        d: "2^{10}", 
+        ans: "a" 
     },
-    {
-        q: "Q24. P(A) = 0.3 और P(B) = 0.4 है। यदि A और B परस्पर अपवर्जी (Mutually Exclusive) हैं, तो P(A ∪ B) क्या होगा?",
-        a: "0.12",
-        b: "0.7",
-        c: "0.1",
-        d: "0.5",
-        ans: "b"
+    { 
+        q: "Q24. यदि $f(x) = x+1$ और $g(x) = x^2$, तो $g(f(x))$ का मान क्या होगा?", 
+        a: "x^2 + 1", 
+        b: "(x+1)^2", 
+        c: "x^2 + x + 1", 
+        d: "x^3", 
+        ans: "b" 
     },
-    {
-        q: "Q25. 1 से 100 तक की संख्याओं में से एक संख्या चुनने पर उसके अभाज्य (Prime) होने की प्रायिकता क्या होगी?",
-        a: "1/4",
-        b: "1/2",
-        c: "1/5",
-        d: "1/3",
-        ans: "a"
+    { 
+        q: "Q25. $\\sin 20^\\circ \\sin 40^\\circ \\sin 60^\\circ \\sin 80^\\circ$ का मान क्या है?", 
+        a: "3/8", 
+        b: "3/16", 
+        c: "1/16", 
+        d: "1/8", 
+        ans: "b" 
     }
 ];
-    const ENG_QS =[
-    {
-        q: "Q1. He died _______ cancer. (Choose correct preposition)",
-        a: "by",
-        b: "of",
-        c: "from",
-        d: "with",
-        ans: "b"
+   [
+    { 
+        q: "Q1. Choose the correctly spelt word:", 
+        a: "Lieutenant", 
+        b: "Lieutanant", 
+        c: "Luitenant", 
+        d: "Lieutinent", 
+        ans: "a" 
     },
-    {
-        q: "Q2. Synonym of 'ABANDON' is:",
-        a: "Keep",
-        b: "Join",
-        c: "Forsake",
-        d: "Create",
-        ans: "c"
+    { 
+        q: "Q2. Identify the synonym of 'ABANDON':", 
+        a: "Keep", 
+        b: "Forsake", 
+        c: "Cherish", 
+        d: "Hold", 
+        ans: "b" 
     },
-    {
-        q: "Q3. Choose the correctly spelt word.",
-        a: "Lieutenant",
-        b: "Leutenant",
-        c: "Liutenant",
-        d: "Leiutenant",
-        ans: "a"
+    { 
+        q: "Q3. Change the Voice: 'The mechanic repaired the car.'", 
+        a: "The car is repaired by the mechanic.", 
+        b: "The car was repaired by the mechanic.", 
+        c: "The car has been repaired by the mechanic.", 
+        d: "The car repair by the mechanic.", 
+        ans: "b" 
     },
-    {
-        q: "Q4. Antonym of 'OPTIMIST' is:",
-        a: "Pessimist",
-        b: "Idealist",
-        c: "Realist",
-        d: "Dreamer",
-        ans: "a"
+    { 
+        q: "Q4. Fill in the blank: 'He is junior _______ me in service.'", 
+        a: "than", 
+        b: "to", 
+        c: "from", 
+        d: "with", 
+        ans: "b" 
     },
-    {
-        q: "Q5. I prefer coffee _______ tea.",
-        a: "than",
-        b: "to",
-        c: "over",
-        d: "from",
-        ans: "b"
+    { 
+        q: "Q5. Give one word substitution for: 'A person who hates mankind.'", 
+        a: "Optimist", 
+        b: "Misanthrope", 
+        c: "Philanthropist", 
+        d: "Theist", 
+        ans: "b" 
     },
-    {
-        q: "Q6. One word for 'A person who does not believe in God':",
-        a: "Theist",
-        b: "Atheist",
-        c: "Ascetic",
-        d: "Fanatic",
-        ans: "b"
+    { 
+        q: "Q6. Choose the antonym of 'ADVERSITY':", 
+        a: "Misfortune", 
+        b: "Prosperity", 
+        c: "Calamity", 
+        d: "Hardship", 
+        ans: "b" 
     },
-    {
-        q: "Q7. Change the voice: 'The cat killed the snake.'",
-        a: "The snake was killed by the cat",
-        b: "The snake is killed by the cat",
-        c: "The snake has killed the cat",
-        d: "The snake killed the cat",
-        ans: "a"
+    { 
+        q: "Q7. Spot the error: 'Each of the students (a)/ have finished (b)/ their homework (c)/ No error (d).'", 
+        a: "a", 
+        b: "b", 
+        c: "c", 
+        d: "d", 
+        ans: "b" 
     },
-    {
-        q: "Q8. He is _______ NCC cadet.",
-        a: "a",
-        b: "an",
-        c: "the",
-        d: "No article",
-        ans: "b"
+    { 
+        q: "Q8. Change into Indirect Speech: 'He said, \"I am playing chess.\"'", 
+        a: "He said that he is playing chess.", 
+        b: "He said that he was playing chess.", 
+        c: "He says that he played chess.", 
+        d: "He said that he had played chess.", 
+        ans: "b" 
     },
-    {
-        q: "Q9. Plural form of 'Deer' is:",
-        a: "Deers",
-        b: "Deeres",
-        c: "Deer",
-        d: "None of these",
-        ans: "c"
+    { 
+        q: "Q9. Fill in the blank with suitable article: 'Copper is _______ useful metal.'", 
+        a: "a", 
+        b: "an", 
+        c: "the", 
+        d: "No article", 
+        ans: "a" 
     },
-    {
-        q: "Q10. The adjective of 'Sun' is:",
-        a: "Sunny",
-        b: "Solar",
-        c: "Sunlike",
-        d: "Suna",
-        ans: "b"
+    { 
+        q: "Q10. What is the feminine of 'Colt'?", 
+        a: "Mare", 
+        b: "Filly", 
+        c: "Ewe", 
+        d: "Doe", 
+        ans: "b" 
     },
-    {
-        q: "Q11. Idiom 'A Red letter day' means:",
-        a: "A dangerous day",
-        b: "A rainy day",
-        c: "An important day",
-        d: "A sad day",
-        ans: "c"
+    { 
+        q: "Q11. Idiom/Phrase: 'To turn over a new leaf' means:", 
+        a: "To change for the better", 
+        b: "To read a book", 
+        c: "To plant a tree", 
+        d: "To hide the truth", 
+        ans: "a" 
     },
-    {
-        q: "Q12. Ram is senior _______ Shyam.",
-        a: "than",
-        b: "from",
-        c: "to",
-        d: "by",
-        ans: "c"
+    { 
+        q: "Q12. Fill in the blank: 'Hardly had he reached the station _______ the train left.'", 
+        a: "than", 
+        b: "then", 
+        c: "when", 
+        d: "that", 
+        ans: "c" 
     },
-    {
-        q: "Q13. Change into Indirect Speech: He said, 'I am busy now.'",
-        a: "He said that he was busy then",
-        b: "He said that he is busy now",
-        c: "He says that he was busy then",
-        d: "He asked that he is busy then",
-        ans: "a"
+    { 
+        q: "Q13. Identify the part of speech of the underlined word: 'He is a **brave** soldier.'", 
+        a: "Noun", 
+        b: "Verb", 
+        c: "Adjective", 
+        d: "Adverb", 
+        ans: "c" 
     },
-    {
-        q: "Q14. Synonym of 'BRIEF' is:",
-        a: "Long",
-        b: "Short",
-        c: "Small",
-        d: "Large",
-        ans: "b"
+    { 
+        q: "Q14. Plural of 'Criterion' is:", 
+        a: "Criterions", 
+        b: "Criteria", 
+        c: "Criterias", 
+        d: "Criteries", 
+        ans: "b" 
     },
-    {
-        q: "Q15. She _______ to the market yesterday.",
-        a: "go",
-        b: "gone",
-        c: "went",
-        d: "going",
-        ans: "c"
+    { 
+        q: "Q15. Fill in the blank: 'The ship was _______ in the ocean.'", 
+        a: "drowned", 
+        b: "sunk", 
+        c: "sinked", 
+        d: "drowning", 
+        ans: "b" 
     },
-    {
-        q: "Q16. Identify the Noun in the sentence: 'Honesty is the best policy.'",
-        a: "Best",
-        b: "Is",
-        c: "Policy",
-        d: "Honesty",
-        ans: "d"
+    { 
+        q: "Q16. Choose the correct preposition: 'She has been living here _______ 2010.'", 
+        a: "for", 
+        b: "since", 
+        c: "from", 
+        d: "in", 
+        ans: "b" 
     },
-    {
-        q: "Q17. A group of Lions is called a:",
-        a: "Herd",
-        b: "Flock",
-        c: "Pride",
-        d: "Pack",
-        ans: "c"
+    { 
+        q: "Q17. Spot the error: 'Unless you do not (a)/ work hard, (b)/ you cannot pass (c)/ No error (d).'", 
+        a: "a", 
+        b: "b", 
+        c: "c", 
+        d: "d", 
+        ans: "a" 
     },
-    {
-        q: "Q18. Antonym of 'BARREN' is:",
-        a: "Fertile",
-        b: "Dry",
-        c: "Empty",
-        d: "Rough",
-        ans: "a"
+    { 
+        q: "Q18. Fill in the blank: 'I wish I _______ a king.'", 
+        a: "was", 
+        b: "am", 
+        c: "were", 
+        d: "be", 
+        ans: "c" 
     },
-    {
-        q: "Q19. Unless you work hard, you _______ pass.",
-        a: "will",
-        b: "will not",
-        c: "can",
-        d: "must",
-        ans: "b"
+    { 
+        q: "Q19. Synonym of 'FRAGILE':", 
+        a: "Strong", 
+        b: "Durable", 
+        c: "Brittle", 
+        d: "Tough", 
+        ans: "c" 
     },
-    {
-        q: "Q20. Choose the correct spelling:",
-        a: "Committee",
-        b: "Comittee",
-        c: "Commite",
-        d: "Comite",
-        ans: "a"
+    { 
+        q: "Q20. Select the correct Verb: 'Bread and butter _______ my favorite breakfast.'", 
+        a: "is", 
+        b: "are", 
+        c: "were", 
+        d: "have", 
+        ans: "a" 
     },
-    {
-        q: "Q21. Past participle of 'Write' is:",
-        a: "Wrote",
-        b: "Written",
-        c: "Writing",
-        d: "Writes",
-        ans: "b"
+    { 
+        q: "Q21. One word substitution: 'A place where birds are kept.'", 
+        a: "Zoo", 
+        b: "Aviary", 
+        c: "Apiary", 
+        d: "Aquarium", 
+        ans: "b" 
     },
-    {
-        q: "Q22. Choose the correct Conjunction: 'Run fast _______ you will miss the train.'",
-        a: "and",
-        b: "but",
-        c: "otherwise",
-        d: "because",
-        ans: "c"
+    { 
+        q: "Q22. Choose the correctly punctuated sentence:", 
+        a: "Alas! I am undone.", 
+        b: "Alas, I am undone.", 
+        c: "Alas I am undone?", 
+        d: "Alas: I am undone.", 
+        ans: "a" 
     },
-    {
-        q: "Q23. One who knows everything is called:",
-        a: "Omnipotent",
-        b: "Omniscient",
-        c: "Omnipresent",
-        d: "Optimist",
-        ans: "b"
+    { 
+        q: "Q23. Fill in the blank: 'Neither of the two books _______ interesting.'", 
+        a: "are", 
+        b: "is", 
+        c: "were", 
+        d: "have been", 
+        ans: "b" 
     },
-    {
-        q: "Q24. Neither he _______ his friend was present.",
-        a: "or",
-        b: "nor",
-        c: "and",
-        d: "but",
-        ans: "b"
+    { 
+        q: "Q24. Adjective of 'Gold' is:", 
+        a: "Goldly", 
+        b: "Golden", 
+        c: "Golds", 
+        d: "Goldish", 
+        ans: "b" 
     },
-    {
-        q: "Q25. Feminine gender of 'Horse' is:",
-        a: "Bitch",
-        b: "Cow",
-        c: "Mare",
-        d: "Hen",
-        ans: "c"
+    { 
+        q: "Q25. Choose the correct question tag: 'You are coming, _______?'", 
+        a: "are you", 
+        b: "aren't you", 
+        c: "don't you", 
+        d: "won't you", 
+        ans: "b" 
     }
 ];
 
