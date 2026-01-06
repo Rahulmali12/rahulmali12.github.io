@@ -2,867 +2,246 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Revento Air Force X (Live Exam)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVENTO - Air Force Live Exam</title>
     <style>
-        :root { --af-blue: #00308F; --bg-gray: #eef2f5; }
-        body { font-family: 'Roboto', sans-serif; background: var(--bg-gray); margin: 0; padding: 0; user-select: none; }
+        /* --- 1. CSS (Design & Theme) --- */
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; user-select: none; } /* Text selection disabled */
+        
+        /* Header */
+        .header { background: #0056b3; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .timer { font-size: 20px; font-weight: bold; background: #004494; padding: 5px 15px; border-radius: 5px; }
 
-        /* HEADER */
-        .cbt-header { height: 60px; background: var(--af-blue); color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.2); box-sizing: border-box; }
-        .brand { font-weight: 900; font-size: 1.2rem; flex-shrink: 0; margin-right: 10px; white-space: nowrap; }
-        .exam-name { font-size: 0.9rem; text-align: right; line-height: 1.2; }
+        /* Main Layout */
+        .container { display: flex; height: 90vh; }
+        
+        /* Question Area (Left) */
+        .question-area { flex: 3; padding: 20px; overflow-y: auto; background: white; border-right: 2px solid #ddd; }
+        .q-box { font-size: 18px; margin-bottom: 20px; font-weight: 500; }
+        .options label { display: block; background: #f8f9fa; padding: 10px; margin: 5px 0; border: 1px solid #ccc; cursor: pointer; border-radius: 5px; }
+        .options input { margin-right: 10px; }
+        .options label:hover { background: #e9ecef; }
 
-        /* LAYOUT */
-        .main-wrapper { display: flex; margin-top: 60px; height: calc(100vh - 60px); overflow: hidden; }
-        .left-panel { flex: 3; padding: 20px; overflow-y: auto; border-right: 1px solid #ddd; padding-bottom: 120px; }
-        .right-panel { flex: 1; background: white; padding: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: -2px 0 5px rgba(0,0,0,0.05); }
+        /* Sidebar (Right) - Question Palette */
+        .sidebar { flex: 1; background: #fff; padding: 10px; display: flex; flex-direction: column; }
+        .student-info { text-align: center; margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .student-img { width: 80px; height: 80px; background: #ddd; border-radius: 50%; margin: 0 auto 10px; }
+        
+        .subject-tabs { display: flex; gap: 5px; margin-bottom: 15px; }
+        .tab { flex: 1; padding: 8px; background: #ccc; border: none; cursor: not-allowed; font-weight: bold; font-size: 12px; }
+        .tab.active { background: #28a745; color: white; cursor: pointer; }
+        .tab.locked { opacity: 0.6; }
 
-        /* MOBILE FIX */
-        @media (max-width: 768px) {
-            .main-wrapper { display: block; height: auto; overflow: visible; margin-bottom: 80px; }
-            .left-panel { width: 100%; border: none; padding: 15px; box-sizing: border-box; overflow: visible; padding-bottom: 100px; }
-            .right-panel { display: none; }
-            .footer-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); display: flex; gap: 10px; box-sizing: border-box; z-index: 2000; }
-        }
-        @media (min-width: 769px) { .footer-bar { display: none; } }
+        .palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .p-btn { padding: 10px; background: #fff; border: 1px solid #ccc; cursor: pointer; font-weight: bold; }
+        .p-btn.answered { background: #28a745; color: white; border-color: #28a745; }
+        .p-btn.current { border: 2px solid #0056b3; }
 
-        /* UI ELEMENTS */
-        .tabs-container { display: flex; gap: 5px; margin-bottom: 20px; position: sticky; top: 0; z-index: 50; background: var(--bg-gray); padding: 5px 0; }
-        .tab { padding: 8px 15px; font-size: 0.8rem; font-weight: bold; border: 1px solid #ccc; background: #fff; color: #aaa; border-radius: 4px; cursor: pointer; }
-        .tab.active { background: var(--af-blue); color: white; border-color: var(--af-blue); }
-        .question-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 15px; }
-        .options label { display: flex; align-items: center; padding: 10px; border: 1px solid #eee; margin-top: 8px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        .options label:hover { background: #e3f2fd; }
-        .options input { margin-right: 12px; transform: scale(1.2); }
-        .btn { flex: 1; padding: 12px; border: none; border-radius: 5px; font-weight: bold; color: white; cursor: pointer; }
-        .btn-green { background: #2e7d32; } .btn-gray { background: #cfd8dc; color: #333; }
+        .controls { margin-top: auto; display: flex; gap: 10px; }
+        .btn { padding: 10px 20px; border: none; cursor: pointer; font-weight: bold; color: white; flex: 1; }
+        .btn-save { background: #28a745; }
+        .btn-submit { background: #dc3545; }
 
-        /* OVERLAYS */
-        #login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0d1b42, #1a237e); z-index: 3000; display: flex; align-items: center; justify-content: center; }
-        #loading { display:none; color:white; margin-top:10px; font-weight:bold; }
+        /* Security Warning Overlay */
+        #security-alert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); color: red; z-index: 1000; text-align: center; padding-top: 20%; font-size: 24px; }
     </style>
 </head>
-<body>
-
-<div id="login-overlay">
-    <div style="background: white; padding: 40px; border-radius: 15px; text-align: center; width: 85%; max-width: 350px;">
-        <h2 style="color:#00308F; margin:0;">REVENTO</h2>
-        <p>Air Force X Group (Live Exam)</p>
-        <button onclick="signInWithGoogle()" style="background:#00308F; color:white; border:none; padding:12px 30px; border-radius:30px; font-weight:bold; cursor:pointer; width:100%;">Login with Google</button>
-        <div id="loading">Checking Records...</div>
-    </div>
-</div>
-
-<div class="cbt-header">
-    <div class="brand">REVENTO</div>
-    <div class="exam-name">Group X (Tech) <span id="mob-timer" style="margin-left:10px; font-family:monospace; color:#0f0;">20:00</span></div>
-</div>
-
-<div class="main-wrapper" id="exam-ui">
-    <div class="left-panel">
-        <div class="tabs-container">
-            <div id="tab-0" class="tab active">PHYSICS</div>
-            <div id="tab-1" class="tab">MATHS</div>
-            <div id="tab-2" class="tab">ENGLISH</div>
-        </div>
-        <form id="quizForm">
-            <div id="cont-0" style="display:block;"></div>
-            <div id="cont-1" style="display:none;"></div>
-            <div id="cont-2" style="display:none;"></div>
-        </form>
+<body oncontextmenu="return false;"> <div id="security-alert">
+        WARNING: Tab Switching is NOT Allowed!<br>
+        <button onclick="resumeExam()" style="padding:10px; margin-top:20px;">Return to Exam</button>
     </div>
 
-    <div class="right-panel">
-        <div style="text-align:center; margin-bottom:20px;">
-            <img id="user-photo" src="" style="width:80px; height:80px; border-radius:8px; border:3px solid #00308F;">
-            <div id="user-name" style="font-weight:bold; margin-top:5px;">Student</div>
-        </div>
-        <div style="background:#2c3e50; color:#0f0; padding:10px; font-size:1.5rem; font-weight:bold; border-radius:5px; margin-bottom:20px;" id="pc-timer">20:00</div>
-        <button class="btn-green" style="width:100%; padding:12px; margin-bottom:10px;" onclick="nextSection()">SAVE & NEXT</button>
-        <button class="btn-gray" style="width:100%; padding:12px;" onclick="document.getElementById('quizForm').reset()">CLEAR</button>
+    <div class="header">
+        <div>REVENTO EXAM PORTAL</div>
+        <div class="timer" id="timer">45:00</div>
+        <div>ID: USER_001</div>
     </div>
-</div>
 
-<div class="footer-bar">
-    <button class="btn btn-gray" onclick="document.getElementById('quizForm').reset()">Clear</button>
-    <button class="btn btn-green" id="mob-next-btn" onclick="nextSection()">Save & Next</button>
-</div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    // 🔴 KEY यहाँ डालें
-    const firebaseConfig = {
-         apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
-  authDomain: "revento-academy.firebaseapp.com",
-  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
-  projectId: "revento-academy",
-  storageBucket: "revento-academy.firebasestorage.app",
-  messagingSenderId: "384071300366",
-  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
-  measurementId: "G-4L8YC6J095"
-};
-
-    // ==================================================
-    // 📅 जादू: यह कोड रोज़ अपने आप तारीख बदल लेगा 📅
-    // ==================================================
-    function getDailyExamID() {
-        const today = new Date();
-        const d = String(today.getDate()).padStart(2, '0');
-        const m = String(today.getMonth() + 1).padStart(2, '0');
-        const y = today.getFullYear();
-        return `exam_${d}_${m}_${y}`; 
-    }
-    const TODAY_DB_NAME = getDailyExamID(); 
-    // ==================================================
-
-    // QUESTIONS
-    const PHYSICS_QS =[
-    { 
-        q: "Q1. यदि किसी कण का संवेग (Momentum) 100% बढ़ा दिया जाए, तो उसकी गतिज ऊर्जा में कितने प्रतिशत वृद्धि होगी?", 
-        a: "100%", 
-        b: "200%", 
-        c: "300%", 
-        d: "400%", 
-        ans: "c" 
-    },
-    { 
-        q: "Q2. एक उपग्रह पृथ्वी के चारों ओर वृत्ताकार कक्षा में घूम रहा है। यदि इसकी गतिज ऊर्जा दोगुनी कर दी जाए, तो क्या होगा?", 
-        a: "कक्षा की त्रिज्या आधी हो जाएगी", 
-        b: "उपग्रह पृथ्वी पर गिर जाएगा", 
-        c: "उपग्रह कक्षा छोड़कर पलायन कर जाएगा", 
-        d: "कोई परिवर्तन नहीं होगा", 
-        ans: "c" 
-    },
-    { 
-        q: "Q3. बरनौली का सिद्धांत (Bernoulli's Principle) किस संरक्षण नियम पर आधारित है?", 
-        a: "द्रव्यमान संरक्षण", 
-        b: "ऊर्जा संरक्षण", 
-        c: "संवेग संरक्षण", 
-        d: "आवेश संरक्षण", 
-        ans: "b" 
-    },
-    { 
-        q: "Q4. पृष्ठ तनाव (Surface Tension) की विमा (Dimensions) क्या है?", 
-        a: "[MLT⁻²]", 
-        b: "[MT⁻²]", 
-        c: "[ML⁻¹T⁻²]", 
-        d: "[M¹L¹T⁻¹]", 
-        ans: "b" 
-    },
-    { 
-        q: "Q5. यदि किसी सरल लोलक की लंबाई 4% बढ़ा दी जाए, तो उसके आवर्तकाल में कितनी वृद्धि होगी?", 
-        a: "4%", 
-        b: "8%", 
-        c: "2%", 
-        d: "16%", 
-        ans: "c" 
-    },
-    { 
-        q: "Q6. कार्नो इंजन (Carnot Engine) की दक्षता 100% होने के लिए सिंक का तापमान कितना होना चाहिए?", 
-        a: "0°C", 
-        b: "100°C", 
-        c: "273 K", 
-        d: "0 K", 
-        ans: "d" 
-    },
-    { 
-        q: "Q7. पूर्ण आंतरिक परावर्तन (TIR) के लिए प्रकाश को किस माध्यम से किस माध्यम में जाना चाहिए?", 
-        a: "विरल से सघन", 
-        b: "सघन से विरल", 
-        c: "वायु से जल", 
-        d: "कांच से हीरा", 
-        ans: "b" 
-    },
-    { 
-        q: "Q8. साबुन के बुलबुले के अंदर अतिरिक्त दाब (Excess Pressure) का सूत्र क्या है?", 
-        a: "2T/R", 
-        b: "4T/R", 
-        c: "T/R", 
-        d: "8T/R", 
-        ans: "b" 
-    },
-    { 
-        q: "Q9. लेंज का नियम (Lenz's Law) किस संरक्षण सिद्धांत का पालन करता है?", 
-        a: "आवेश", 
-        b: "द्रव्यमान", 
-        c: "ऊर्जा", 
-        d: "संवेग", 
-        ans: "c" 
-    },
-    { 
-        q: "Q10. शुद्ध प्रेरकत्व (Pure Inductive) परिपथ में धारा और वोल्टेज के बीच कालांतर (Phase Difference) कितना होता है?", 
-        a: "0°", 
-        b: "45°", 
-        c: "90°", 
-        d: "180°", 
-        ans: "c" 
-    },
-    { 
-        q: "Q11. यंग के द्वि-स्लिट प्रयोग में यदि प्रकाश की तरंगदैर्ध्य (Wavelength) दोगुनी कर दी जाए, तो फ्रिंज चौड़ाई पर क्या प्रभाव पड़ेगा?", 
-        a: "आधी हो जाएगी", 
-        b: "चार गुनी", 
-        c: "दोगुनी", 
-        d: "अपरिवर्तित", 
-        ans: "c" 
-    },
-    { 
-        q: "Q12. किसी गैस की विशिष्ट ऊष्माओं का अनुपात (Cp/Cv) परमाणुकता के साथ कैसे बदलता है? (Monoatomic के लिए)", 
-        a: "1.40", 
-        b: "1.67", 
-        c: "1.33", 
-        d: "1.00", 
-        ans: "b" 
-    },
-    { 
-        q: "Q13. प्लांक नियतांक (Planck's Constant) की विमा किसके समान होती है?", 
-        a: "बल", 
-        b: "कोणीय संवेग", 
-        c: "ऊर्जा", 
-        d: "रेखीय संवेग", 
-        ans: "b" 
-    },
-    { 
-        q: "Q14. भू-स्थिर उपग्रह (Geostationary Satellite) का आवर्तकाल कितना होता है?", 
-        a: "12 घंटे", 
-        b: "6 घंटे", 
-        c: "24 घंटे", 
-        d: "365 दिन", 
-        ans: "c" 
-    },
-    { 
-        q: "Q15. किस ताप पर फारेनहाइट और सेल्सियस पैमाने का मान समान होता है?", 
-        a: "40°", 
-        b: "-40°", 
-        c: "32°", 
-        d: "-32°", 
-        ans: "b" 
-    },
-    { 
-        q: "Q16. आकाश का नीला रंग किसके कारण दिखाई देता है?", 
-        a: "विवर्तन", 
-        b: "व्यतिकरण", 
-        c: "प्रकीर्णन (Scattering)", 
-        d: "अपवर्तन", 
-        ans: "c" 
-    },
-    { 
-        q: "Q17. फोटोइलेक्ट्रिक प्रभाव में उत्सर्जित इलेक्ट्रॉनों की अधिकतम गतिज ऊर्जा किस पर निर्भर करती है?", 
-        a: "प्रकाश की तीव्रता पर", 
-        b: "प्रकाश की आवृत्ति पर", 
-        c: "समय पर", 
-        d: "इनमें से कोई नहीं", 
-        ans: "b" 
-    },
-    { 
-        q: "Q18. एक आदर्श एमीटर (Ideal Ammeter) का प्रतिरोध कितना होना चाहिए?", 
-        a: "अनंत", 
-        b: "बहुत उच्च", 
-        c: "शून्य", 
-        d: "100 ओम", 
-        ans: "c" 
-    },
-    { 
-        q: "Q19. रेडियोएक्टिवता की इकाई क्या है?", 
-        a: "कैंडेला", 
-        b: "बेकुरल", 
-        c: "वेबर", 
-        d: "टेस्ला", 
-        ans: "b" 
-    },
-    { 
-        q: "Q20. जब एक प्रकाश किरण एक माध्यम से दूसरे माध्यम में जाती है, तो कौन सी राशि अपरिवर्तित रहती है?", 
-        a: "वेग", 
-        b: "तरंगदैर्ध्य", 
-        c: "आवृत्ति (Frequency)", 
-        d: "आयाम", 
-        ans: "c" 
-    },
-    { 
-        q: "Q21. एक समान चुंबकीय क्षेत्र में वृत्ताकार पथ पर घूमने वाले आवेशित कण के आवर्तकाल का मान किस पर निर्भर नहीं करता?", 
-        a: "द्रव्यमान", 
-        b: "आवेश", 
-        c: "वेग (Velocity)", 
-        d: "चुंबकीय क्षेत्र", 
-        ans: "c" 
-    },
-    { 
-        q: "Q22. ट्रांजिस्टर का उपयोग मुख्य रूप से किस रूप में किया जाता है?", 
-        a: "दिष्टकारी", 
-        b: "प्रवर्धक (Amplifier)", 
-        c: "फिल्टर", 
-        d: "वोल्टेज रेगुलेटर", 
-        ans: "b" 
-    },
-    { 
-        q: "Q23. श्यानता गुणांक (Coefficient of Viscosity) की SI इकाई क्या है?", 
-        a: "पास्कल", 
-        b: "प्वाइजुली (Poiseuille)", 
-        c: "वाट", 
-        d: "न्यूटन", 
-        ans: "b" 
-    },
-    { 
-        q: "Q24. डॉप्लर प्रभाव (Doppler Effect) किससे संबंधित है?", 
-        a: "ध्वनि", 
-        b: "प्रकाश", 
-        c: "दोनों a और b", 
-        d: "इनमें से कोई नहीं", 
-        ans: "c" 
-    },
-    { 
-        q: "Q25. संधारित्र (Capacitor) में ऊर्जा कहाँ संचित होती है?", 
-        a: "चालक प्लेटों पर", 
-        b: "वैद्युत क्षेत्र में", 
-        c: "चुंबकीय क्षेत्र में", 
-        d: "तारों में", 
-        ans: "b" 
-    }
-];
-   
- [
-    {
-        q: "Q1. यदि A = {1, 2} है, तो इसके घात समुच्चय (Power Set) में कुल कितने अवयव होंगे?",
-        a: "2",
-        b: "4",
-        c: "8",
-        d: "0",
-        ans: "b"
-    },
-    {
-        q: "Q2. यदि f(x) = x + 2 और g(x) = x² हो, तो fog(x) का मान क्या होगा?",
-        a: "x² + 2",
-        b: "x² + 4",
-        c: "(x + 2)²",
-        d: "x² - 2",
-        ans: "a"
-    },
-    {
-        q: "Q3. i⁴ⁿ⁺¹ का मान क्या होगा, जहाँ n एक धनात्मक पूर्णांक है?",
-        a: "1",
-        b: "-1",
-        c: "i",
-        d: "-i",
-        ans: "c"
-    },
-    {
-        q: "Q4. द्विघात समीकरण x² - 5x + 6 = 0 के मूल (Roots) क्या हैं?",
-        a: "2, 3",
-        b: "-2, -3",
-        c: "1, 6",
-        d: "2, -3",
-        ans: "a"
-    },
-    {
-        q: "Q5. श्रेणी 2, 4, 8, 16, ... का 10वाँ पद क्या होगा?",
-        a: "512",
-        b: "1024",
-        c: "256",
-        d: "2048",
-        ans: "b"
-    },
-    {
-        q: "Q6. sin(765°) का मान क्या है?",
-        a: "0",
-        b: "1",
-        c: "1/√2",
-        d: "√3/2",
-        ans: "c"
-    },
-    {
-        q: "Q7. tan⁻¹(1) + tan⁻¹(2) + tan⁻¹(3) का मान क्या होगा?",
-        a: "π",
-        b: "π/2",
-        c: "π/4",
-        d: "0",
-        ans: "a"
-    },
-    {
-        q: "Q8. यदि मैट्रिक्स A = [[1, 2], [3, 4]] है, तो |A| (Determinant) का मान क्या होगा?",
-        a: "-2",
-        b: "2",
-        c: "10",
-        d: "0",
-        ans: "a"
-    },
-    {
-        q: "Q9. एक अव्युत्क्रमणीय (Singular) मैट्रिक्स के लिए डिटर्मिनेंट का मान होता है:",
-        a: "1",
-        b: "-1",
-        c: "0",
-        d: "अनंत",
-        ans: "c"
-    },
-    {
-        q: "Q10. शब्द 'BIHAR' के अक्षरों को कितने अलग-अलग तरीकों से व्यवस्थित किया जा सकता है?",
-        a: "24",
-        b: "120",
-        c: "60",
-        d: "720",
-        ans: "b"
-    },
-    {
-        q: "Q11. (1 + x)ⁿ के विस्तार में कुल पदों की संख्या कितनी होती है?",
-        a: "n",
-        b: "n - 1",
-        c: "n + 1",
-        d: "2n",
-        ans: "c"
-    },
-    {
-        q: "Q12. रेखा 3x + 4y - 12 = 0 की प्रवणता (Slope) क्या है?",
-        a: "3/4",
-        b: "-3/4",
-        c: "4/3",
-        d: "-4/3",
-        ans: "b"
-    },
-    {
-        q: "Q13. उस वृत (Circle) की त्रिज्या क्या है जिसका समीकरण x² + y² = 49 है?",
-        a: "49",
-        b: "7",
-        c: "14",
-        d: "24.5",
-        ans: "b"
-    },
-    {
-        q: "Q14. लिमिट lim (x→0) (sin 3x / x) का मान क्या है?",
-        a: "1",
-        b: "0",
-        c: "3",
-        d: "1/3",
-        ans: "c"
-    },
-    {
-        q: "Q15. d/dx (log x) का मान क्या है?",
-        a: "1/x",
-        b: "e^x",
-        c: "1",
-        d: "log x",
-        ans: "a"
-    },
-    {
-        q: "Q16. यदि y = sin(x²) हो, तो dy/dx क्या होगा?",
-        a: "cos(x²)",
-        b: "2x cos(x²)",
-        c: "cos(2x)",
-        d: "2x sin(x²)",
-        ans: "b"
-    },
-    {
-        q: "Q17. वक्र y = x² के बिंदु (1, 1) पर स्पर्श रेखा की प्रवणता (Slope) क्या होगी?",
-        a: "1",
-        b: "2",
-        c: "0",
-        d: "4",
-        ans: "b"
-    },
-    {
-        q: "Q18. ∫ x⁵ dx का मान क्या है?",
-        a: "5x⁴ + c",
-        b: "x⁶/6 + c",
-        c: "x⁴/4 + c",
-        d: "6x⁶ + c",
-        ans: "b"
-    },
-    {
-        q: "Q19. ∫ (0 से π/2) sin x dx का मान क्या होगा?",
-        a: "0",
-        b: "1",
-        c: "-1",
-        d: "2",
-        ans: "b"
-    },
-    {
-        q: "Q20. अवकल समीकरण (Differential Equation) d²y/dx² + y = 0 की कोटि (Order) क्या है?",
-        a: "1",
-        b: "2",
-        c: "0",
-        d: "परिभाषित नहीं",
-        ans: "b"
-    },
-    {
-        q: "Q21. यदि सदिश (Vector) a = 2i + 3j और b = i + j हो, तो a . b (Dot Product) क्या होगा?",
-        a: "5",
-        b: "6",
-        c: "1",
-        d: "0",
-        ans: "a"
-    },
-    {
-        q: "Q22. Z-अक्ष की दिक्-कोज्याएँ (Direction Cosines) क्या हैं?",
-        a: "(1, 0, 0)",
-        b: "(0, 1, 0)",
-        c: "(0, 0, 1)",
-        d: "(1, 1, 1)",
-        ans: "c"
-    },
-    {
-        q: "Q23. एक लीप वर्ष (Leap Year) में 53 रविवार होने की प्रायिकता (Probability) क्या है?",
-        a: "1/7",
-        b: "2/7",
-        c: "5/7",
-        d: "6/7",
-        ans: "b"
-    },
-    {
-        q: "Q24. P(A) = 0.3 और P(B) = 0.4 है। यदि A और B परस्पर अपवर्जी (Mutually Exclusive) हैं, तो P(A ∪ B) क्या होगा?",
-        a: "0.12",
-        b: "0.7",
-        c: "0.1",
-        d: "0.5",
-        ans: "b"
-    },
-    {
-        q: "Q25. 1 से 100 तक की संख्याओं में से एक संख्या चुनने पर उसके अभाज्य (Prime) होने की प्रायिकता क्या होगी?",
-        a: "1/4",
-        b: "1/2",
-        c: "1/5",
-        d: "1/3",
-        ans: "a"
-    }
-];
-   
-    { 
-        q: "Q1. Choose the correctly spelt word:", 
-        a: "Lieutenant", 
-        b: "Lieutanant", 
-        c: "Luitenant", 
-        d: "Lieutinent", 
-        ans: "a" 
-    },
-    { 
-        q: "Q2. Identify the synonym of 'ABANDON':", 
-        a: "Keep", 
-        b: "Forsake", 
-        c: "Cherish", 
-        d: "Hold", 
-        ans: "b" 
-    },
-    { 
-        q: "Q3. Change the Voice: 'The mechanic repaired the car.'", 
-        a: "The car is repaired by the mechanic.", 
-        b: "The car was repaired by the mechanic.", 
-        c: "The car has been repaired by the mechanic.", 
-        d: "The car repair by the mechanic.", 
-        ans: "b" 
-    },
-    { 
-        q: "Q4. Fill in the blank: 'He is junior _______ me in service.'", 
-        a: "than", 
-        b: "to", 
-        c: "from", 
-        d: "with", 
-        ans: "b" 
-    },
-    { 
-        q: "Q5. Give one word substitution for: 'A person who hates mankind.'", 
-        a: "Optimist", 
-        b: "Misanthrope", 
-        c: "Philanthropist", 
-        d: "Theist", 
-        ans: "b" 
-    },
-    { 
-        q: "Q6. Choose the antonym of 'ADVERSITY':", 
-        a: "Misfortune", 
-        b: "Prosperity", 
-        c: "Calamity", 
-        d: "Hardship", 
-        ans: "b" 
-    },
-    { 
-        q: "Q7. Spot the error: 'Each of the students (a)/ have finished (b)/ their homework (c)/ No error (d).'", 
-        a: "a", 
-        b: "b", 
-        c: "c", 
-        d: "d", 
-        ans: "b" 
-    },
-    { 
-        q: "Q8. Change into Indirect Speech: 'He said, \"I am playing chess.\"'", 
-        a: "He said that he is playing chess.", 
-        b: "He said that he was playing chess.", 
-        c: "He says that he played chess.", 
-        d: "He said that he had played chess.", 
-        ans: "b" 
-    },
-    { 
-        q: "Q9. Fill in the blank with suitable article: 'Copper is _______ useful metal.'", 
-        a: "a", 
-        b: "an", 
-        c: "the", 
-        d: "No article", 
-        ans: "a" 
-    },
-    { 
-        q: "Q10. What is the feminine of 'Colt'?", 
-        a: "Mare", 
-        b: "Filly", 
-        c: "Ewe", 
-        d: "Doe", 
-        ans: "b" 
-    },
-    { 
-        q: "Q11. Idiom/Phrase: 'To turn over a new leaf' means:", 
-        a: "To change for the better", 
-        b: "To read a book", 
-        c: "To plant a tree", 
-        d: "To hide the truth", 
-        ans: "a" 
-    },
-    { 
-        q: "Q12. Fill in the blank: 'Hardly had he reached the station _______ the train left.'", 
-        a: "than", 
-        b: "then", 
-        c: "when", 
-        d: "that", 
-        ans: "c" 
-    },
-    { 
-        q: "Q13. Identify the part of speech of the underlined word: 'He is a **brave** soldier.'", 
-        a: "Noun", 
-        b: "Verb", 
-        c: "Adjective", 
-        d: "Adverb", 
-        ans: "c" 
-    },
-    { 
-        q: "Q14. Plural of 'Criterion' is:", 
-        a: "Criterions", 
-        b: "Criteria", 
-        c: "Criterias", 
-        d: "Criteries", 
-        ans: "b" 
-    },
-    { 
-        q: "Q15. Fill in the blank: 'The ship was _______ in the ocean.'", 
-        a: "drowned", 
-        b: "sunk", 
-        c: "sinked", 
-        d: "drowning", 
-        ans: "b" 
-    },
-    { 
-        q: "Q16. Choose the correct preposition: 'She has been living here _______ 2010.'", 
-        a: "for", 
-        b: "since", 
-        c: "from", 
-        d: "in", 
-        ans: "b" 
-    },
-    { 
-        q: "Q17. Spot the error: 'Unless you do not (a)/ work hard, (b)/ you cannot pass (c)/ No error (d).'", 
-        a: "a", 
-        b: "b", 
-        c: "c", 
-        d: "d", 
-        ans: "a" 
-    },
-    { 
-        q: "Q18. Fill in the blank: 'I wish I _______ a king.'", 
-        a: "was", 
-        b: "am", 
-        c: "were", 
-        d: "be", 
-        ans: "c" 
-    },
-    { 
-        q: "Q19. Synonym of 'FRAGILE':", 
-        a: "Strong", 
-        b: "Durable", 
-        c: "Brittle", 
-        d: "Tough", 
-        ans: "c" 
-    },
-    { 
-        q: "Q20. Select the correct Verb: 'Bread and butter _______ my favorite breakfast.'", 
-        a: "is", 
-        b: "are", 
-        c: "were", 
-        d: "have", 
-        ans: "a" 
-    },
-    { 
-        q: "Q21. One word substitution: 'A place where birds are kept.'", 
-        a: "Zoo", 
-        b: "Aviary", 
-        c: "Apiary", 
-        d: "Aquarium", 
-        ans: "b" 
-    },
-    { 
-        q: "Q22. Choose the correctly punctuated sentence:", 
-        a: "Alas! I am undone.", 
-        b: "Alas, I am undone.", 
-        c: "Alas I am undone?", 
-        d: "Alas: I am undone.", 
-        ans: "a" 
-    },
-    { 
-        q: "Q23. Fill in the blank: 'Neither of the two books _______ interesting.'", 
-        a: "are", 
-        b: "is", 
-        c: "were", 
-        d: "have been", 
-        ans: "b" 
-    },
-    { 
-        q: "Q24. Adjective of 'Gold' is:", 
-        a: "Goldly", 
-        b: "Golden", 
-        c: "Golds", 
-        d: "Goldish", 
-        ans: "b" 
-    },
-    { 
-        q: "Q25. Choose the correct question tag: 'You are coming, _______?'", 
-        a: "are you", 
-        b: "aren't you", 
-        c: "don't you", 
-        d: "won't you", 
-        ans: "b" 
-    }
-];
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-    let currentUser, timerInt, time=1200, currentSec=0;
-
-    // Render HTML
-    function renderQ(data, id, pre) {
-        let h = "";
-        data.forEach((item, i) => {
-            h += `<div class="question-card"><span style="font-weight:bold; color:#00308F;">Q${i+1}</span> <b>${item.q}</b>
-            <div class="options">
-                <label><input type="radio" name="${pre}${i}" value="a"> ${item.a}</label>
-                <label><input type="radio" name="${pre}${i}" value="b"> ${item.b}</label>
-                <label><input type="radio" name="${pre}${i}" value="c"> ${item.c}</label>
-                <label><input type="radio" name="${pre}${i}" value="d"> ${item.d}</label>
-            </div></div>`;
-        });
-        document.getElementById(id).innerHTML = h;
-    }
-    renderQ(PHYSICS_QS, "cont-0", "p");
-    renderQ(MATH_QS, "cont-1", "m");
-    renderQ(ENG_QS, "cont-2", "e");
-
-    window.signInWithGoogle = () => signInWithPopup(auth, provider).catch(e => alert(e));
-
-    // 👇 MAIN LOGIC (USING AUTOMATIC DATE NAME) 👇
-    onAuthStateChanged(auth, async (user) => {
-        if(user) {
-            currentUser = user;
-            document.getElementById('loading').style.display = 'block';
-            
-            // 🛑 यहाँ हम 'TODAY_DB_NAME' का इस्तेमाल कर रहे हैं
-            const docRef = doc(db, TODAY_DB_NAME, user.uid);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                alert("आपने आज का टेस्ट दे दिया है! कल फिर कोशिश करें।");
-                showFinalResult(docSnap.data());
-                document.getElementById('login-overlay').style.display = 'none';
-            } else {
-                document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('user-name').innerText = user.displayName;
-                document.getElementById('user-photo').src = user.photoURL;
-                startTimer();
-            }
-        }
-    });
-
-    function startTimer() {
-        time = 20 * 60;
-        clearInterval(timerInt);
-        timerInt = setInterval(() => {
-            time--;
-            let m = Math.floor(time/60).toString().padStart(2,'0');
-            let s = (time%60).toString().padStart(2,'0');
-            document.getElementById('pc-timer').innerText = `${m}:${s}`;
-            document.getElementById('mob-timer').innerText = `${m}:${s}`;
-            if(time <= 0) nextSection(true);
-        }, 1000);
-    }
-
-    window.nextSection = (auto=false) => {
-        if(!auto && !confirm("Save & Next?")) return;
-        if (currentSec < 2) {
-            document.getElementById(`cont-${currentSec}`).style.display='none';
-            document.getElementById(`tab-${currentSec}`).classList.remove('active');
-            currentSec++;
-            document.getElementById(`cont-${currentSec}`).style.display='block';
-            document.getElementById(`tab-${currentSec}`).classList.add('active');
-            window.scrollTo(0,0);
-            if(currentSec===2) {
-                document.getElementById('mob-next-btn').innerText = "SUBMIT EXAM";
-                document.getElementById('mob-next-btn').style.background = "#d32f2f";
-            }
-            startTimer();
-        } else {
-            submitExam();
-        }
-    };
-
-    async function submitExam() {
-        clearInterval(timerInt);
-        let score=0, correct=0, wrong=0;
-        const form = document.getElementById('quizForm');
-        const formData = new FormData(form);
-
-        PHYSICS_QS.forEach((q, i) => { let v = formData.get(`p${i}`); if(v===q.ans){score++; correct++} else if(v){score-=0.25; wrong++} });
-        MATH_QS.forEach((q, i) => { let v = formData.get(`m${i}`); if(v===q.ans){score++; correct++} else if(v){score-=0.25; wrong++} });
-        ENG_QS.forEach((q, i) => { let v = formData.get(`e${i}`); if(v===q.ans){score++; correct++} else if(v){score-=0.25; wrong++} });
-
-        const resultData = { name: currentUser.displayName, score, correct, wrong, timestamp: new Date() };
-
-        // 🛑 SAVE TO TODAY'S DATE FOLDER
-        await setDoc(doc(db, TODAY_DB_NAME, currentUser.uid), resultData);
-        showFinalResult(resultData);
-    }
-
-    async function showFinalResult(data) {
-        document.body.innerHTML = `
-            <div style="padding:20px; text-align:center; font-family:Roboto; height:100vh; overflow-y:auto;">
-                <h1 style="color:#00308F">RESULT (${new Date().toLocaleDateString()})</h1>
-                <div style="font-size:4rem; font-weight:900; color:#00308F;">${data.score}</div>
-                <div style="display:flex; justify-content:center; gap:20px; margin:20px 0;">
-                    <span style="color:green; font-weight:bold;">✅ ${data.correct} Correct</span>
-                    <span style="color:red; font-weight:bold;">❌ ${data.wrong} Wrong</span>
+    <div class="container">
+        <div class="question-area">
+            <h3 id="subject-title">Subject: Mathematics</h3>
+            <div class="q-box" id="question-text">Loading Question...</div>
+            <div class="options" id="options-container">
                 </div>
-                
-                <h3 style="background:#eee; padding:10px; margin-top:30px;">🏆 TODAY'S TOP RANKERS</h3>
-                <table id="lb" style="width:100%; max-width:500px; margin:0 auto; border-collapse:collapse; text-align:left;">
-                    <tr style="background:#00308F; color:white;"><th style="padding:10px;">Rank</th><th>Name</th><th>Score</th></tr>
-                    <tr><td colspan="3" style="padding:10px; text-align:center;">Loading Ranks...</td></tr>
-                </table>
-                <button onclick="location.reload()" style="margin-top:30px; padding:12px 30px; background:#333; color:white; border:none; border-radius:5px;">Close</button>
+            <div style="margin-top: 30px;">
+                <button class="btn btn-save" onclick="saveAndNext()">Save & Next</button>
             </div>
-        `;
+        </div>
 
-        // 🛑 FETCH TODAY'S LEADERBOARD
-        try {
-            const q = query(collection(db, TODAY_DB_NAME), orderBy("score", "desc"), limit(10));
-            const snap = await getDocs(q);
-            let html = `<tr style="background:#00308F; color:white;"><th style="padding:10px;">Rank</th><th>Name</th><th>Score</th></tr>`;
-            let r = 1;
-            snap.forEach(d => {
-                const user = d.data();
-                let bg = (d.id === currentUser.uid) ? "#fffde7" : "white";
-                let weight = (d.id === currentUser.uid) ? "bold" : "normal";
-                html += `<tr style="background:${bg}; font-weight:${weight}; border-bottom:1px solid #ddd;">
-                    <td style="padding:10px;">#${r++}</td><td>${user.name}</td><td>${user.score}</td></tr>`;
+        <div class="sidebar">
+            <div class="student-info">
+                <div class="student-img"><img src="https://via.placeholder.com/80" alt="User"></div>
+                <div>Student Name</div>
+            </div>
+
+            <div class="subject-tabs">
+                <button id="tab-math" class="tab active">MATHS</button>
+                <button id="tab-phy" class="tab locked">PHYSICS</button>
+                <button id="tab-eng" class="tab locked">ENGLISH</button>
+            </div>
+
+            <div class="palette" id="palette-container">
+                </div>
+
+            <div class="controls">
+                <button class="btn btn-submit" onclick="submitSection()">Submit Section</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --- 2. JavaScript (Logic & Data) --- */
+
+        // --- DATA: यहाँ आप अपने प्रश्न बदल सकते हैं ---
+        // 'ans' में सही ऑप्शन का index लिखें (0, 1, 2, या 3)
+        const examData = {
+            maths: [
+                { id: 1, q: "यदि f(x) = x² + 2x, तो f(2) का मान क्या है?", opts: ["4", "8", "6", "10"], ans: 1 },
+                { id: 2, q: "Integration of sin(x) dx is?", opts: ["cos(x)", "-cos(x)", "sin(x)", "-sin(x)"], ans: 1 },
+                { id: 3, q: "Matrix A is singular if |A| is?", opts: ["1", "-1", "0", "Undefined"], ans: 2 },
+                { id: 4, q: "Value of tan(45°)?", opts: ["0", "1", "Infinity", "1/2"], ans: 1 },
+                { id: 5, q: "Limit x->0 of (sin x)/x is?", opts: ["0", "1", "Infinity", "-1"], ans: 1 }
+            ],
+            physics: [
+                { id: 1, q: "Unit of Force is?", opts: ["Newton", "Joule", "Watt", "Pascal"], ans: 0 },
+                { id: 2, q: "Dimension of Power?", opts: ["ML2T-3", "MLT-2", "ML2T-2", "None"], ans: 0 }
+            ],
+            english: [
+                { id: 1, q: "Synonym of 'Abundant'?", opts: ["Scarce", "Plentiful", "Rare", "Few"], ans: 1 }
+            ]
+        };
+
+        // --- STATE VARIABLES ---
+        let currentSubject = 'maths';
+        let currentQIndex = 0;
+        let userAnswers = { maths: {}, physics: {}, english: {} };
+        let timerTime = 45 * 60; // 45 Minutes
+
+        // --- CORE FUNCTIONS ---
+
+        function loadQuestion(index) {
+            const data = examData[currentSubject];
+            const q = data[index];
+            currentQIndex = index;
+
+            document.getElementById('question-text').innerHTML = `Q${index + 1}. ${q.q}`;
+            const optsContainer = document.getElementById('options-container');
+            optsContainer.innerHTML = '';
+
+            q.opts.forEach((opt, i) => {
+                const checked = userAnswers[currentSubject][index] === i ? 'checked' : '';
+                optsContainer.innerHTML += `
+                    <label>
+                        <input type="radio" name="opt" value="${i}" ${checked}> ${opt}
+                    </label>
+                `;
             });
-            document.getElementById('lb').innerHTML = html;
-        } catch(e) { console.log(e); }
-    }
-</script>
+            renderPalette();
+        }
+
+        function saveAndNext() {
+            const selected = document.querySelector('input[name="opt"]:checked');
+            if (selected) {
+                userAnswers[currentSubject][currentQIndex] = parseInt(selected.value);
+            }
+            
+            if (currentQIndex < examData[currentSubject].length - 1) {
+                loadQuestion(currentQIndex + 1);
+            } else {
+                alert("Last question of this section!");
+            }
+        }
+
+        function renderPalette() {
+            const container = document.getElementById('palette-container');
+            container.innerHTML = '';
+            examData[currentSubject].forEach((_, i) => {
+                const isAnswered = userAnswers[currentSubject][i] !== undefined;
+                const isCurrent = i === currentQIndex;
+                let className = 'p-btn';
+                if (isAnswered) className += ' answered';
+                if (isCurrent) className += ' current';
+                
+                container.innerHTML += `<button class="${className}" onclick="loadQuestion(${i})">${i + 1}</button>`;
+            });
+        }
+
+        // --- SUBJECT LOCKING LOGIC ---
+        function submitSection() {
+            if (!confirm("Are you sure you want to submit this section? You cannot go back.")) return;
+
+            if (currentSubject === 'maths') {
+                alert("Maths Submitted! Proceeding to Physics.");
+                currentSubject = 'physics';
+                document.getElementById('tab-math').classList.remove('active');
+                document.getElementById('tab-math').classList.add('locked'); // Lock Math
+                document.getElementById('tab-phy').classList.remove('locked');
+                document.getElementById('tab-phy').classList.add('active');
+                document.getElementById('subject-title').innerText = "Subject: Physics";
+                loadQuestion(0);
+            } else if (currentSubject === 'physics') {
+                alert("Physics Submitted! Proceeding to English.");
+                currentSubject = 'english';
+                document.getElementById('tab-phy').classList.remove('active');
+                document.getElementById('tab-phy').classList.add('locked');
+                document.getElementById('tab-eng').classList.remove('locked');
+                document.getElementById('tab-eng').classList.add('active');
+                document.getElementById('subject-title').innerText = "Subject: English";
+                loadQuestion(0);
+            } else {
+                calculateResult();
+            }
+        }
+
+        function calculateResult() {
+            let score = 0;
+            // Simple scoring logic for demo
+            ['maths', 'physics', 'english'].forEach(sub => {
+                examData[sub].forEach((q, idx) => {
+                    if (userAnswers[sub][idx] === q.ans) {
+                        score++;
+                    }
+                });
+            });
+            alert(`Exam Completed! Your Score: ${score}`);
+            // Here you would send data to Firebase
+        }
+
+        // --- SECURITY FEATURES (Anti-Cheat) ---
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.getElementById('security-alert').style.display = 'block';
+                // You can add logic here to auto-submit exam if they cheat twice
+            }
+        });
+
+        function resumeExam() {
+            document.getElementById('security-alert').style.display = 'none';
+        }
+
+        // Disable specific keys (F12, PrintScreen, etc.)
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) { return false; } // F12
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } // Ctrl+Shift+I
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Ctrl+U
+        }
+
+        // --- TIMER LOGIC ---
+        setInterval(() => {
+            if (timerTime > 0) {
+                timerTime--;
+                let m = Math.floor(timerTime / 60);
+                let s = timerTime % 60;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' + s : s}`;
+            } else {
+                alert("Time Up!");
+                calculateResult();
+            }
+        }, 1000);
+
+        // Initial Load
+        loadQuestion(0);
+
+    </script>
 </body>
 </html>
