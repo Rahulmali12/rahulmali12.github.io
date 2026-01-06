@@ -373,39 +373,123 @@
             // ^ Uncomment above line after setting up EmailJS keys
         }
 
-        // --- 6. CERTIFICATE GENERATOR ---
-        function generateCertificate() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({ orientation: 'landscape' });
+      // --- 6. KHATERNAAK CERTIFICATE GENERATOR ---
+function generateCertificate() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
 
-            // Design
-            doc.setFillColor(0, 51, 102); // AF Blue
-            doc.rect(0, 0, 297, 210, 'F'); // Background
-            doc.setFillColor(255, 255, 255);
-            doc.rect(10, 10, 277, 190, 'F'); // Inner White
+    // --- 1. DESIGN BACKGROUND & BORDER ---
+    const width = doc.internal.pageSize.getWidth();
+    const height = doc.internal.pageSize.getHeight();
 
-            doc.setFontSize(30);
-            doc.setTextColor(0, 51, 102);
-            doc.text("CERTIFICATE OF COMPLETION", 148, 50, null, null, "center");
-            
-            doc.setFontSize(16);
-            doc.setTextColor(0, 0, 0);
-            doc.text("This is to certify that", 148, 80, null, null, "center");
-            
-            doc.setFontSize(24);
-            doc.setFont("helvetica", "bold");
-            doc.text(currentUser.displayName, 148, 95, null, null, "center");
+    // Background Color (Light Cream for Paper feel)
+    doc.setFillColor(255, 255, 250);
+    doc.rect(0, 0, width, height, 'F');
 
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(16);
-            doc.text("Has successfully completed the Air Force Mock Test", 148, 110, null, null, "center");
-            
-            const score = document.getElementById('final-score').innerText;
-            doc.text(score, 148, 130, null, null, "center");
+    // Outer Thick Blue Border
+    doc.setLineWidth(2);
+    doc.setDrawColor(0, 51, 102); // AF Blue
+    doc.rect(5, 5, width - 10, height - 10);
 
-            doc.save("AirForce_Certificate.pdf");
-        }
+    // Inner Gold Border (Double Line)
+    doc.setLineWidth(1);
+    doc.setDrawColor(212, 175, 55); // Gold
+    doc.rect(8, 8, width - 16, height - 16);
+    doc.rect(10, 10, width - 20, height - 20);
 
+    // Corner Designs (Triangles)
+    doc.setFillColor(0, 51, 102);
+    // Top Left
+    doc.triangle(5, 5, 30, 5, 5, 30, 'F');
+    // Bottom Right
+    doc.triangle(width - 5, height - 5, width - 30, height - 5, width - 5, height - 30, 'F');
+
+    // --- 2. HEADER & LOGO ---
+    
+    // (Optional) Add Logo here if you have Base64 string
+    // doc.addImage(imgData, 'PNG', width/2 - 15, 20, 30, 30);
+    
+    // Academy Name
+    doc.setFont("times", "bold");
+    doc.setFontSize(36);
+    doc.setTextColor(0, 51, 102); // Blue
+    doc.text("REVENTO ACADEMY", width / 2, 40, null, null, "center");
+
+    // Tagline
+    doc.setFontSize(14);
+    doc.setTextColor(100, 100, 100); // Grey
+    doc.text("Excellence in Defence Education", width / 2, 50, null, null, "center");
+
+    // Decorative Line
+    doc.setDrawColor(212, 175, 55); // Gold
+    doc.setLineWidth(1.5);
+    doc.line(70, 55, width - 70, 55);
+
+    // --- 3. MAIN CONTENT ---
+    
+    // "CERTIFICATE OF ACHIEVEMENT"
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.setTextColor(212, 175, 55); // Gold Color
+    doc.text("CERTIFICATE OF ACHIEVEMENT", width / 2, 75, null, null, "center");
+
+    // "Congratulations"
+    doc.setFont("times", "italic");
+    doc.setFontSize(16);
+    doc.setTextColor(0, 0, 0);
+    doc.text("We proudly present this to", width / 2, 90, null, null, "center");
+
+    // STUDENT NAME (Big & Stylish)
+    doc.setFont("times", "bolditalic");
+    doc.setFontSize(40);
+    doc.setTextColor(0, 51, 102); // Blue
+    const studentName = currentUser ? currentUser.displayName.toUpperCase() : "STUDENT NAME";
+    doc.text(studentName, width / 2, 110, null, null, "center");
+
+    // Underline Name
+    doc.setLineWidth(0.5);
+    doc.line(60, 112, width - 60, 112);
+
+    // Body Text
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(14);
+    doc.setTextColor(50, 50, 50);
+    const scoreText = document.getElementById('final-score').innerText; // Get Score from screen
+    doc.text(`For successfully qualifying the Air Force X-Group Live Mock Test.`, width / 2, 130, null, null, "center");
+    
+    // Score Highlight
+    doc.setFont("courier", "bold");
+    doc.setFontSize(18);
+    doc.setTextColor(0, 100, 0); // Green
+    doc.text(`PERFORMANCE: ${scoreText}`, width / 2, 145, null, null, "center");
+
+    // --- 4. FOOTER & SIGNATURES ---
+    const date = new Date().toLocaleDateString();
+    
+    // Date (Left)
+    doc.setFont("times", "bold");
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Date: ${date}`, 40, 170);
+    doc.line(30, 165, 80, 165); // Line above date
+
+    // Signature (Right)
+    doc.text("Director", width - 50, 175, null, null, "center");
+    doc.setFont("times", "italic");
+    doc.setFontSize(14);
+    doc.text("Rahul Mali", width - 50, 165, null, null, "center"); // Sign Name
+    doc.text("(Team Revento)", width - 50, 182, null, null, "center");
+    doc.setDrawColor(0, 0, 0);
+    doc.line(width - 80, 160, width - 20, 160); // Line for sign
+
+    // Bottom Branding
+    doc.setFontSize(10);
+    doc.setTextColor(150, 150, 150);
+    doc.text("Verified by Revento Academy Exam Portal • www.reventoacademy.com", width / 2, 195, null, null, "center");
+
+    // Save
+    doc.save("Revento_Certificate.pdf");
+}
         // --- 7. SECURITY ---
         function monitorSecurity() {
             document.addEventListener("visibilitychange", () => {
