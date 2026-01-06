@@ -2,246 +2,437 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REVENTO - Air Force Live Exam</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AIR FORCE LIVE EXAM (Mobile Ready)</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <style>
-        /* --- 1. CSS (Design & Theme) --- */
-        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; user-select: none; } /* Text selection disabled */
+        /* --- GLOBAL STYLES --- */
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #f0f2f5; overflow: hidden; user-select: none; -webkit-user-select: none;
+            touch-action: manipulation; /* Zoom disable on double tap */
+        }
         
-        /* Header */
-        .header { background: #0056b3; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .timer { font-size: 20px; font-weight: bold; background: #004494; padding: 5px 15px; border-radius: 5px; }
+        /* --- SCREENS --- */
+        #login-screen, #leaderboard-screen { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            height: 100vh; background: linear-gradient(135deg, #0056b3, #002a4d); color: white; text-align: center;
+            padding: 20px;
+        }
+        #exam-screen { display: none; height: 100vh; flex-direction: column; }
 
-        /* Main Layout */
-        .container { display: flex; height: 90vh; }
+        /* --- LOGIN & BUTTONS --- */
+        h1 { font-size: 24px; margin-bottom: 10px; }
+        .g-btn { 
+            background: white; color: #333; padding: 12px 25px; font-weight: bold; border: none; 
+            cursor: pointer; border-radius: 50px; font-size: 16px; display: flex; align-items: center; gap: 10px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: transform 0.2s;
+        }
+        .g-btn:active { transform: scale(0.95); }
+
+        /* --- EXAM HEADER --- */
+        .header { 
+            background: #fff; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #ddd; height: 60px;
+        }
+        .timer { font-size: 20px; font-weight: 800; color: #d9534f; background: #ffebeb; padding: 5px 10px; border-radius: 5px; }
+        .user-badge { font-weight: bold; color: #0056b3; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* --- MAIN EXAM AREA (Responsive Flex) --- */
+        .main-area { display: flex; flex: 1; overflow: hidden; }
         
-        /* Question Area (Left) */
-        .question-area { flex: 3; padding: 20px; overflow-y: auto; background: white; border-right: 2px solid #ddd; }
-        .q-box { font-size: 18px; margin-bottom: 20px; font-weight: 500; }
-        .options label { display: block; background: #f8f9fa; padding: 10px; margin: 5px 0; border: 1px solid #ccc; cursor: pointer; border-radius: 5px; }
-        .options input { margin-right: 10px; }
-        .options label:hover { background: #e9ecef; }
-
-        /* Sidebar (Right) - Question Palette */
-        .sidebar { flex: 1; background: #fff; padding: 10px; display: flex; flex-direction: column; }
-        .student-info { text-align: center; margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-        .student-img { width: 80px; height: 80px; background: #ddd; border-radius: 50%; margin: 0 auto 10px; }
+        /* Question Area */
+        .question-box { 
+            flex: 3; padding: 20px; background: white; overflow-y: auto; 
+            display: flex; flex-direction: column;
+        }
+        #question-text { font-size: 18px; line-height: 1.5; margin-bottom: 20px; font-weight: 500; }
         
-        .subject-tabs { display: flex; gap: 5px; margin-bottom: 15px; }
-        .tab { flex: 1; padding: 8px; background: #ccc; border: none; cursor: not-allowed; font-weight: bold; font-size: 12px; }
-        .tab.active { background: #28a745; color: white; cursor: pointer; }
-        .tab.locked { opacity: 0.6; }
+        .option-label {
+            display: block; background: #f8f9fa; padding: 12px; margin: 8px 0; border: 1px solid #dee2e6; 
+            border-radius: 8px; cursor: pointer; transition: background 0.2s; font-size: 16px;
+        }
+        .option-label:hover { background: #e9ecef; }
+        .option-label input { margin-right: 10px; transform: scale(1.2); }
 
-        .palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .p-btn { padding: 10px; background: #fff; border: 1px solid #ccc; cursor: pointer; font-weight: bold; }
-        .p-btn.answered { background: #28a745; color: white; border-color: #28a745; }
-        .p-btn.current { border: 2px solid #0056b3; }
+        /* Sidebar / Palette Area */
+        .sidebar { 
+            flex: 1; background: #f1f3f5; border-left: 1px solid #ddd; padding: 10px; 
+            display: flex; flex-direction: column; min-width: 250px;
+        }
 
-        .controls { margin-top: auto; display: flex; gap: 10px; }
-        .btn { padding: 10px 20px; border: none; cursor: pointer; font-weight: bold; color: white; flex: 1; }
+        /* Question Palette Grid */
+        #palette { 
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; 
+            overflow-y: auto; max-height: 300px; padding: 5px;
+        }
+        .q-btn { 
+            width: 100%; aspect-ratio: 1; border: 1px solid #ccc; background: white; 
+            cursor: pointer; font-weight: bold; border-radius: 4px;
+        }
+        .q-btn.active { background: #007bff; color: white; border-color: #0056b3; }
+        .q-btn.answered { background: #28a745; color: white; border-color: #1e7e34; }
+
+        /* Subject Tabs */
+        .tabs-container { display: flex; gap: 5px; margin-bottom: 10px; }
+        .tab-btn { 
+            flex: 1; padding: 8px; border: none; font-weight: bold; font-size: 12px; 
+            border-radius: 4px; background: #e2e6ea; color: #495057;
+        }
+        .tab-btn.active { background: #0056b3; color: white; }
+        .tab-btn.locked { opacity: 0.5; cursor: not-allowed; }
+
+        /* Action Buttons */
+        .action-bar { margin-top: auto; display: flex; gap: 10px; padding-top: 10px; }
+        .btn-main { flex: 1; padding: 12px; border: none; color: white; font-weight: bold; border-radius: 5px; cursor: pointer; font-size: 14px;}
         .btn-save { background: #28a745; }
         .btn-submit { background: #dc3545; }
 
-        /* Security Warning Overlay */
-        #security-alert { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); color: red; z-index: 1000; text-align: center; padding-top: 20%; font-size: 24px; }
+        /* --- MOBILE OPTIMIZATIONS (@media) --- */
+        @media (max-width: 768px) {
+            .main-area { flex-direction: column; } /* Stack Vertically */
+            
+            .question-box { 
+                flex: 1; /* Take remaining space */
+                padding: 15px; 
+                padding-bottom: 80px; /* Space for bottom bar */
+            }
+            #question-text { font-size: 16px; }
+
+            /* Mobile Bottom Bar for Navigation */
+            .sidebar {
+                position: fixed; bottom: 0; left: 0; width: 100%; height: auto;
+                background: white; border-top: 2px solid #ccc; z-index: 100;
+                padding: 10px; flex-direction: row; align-items: center; justify-content: space-between;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            }
+            
+            /* Hide Palette by default on mobile */
+            #palette-container { 
+                display: none; position: fixed; bottom: 70px; left: 0; width: 100%; 
+                background: white; border-top: 2px solid #0056b3; padding: 15px; 
+                box-shadow: 0 -5px 15px rgba(0,0,0,0.2); border-radius: 15px 15px 0 0;
+            }
+            #palette-container.show { display: block; }
+            
+            /* Mobile Buttons */
+            .mobile-controls { display: flex; width: 100%; gap: 10px; }
+            .btn-toggle-palette { background: #6c757d; color: white; padding: 10px; border-radius: 5px; border: none; }
+        }
+
+        /* Leaderboard Table */
+        table { width: 95%; max-width: 600px; border-collapse: collapse; margin-top: 20px; background: white; color: black; border-radius: 8px; overflow: hidden; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; font-size: 14px; }
+        th { background: #0056b3; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+
+        /* Security Warning */
+        #warning-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(220, 53, 69, 0.95); color: white; z-index: 9999; text-align: center; padding: 0 20px; flex-direction: column; justify-content: center; align-items: center; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div id="security-alert">
-        WARNING: Tab Switching is NOT Allowed!<br>
-        <button onclick="resumeExam()" style="padding:10px; margin-top:20px;">Return to Exam</button>
+<body oncontextmenu="return false;">
+
+    <div id="login-screen">
+        <div style="font-size: 50px; margin-bottom: 10px;">✈️</div>
+        <h1>AIR FORCE X-GROUP</h1>
+        <p style="opacity: 0.8; margin-bottom: 30px;">Live Exam • Secure • Real-time</p>
+        <button class="g-btn" onclick="googleLogin()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20"> 
+            Google Login
+        </button>
     </div>
 
-    <div class="header">
-        <div>REVENTO EXAM PORTAL</div>
-        <div class="timer" id="timer">45:00</div>
-        <div>ID: USER_001</div>
+    <div id="exam-screen">
+        <div id="warning-overlay">
+            <div style="font-size: 60px;">⚠️</div>
+            <h2>CHEATING DETECTED!</h2>
+            <p>You switched tabs or minimized the app.</p>
+            <p>Exam is terminating...</p>
+        </div>
+
+        <div class="header">
+            <div class="user-badge" id="user-name">Student</div>
+            <div class="timer" id="timer">45:00</div>
+            <button onclick="finishExam()" style="background:red; color:white; border:none; padding:5px 10px; border-radius:4px; font-size:12px;">FINISH</button>
+        </div>
+
+        <div class="main-area">
+            <div class="question-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3 id="subject-name" style="margin:0; color:#0056b3;">Physics</h3>
+                    <span style="font-size:12px; color:gray;">Positive: +1 | Negative: 0</span>
+                </div>
+                
+                <div id="question-text">Loading Question...</div>
+                <div id="options-area">
+                    </div>
+            </div>
+
+            <div id="palette-container" class="sidebar-content">
+                <div class="tabs-container">
+                    <button id="tab-phy" class="tab-btn active">PHYSICS</button>
+                    <button id="tab-math" class="tab-btn locked">MATHS</button>
+                </div>
+                <p style="font-size:12px; margin:5px 0;">Question Palette:</p>
+                <div id="palette"></div>
+                <br>
+                <button class="btn-main btn-submit" onclick="submitSection()">SUBMIT SECTION</button>
+                <button class="btn-main" onclick="togglePalette()" style="background:#6c757d; margin-top:5px; width:100%; display:none;" id="close-palette-btn">CLOSE MENU</button>
+            </div>
+
+            <div class="sidebar mobile-only-bar">
+                <div class="mobile-controls">
+                    <button class="btn-toggle-palette" onclick="togglePalette()">☰ Q-List</button>
+                    <button class="btn-main btn-save" onclick="saveNext()">SAVE & NEXT</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
-        <div class="question-area">
-            <h3 id="subject-title">Subject: Mathematics</h3>
-            <div class="q-box" id="question-text">Loading Question...</div>
-            <div class="options" id="options-container">
-                </div>
-            <div style="margin-top: 30px;">
-                <button class="btn btn-save" onclick="saveAndNext()">Save & Next</button>
-            </div>
-        </div>
-
-        <div class="sidebar">
-            <div class="student-info">
-                <div class="student-img"><img src="https://via.placeholder.com/80" alt="User"></div>
-                <div>Student Name</div>
-            </div>
-
-            <div class="subject-tabs">
-                <button id="tab-math" class="tab active">MATHS</button>
-                <button id="tab-phy" class="tab locked">PHYSICS</button>
-                <button id="tab-eng" class="tab locked">ENGLISH</button>
-            </div>
-
-            <div class="palette" id="palette-container">
-                </div>
-
-            <div class="controls">
-                <button class="btn btn-submit" onclick="submitSection()">Submit Section</button>
-            </div>
-        </div>
+    <div id="leaderboard-screen" style="display:none;">
+        <div style="font-size: 50px;">🏆</div>
+        <h1>LEADERBOARD</h1>
+        <h3 id="my-score" style="background:white; color:black; padding:5px 15px; border-radius:20px;">Your Score: ...</h3>
+        <table id="rank-table">
+            <thead>
+                <tr>
+                    <th width="15%">#</th>
+                    <th>Name</th>
+                    <th width="20%">Pts</th>
+                </tr>
+            </thead>
+            <tbody id="lb-body">
+                </tbody>
+        </table>
+        <button onclick="location.reload()" style="margin-top:20px; padding:10px 20px; background:white; color:#0056b3; border:none; border-radius:5px; font-weight:bold;">HOME</button>
     </div>
 
     <script>
-        /* --- 2. JavaScript (Logic & Data) --- */
+        // --- 1. CONFIG (यहाँ अपनी API KEY डालें) ---
+        const firebaseConfig = {
+             apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+  authDomain: "revento-academy.firebaseapp.com",
+  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
+  projectId: "revento-academy",
+  storageBucket: "revento-academy.firebasestorage.app",
+  messagingSenderId: "384071300366",
+  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
+  measurementId: "G-4L8YC6J095"
+        };
+        
+        // Init Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.database();
+        let currentUser = null;
 
-        // --- DATA: यहाँ आप अपने प्रश्न बदल सकते हैं ---
-        // 'ans' में सही ऑप्शन का index लिखें (0, 1, 2, या 3)
-        const examData = {
-            maths: [
-                { id: 1, q: "यदि f(x) = x² + 2x, तो f(2) का मान क्या है?", opts: ["4", "8", "6", "10"], ans: 1 },
-                { id: 2, q: "Integration of sin(x) dx is?", opts: ["cos(x)", "-cos(x)", "sin(x)", "-sin(x)"], ans: 1 },
-                { id: 3, q: "Matrix A is singular if |A| is?", opts: ["1", "-1", "0", "Undefined"], ans: 2 },
-                { id: 4, q: "Value of tan(45°)?", opts: ["0", "1", "Infinity", "1/2"], ans: 1 },
-                { id: 5, q: "Limit x->0 of (sin x)/x is?", opts: ["0", "1", "Infinity", "-1"], ans: 1 }
-            ],
+        // --- 2. EXAM DATA ---
+        const questions = {
             physics: [
-                { id: 1, q: "Unit of Force is?", opts: ["Newton", "Joule", "Watt", "Pascal"], ans: 0 },
-                { id: 2, q: "Dimension of Power?", opts: ["ML2T-3", "MLT-2", "ML2T-2", "None"], ans: 0 }
+                { q: "SI Unit of Force (बल का मात्रक)?", opts: ["Newton", "Joule", "Watt", "Pascal"], ans: 0 },
+                { q: "Escape velocity of Earth (पलायन वेग)?", opts: ["11.2 km/s", "9.8 km/s", "15 km/s", "2.4 km/s"], ans: 0 },
+                { q: "Light year measures?", opts: ["Time", "Distance", "Light", "Mass"], ans: 1 },
+                { q: "Sound travels fastest in?", opts: ["Air", "Water", "Steel", "Vacuum"], ans: 2 }
             ],
-            english: [
-                { id: 1, q: "Synonym of 'Abundant'?", opts: ["Scarce", "Plentiful", "Rare", "Few"], ans: 1 }
+            maths: [
+                { q: "Value of sin(30°)?", opts: ["1/2", "1/√2", "√3/2", "1"], ans: 0 },
+                { q: "Integration of x dx?", opts: ["1", "x^2/2", "x^2", "log x"], ans: 1 },
+                { q: "Log(1) is equal to?", opts: ["0", "1", "10", "Infinity"], ans: 0 },
+                { q: "If A is singular matrix, |A| = ?", opts: ["1", "0", "-1", "None"], ans: 1 }
             ]
         };
 
-        // --- STATE VARIABLES ---
-        let currentSubject = 'maths';
-        let currentQIndex = 0;
-        let userAnswers = { maths: {}, physics: {}, english: {} };
-        let timerTime = 45 * 60; // 45 Minutes
+        let currentSub = 'physics';
+        let qIndex = 0;
+        let answers = { physics: {}, maths: {} };
+        let timer = 25 * 60; // 25 Mins
+        let cheatingCount = 0;
 
-        // --- CORE FUNCTIONS ---
+        // --- 3. LOGIC ---
+        
+        function googleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then((res) => {
+                currentUser = res.user;
+                document.getElementById('user-name').innerText = currentUser.displayName.split(' ')[0]; // Show First Name
+                startExam();
+            }).catch(e => alert(e.message));
+        }
 
-        function loadQuestion(index) {
-            const data = examData[currentSubject];
-            const q = data[index];
-            currentQIndex = index;
+        function startExam() {
+            // Mobile Fullscreen Request
+            let docElm = document.documentElement;
+            if (docElm.requestFullscreen) { docElm.requestFullscreen(); }
+            
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'flex';
+            
+            // UI Adjustment for Mobile
+            if(window.innerWidth < 768) {
+                document.getElementById('palette-container').style.display = 'none'; // Initially hide palette
+                document.getElementById('close-palette-btn').style.display = 'block';
+            }
 
-            document.getElementById('question-text').innerHTML = `Q${index + 1}. ${q.q}`;
-            const optsContainer = document.getElementById('options-container');
-            optsContainer.innerHTML = '';
+            loadQuestion();
+            startTimer();
+            activateSecurity();
+        }
 
-            q.opts.forEach((opt, i) => {
-                const checked = userAnswers[currentSubject][index] === i ? 'checked' : '';
-                optsContainer.innerHTML += `
-                    <label>
-                        <input type="radio" name="opt" value="${i}" ${checked}> ${opt}
-                    </label>
-                `;
+        function loadQuestion() {
+            const data = questions[currentSub][qIndex];
+            document.getElementById('question-text').innerText = `Q${qIndex+1}. ${data.q}`;
+            
+            const area = document.getElementById('options-area');
+            area.innerHTML = '';
+            
+            data.opts.forEach((opt, i) => {
+                const isChecked = (answers[currentSub][qIndex] === i) ? 'checked' : '';
+                area.innerHTML += `
+                    <label class="option-label">
+                        <input type="radio" name="opt" value="${i}" ${isChecked}> ${opt}
+                    </label>`;
             });
             renderPalette();
         }
 
-        function saveAndNext() {
+        function saveNext() {
             const selected = document.querySelector('input[name="opt"]:checked');
             if (selected) {
-                userAnswers[currentSubject][currentQIndex] = parseInt(selected.value);
+                answers[currentSub][qIndex] = parseInt(selected.value);
             }
             
-            if (currentQIndex < examData[currentSubject].length - 1) {
-                loadQuestion(currentQIndex + 1);
+            if (qIndex < questions[currentSub].length - 1) {
+                qIndex++;
+                loadQuestion();
             } else {
-                alert("Last question of this section!");
+                // If last question, just update palette but stay
+                renderPalette();
+                if(window.innerWidth < 768) alert("Last Question! Use 'Q-List' to Submit.");
             }
         }
 
         function renderPalette() {
-            const container = document.getElementById('palette-container');
-            container.innerHTML = '';
-            examData[currentSubject].forEach((_, i) => {
-                const isAnswered = userAnswers[currentSubject][i] !== undefined;
-                const isCurrent = i === currentQIndex;
-                let className = 'p-btn';
-                if (isAnswered) className += ' answered';
-                if (isCurrent) className += ' current';
+            const p = document.getElementById('palette');
+            p.innerHTML = '';
+            questions[currentSub].forEach((_, i) => {
+                let cls = 'q-btn';
+                if(i === qIndex) cls += ' active';
+                if(answers[currentSub][i] !== undefined) cls += ' answered';
                 
-                container.innerHTML += `<button class="${className}" onclick="loadQuestion(${i})">${i + 1}</button>`;
+                p.innerHTML += `<button class="${cls}" onclick="jumpToQ(${i})">${i+1}</button>`;
             });
         }
 
-        // --- SUBJECT LOCKING LOGIC ---
-        function submitSection() {
-            if (!confirm("Are you sure you want to submit this section? You cannot go back.")) return;
+        function jumpToQ(i) {
+            qIndex = i;
+            loadQuestion();
+            // On mobile, close palette after selection
+            if(window.innerWidth < 768) togglePalette();
+        }
 
-            if (currentSubject === 'maths') {
-                alert("Maths Submitted! Proceeding to Physics.");
-                currentSubject = 'physics';
-                document.getElementById('tab-math').classList.remove('active');
-                document.getElementById('tab-math').classList.add('locked'); // Lock Math
-                document.getElementById('tab-phy').classList.remove('locked');
-                document.getElementById('tab-phy').classList.add('active');
-                document.getElementById('subject-title').innerText = "Subject: Physics";
-                loadQuestion(0);
-            } else if (currentSubject === 'physics') {
-                alert("Physics Submitted! Proceeding to English.");
-                currentSubject = 'english';
-                document.getElementById('tab-phy').classList.remove('active');
-                document.getElementById('tab-phy').classList.add('locked');
-                document.getElementById('tab-eng').classList.remove('locked');
-                document.getElementById('tab-eng').classList.add('active');
-                document.getElementById('subject-title').innerText = "Subject: English";
-                loadQuestion(0);
-            } else {
-                calculateResult();
+        function togglePalette() {
+            // Logic for mobile bottom sheet
+            const pContainer = document.getElementById('palette-container');
+            if (window.innerWidth < 768) {
+                if (pContainer.style.display === 'none' || pContainer.style.display === '') {
+                    pContainer.style.display = 'block';
+                    pContainer.classList.add('show');
+                } else {
+                    pContainer.style.display = 'none';
+                    pContainer.classList.remove('show');
+                }
             }
         }
 
-        function calculateResult() {
+        function submitSection() {
+            if(currentSub === 'physics') {
+                if(!confirm("Submit Physics & Start Maths?")) return;
+                currentSub = 'maths';
+                qIndex = 0;
+                document.getElementById('tab-phy').classList.remove('active');
+                document.getElementById('tab-math').classList.remove('locked');
+                document.getElementById('tab-math').classList.add('active');
+                document.getElementById('subject-name').innerText = "Mathematics";
+                loadQuestion();
+                if(window.innerWidth < 768) togglePalette();
+            } else {
+                finishExam();
+            }
+        }
+
+        function finishExam() {
+            if (document.exitFullscreen) document.exitFullscreen();
+            
             let score = 0;
-            // Simple scoring logic for demo
-            ['maths', 'physics', 'english'].forEach(sub => {
-                examData[sub].forEach((q, idx) => {
-                    if (userAnswers[sub][idx] === q.ans) {
-                        score++;
-                    }
+            ['physics', 'maths'].forEach(sub => {
+                questions[sub].forEach((q, i) => {
+                    if (answers[sub][i] === q.ans) score++;
                 });
             });
-            alert(`Exam Completed! Your Score: ${score}`);
-            // Here you would send data to Firebase
-        }
 
-        // --- SECURITY FEATURES (Anti-Cheat) ---
-        document.addEventListener("visibilitychange", function() {
-            if (document.hidden) {
-                document.getElementById('security-alert').style.display = 'block';
-                // You can add logic here to auto-submit exam if they cheat twice
+            // Save DB
+            if(currentUser) {
+                db.ref('leaderboard/' + currentUser.uid).set({
+                    name: currentUser.displayName,
+                    score: score,
+                    time: new Date().toLocaleTimeString()
+                });
             }
-        });
 
-        function resumeExam() {
-            document.getElementById('security-alert').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'none';
+            document.getElementById('leaderboard-screen').style.display = 'flex';
+            document.getElementById('my-score').innerText = `Your Score: ${score}`;
+            loadLeaderboard();
         }
 
-        // Disable specific keys (F12, PrintScreen, etc.)
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) { return false; } // F12
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } // Ctrl+Shift+I
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Ctrl+U
+        function loadLeaderboard() {
+            db.ref('leaderboard').orderByChild('score').limitToLast(20).on('value', snap => {
+                const body = document.getElementById('lb-body');
+                body.innerHTML = '';
+                let list = [];
+                snap.forEach(c => list.push(c.val()));
+                list.sort((a,b) => b.score - a.score);
+                
+                list.forEach((u, i) => {
+                    body.innerHTML += `<tr><td>#${i+1}</td><td>${u.name}</td><td>${u.score}</td></tr>`;
+                });
+            });
         }
 
-        // --- TIMER LOGIC ---
-        setInterval(() => {
-            if (timerTime > 0) {
-                timerTime--;
-                let m = Math.floor(timerTime / 60);
-                let s = timerTime % 60;
-                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' + s : s}`;
-            } else {
-                alert("Time Up!");
-                calculateResult();
-            }
-        }, 1000);
+        function startTimer() {
+            setInterval(() => {
+                if(timer > 0) {
+                    timer--;
+                    let m = Math.floor(timer/60);
+                    let s = timer%60;
+                    document.getElementById('timer').innerText = `${m}:${s<10?'0'+s:s}`;
+                } else {
+                    finishExam();
+                }
+            }, 1000);
+        }
 
-        // Initial Load
-        loadQuestion(0);
-
+        function activateSecurity() {
+            // Visibility Check
+            document.addEventListener("visibilitychange", () => {
+                if(document.hidden) {
+                    cheatingCount++;
+                    if(cheatingCount >= 2) {
+                        document.getElementById('warning-overlay').style.display = 'flex';
+                        setTimeout(finishExam, 3000);
+                    } else {
+                        alert("WARNING: Do not switch apps! Next time exam will END.");
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
