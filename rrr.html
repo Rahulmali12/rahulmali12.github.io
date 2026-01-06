@@ -72,6 +72,57 @@
         /* RESULT & CERTIFICATE */
         #result-screen { background: white; text-align: center; padding: 20px; overflow-y: auto; }
         .cert-btn { background: #d4af37; color: white; padding: 10px 20px; border:none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+/* --- UNIVERSAL FOOTER (Phone & PC) --- */
+.footer-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #fff;
+    border-top: 2px solid #ddd;
+    
+    /* यह लाइन सबसे ज़रूरी है: */
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%;
+    z-index: 1000; /* सबसे ऊपर दिखेगा */
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+/* कंप्यूटर पर इसे थोड़ा साइड में रखें ताकि साइडबार न दबे */
+@media (min-width: 769px) {
+    .footer-controls {
+        position: relative; /* कंप्यूटर पर फिक्स नहीं रहेगा */
+        width: auto;
+        border: none;
+        box-shadow: none;
+        margin-top: 20px;
+    }
+}
+
+/* बटन की स्टाइल */
+.btn-nav {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+.btn-prev { background: #6c757d; color: white; }
+.btn-next { background: #28a745; color: white; }
+.btn-submit { background: #dc3545; color: white; }
+
+/* मोबाइल पर प्रश्न के नीचे जगह ताकि बटन टेक्स्ट को न ढक ले */
+@media (max-width: 768px) {
+    .q-area {
+        padding-bottom: 80px !important; /* बटन के लिए जगह */
+    }
+    .sidebar {
+        bottom: 70px !important; /* साइडबार बटन के ऊपर खुले */
+    }
+}
     </style>
 </head>
 <body>
@@ -79,7 +130,7 @@
     <div id="login-screen" class="screen" style="display: flex;">
         <div class="login-card">
             <h1 style="margin:0;">INDIAN AIR FORCE</h1>
-            <p>Agniveer Vayu - Intake 01/2026</p>
+            <p>Agniveer Vayu - Intake 01/2027</p>
             <p id="attempt-msg" style="color: yellow; font-size: 14px;"></p>
             <br>
             <button class="btn-google" onclick="handleLogin()">
@@ -113,7 +164,11 @@
                 <div id="q-content">Loading...</div>
                 <div id="options-box"></div>
             </div>
-
+<div class="footer-controls">
+    <button class="btn-nav btn-prev" onclick="prevQuestion()"> &larr; Prev </button>
+    <button class="btn-nav" onclick="toggleSidebar()" style="background:#0056b3; color:white; display:none;" id="mobile-menu-btn"> ☰ Q-List </button>
+    <button class="btn-nav btn-next" onclick="saveAndNext()"> Save & Next &rarr; </button>
+</div>
             <div class="sidebar" id="sidebar">
                 <div class="student-profile">
                     <img src="" id="user-img" class="profile-pic">
@@ -229,7 +284,8 @@
             
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('exam-screen').style.display = 'flex';
-            if(window.innerWidth < 768) document.getElementById('mob-nav').style.display = 'flex';
+           if(window.innerWidth < 768) {
+        document.getElementById('mobile-menu-btn').style.display = 'block';
 
             loadSubject(0);
             monitorSecurity();
@@ -287,13 +343,20 @@
             renderPalette();
         }
 
-        function saveAndNext() {
-            const subName = subjectsOrder[currentSubIndex];
-            if(currentQ < subjectConfig[subName].qs.length - 1) {
-                currentQ++;
-                loadQuestion();
-            }
+     function saveAndNext() {
+    const subName = subjectsOrder[currentSubIndex];
+    
+    // अगर आखिरी प्रश्न नहीं है, तो आगे बढ़ो
+    if(currentQ < subjectConfig[subName].qs.length - 1) {
+        currentQ++;
+        loadQuestion();
+    } else {
+        // अगर आखिरी प्रश्न है, तो सबमिट के लिए पूछो
+        if(confirm("Section Complete! Submit Subject?")) {
+            submitSubject();
         }
+    }
+}
 
         function renderPalette() {
             const subName = subjectsOrder[currentSubIndex];
