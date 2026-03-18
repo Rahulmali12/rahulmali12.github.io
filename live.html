@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Quiz Battle - Ludo Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* डार्क और गेमिंग थीम */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            width: 95%;
+            max-width: 800px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.5s; }
+
+        /* लूडो स्टाइल प्लेयर बोर्ड (लाइव स्कोर) */
+        .live-players-board {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+        }
+
+        .player-token {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            padding: 8px 15px;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 2px solid #ffd700;
+            transition: transform 0.3s ease;
+        }
+
+        .player-token .avatar {
+            width: 35px;
+            height: 35px;
+            background: white;
+            color: #ff416c;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .player-token .info {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            line-height: 1.2;
+        }
+
+        .player-token .name { font-size: 0.9rem; font-weight: 600; }
+        .player-token .score { font-size: 1.1rem; font-weight: bold; color: #fff; }
+
+        /* गेम UI */
+        input {
+            width: 80%; padding: 15px; margin: 20px 0;
+            border-radius: 10px; border: none; font-size: 16px; outline: none;
+            text-align: center; background: rgba(255,255,255,0.9); color: #333;
+        }
+
+        button.main-btn {
+            background: linear-gradient(to right, #00b4db, #0083b0);
+            color: white; border: none; padding: 15px 30px;
+            border-radius: 10px; font-size: 18px; cursor: pointer;
+            transition: transform 0.2s; width: 100%; max-width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 180, 219, 0.4);
+        }
+
+        button.main-btn:hover { transform: scale(1.05); }
+
+        .header { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 1.2rem; align-items: center; }
+        .timer { font-size: 1.5rem; font-weight: bold; color: #ffeb3b; background: rgba(0,0,0,0.4); padding: 5px 15px; border-radius: 10px; }
+
+        .question-box { background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; margin-bottom: 20px; }
+        .question-box h3 { font-size: 1.5rem; line-height: 1.5; margin-bottom: 20px; color: #fff; }
+
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 600px) { .options { grid-template-columns: 1fr; } } /* मोबाइल के लिए */
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.15); border: 2px solid transparent;
+            color: white; padding: 15px; border-radius: 10px; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.3s;
+        }
+        
+        .option-btn:hover { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.5); }
+        .option-btn.correct { background: #00b09b !important; background: linear-gradient(to right, #00b09b, #96c93d) !important; color: white !important; border-color: #fff !important; transform: scale(1.02); }
+        .option-btn.wrong { background: #cb2d3e !important; background: linear-gradient(to right, #cb2d3e, #ef473a) !important; color: white !important; border-color: #fff !important; }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="login-screen" class="screen active">
+            <h1 style="font-size: 2.5rem; margin-bottom: 10px;">🔥 महा-क्विज़ बैटल 🔥</h1>
+            <p>अपने दोस्तों के साथ लाइव मुकाबला करें!</p>
+            <input type="text" id="username" placeholder="अपना नाम लिखें (उदा. राहुल)...">
+            <button id="join-btn" class="main-btn">मुकाबला शुरू करें 🚀</button>
+        </div>
+
+        <div id="game-screen" class="screen">
+            
+            <div id="live-players-board" class="live-players-board">
+                </div>
+
+            <div class="header">
+                <h2>सवाल बोर्ड</h2>
+                <div class="timer">⏳ <span id="time-left">15</span>s</div>
+            </div>
+            
+            <div class="question-box">
+                <h3 id="question-text">सवाल लोड हो रहा है...</h3>
+                <div id="options-container" class="options">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue, update, remove, onDisconnect } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // ⚠️ अपनी Firebase Config यहाँ डालें ⚠️
+        const firebaseConfig = {
+  apiKey: "AIzaSyBmsqEPUnWjjb2m4g1XgEcRrxlK_dOIDfE",
+  authDomain: "revento-academy.firebaseapp.com",
+  databaseURL: "https://revento-academy-default-rtdb.firebaseio.com",
+  projectId: "revento-academy",
+  storageBucket: "revento-academy.firebasestorage.app",
+  messagingSenderId: "384071300366",
+  appId: "1:384071300366:web:8a95f3ec8507bc2d3b535f",
+  measurementId: "G-4L8YC6J095"
+};
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // 👉 आपका अपना हिंदी क्वेश्चन बैंक
+        const myQuestionBank = [
+            { q: "विद्युत धारा (Electric Current) का SI मात्रक क्या है?", options: ["वोल्ट", "ओम", "एम्पीयर", "वाट"], ans: "एम्पीयर" },
+            { q: "ध्वनि की चाल सबसे अधिक किसमें होती है?", options: ["निर्वात में", "जल में", "हवा में", "ठोस (स्टील) में"], ans: "ठोस (स्टील) में" },
+            { q: "शुद्ध जल का pH मान कितना होता है?", options: ["6", "7", "8", "14"], ans: "7" },
+            { q: "लाफिंग गैस (Laughing Gas) का रासायनिक नाम क्या है?", options: ["नाइट्रस ऑक्साइड", "कार्बन मोनोऑक्साइड", "सल्फर डाइऑक्साइड", "हाइड्रोजन पेरोक्साइड"], ans: "नाइट्रस ऑक्साइड" },
+            { q: "मानव शरीर की सबसे बड़ी ग्रंथि (Gland) कौन सी है?", options: ["अग्न्याशय (Pancreas)", "यकृत (Liver)", "थायरॉयड", "पीयूष ग्रंथि"], ans: "यकृत (Liver)" },
+            { q: "विटामिन C की कमी से कौन सा रोग होता है?", options: ["रतौंधी", "बेरी-बेरी", "स्कर्वी", "रिकेट्स"], ans: "स्कर्वी" },
+            { q: "भारत का सबसे बड़ा सैन्य पुरस्कार कौन सा है?", options: ["वीर चक्र", "परमवीर चक्र", "अशोक चक्र", "शौर्य चक्र"], ans: "परमवीर चक्र" },
+            { q: "अंतरिक्ष में जाने वाले प्रथम भारतीय कौन थे?", options: ["राकेश शर्मा", "कल्पना चावला", "सुनीता विलियम्स", "सतीश धवन"], ans: "राकेश शर्मा" },
+            { q: "रक्त (Blood) का रंग लाल किसके कारण होता है?", options: ["प्लाज्मा", "हीमोग्लोबिन", "WBC", "प्लेटलेट्स"], ans: "हीमोग्लोबिन" },
+            { q: "सूर्य के प्रकाश से हमें कौन सा विटामिन मिलता है?", options: ["विटामिन A", "विटामिन B", "विटामिन C", "विटामिन D"], ans: "विटामिन D" }
+        ];
+
+        let playerName = "";
+        let score = 0;
+        let currentCorrectAnswer = "";
+        let timer;
+        let timeLeft = 15;
+
+        const loginScreen = document.getElementById("login-screen");
+        const gameScreen = document.getElementById("game-screen");
+        const joinBtn = document.getElementById("join-btn");
+        const usernameInput = document.getElementById("username");
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const livePlayersBoard = document.getElementById("live-players-board");
+        const timeDisplay = document.getElementById("time-left");
+
+        joinBtn.addEventListener("click", () => {
+            playerName = usernameInput.value.trim();
+            if (playerName) {
+                loginScreen.classList.remove("active");
+                gameScreen.classList.add("active");
+                
+                const playerRef = ref(db, 'players/' + playerName);
+                
+                // प्लेयर जुड़े तो डेटाबेस में डालें और हटे तो अपने आप मिटा दें
+                set(playerRef, { score: score });
+                onDisconnect(playerRef).remove();
+
+                loadNewQuestion();
+                listenToLeaderboard();
+            } else {
+                alert("कृपया अपना नाम लिखें!");
+            }
+        });
+
+        function loadNewQuestion() {
+            optionsContainer.innerHTML = "";
+            clearInterval(timer); 
+            
+            const randomIdx = Math.floor(Math.random() * myQuestionBank.length);
+            const questionData = myQuestionBank[randomIdx];
+            
+            questionText.innerHTML = questionData.q;
+            currentCorrectAnswer = questionData.ans;
+            
+            let options = [...questionData.options];
+            options.sort(() => Math.random() - 0.5); 
+
+            options.forEach(option => {
+                const btn = document.createElement("button");
+                btn.innerHTML = option;
+                btn.classList.add("option-btn");
+                btn.onclick = () => checkAnswer(btn, option);
+                optionsContainer.appendChild(btn);
+            });
+
+            startTimer();
+        }
+
+        function startTimer() {
+            timeLeft = 15;
+            timeDisplay.innerText = timeLeft;
+            timer = setInterval(() => {
+                timeLeft--;
+                timeDisplay.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    loadNewQuestion(); 
+                }
+            }, 1000);
+        }
+
+        function checkAnswer(btn, selectedOption) {
+            clearInterval(timer); 
+            
+            const allBtns = document.querySelectorAll(".option-btn");
+            allBtns.forEach(b => b.disabled = true);
+
+            if (selectedOption === currentCorrectAnswer) {
+                btn.classList.add("correct");
+                score += 10;
+                update(ref(db, 'players/' + playerName), { score: score }); 
+            } else {
+                btn.classList.add("wrong");
+                allBtns.forEach(b => {
+                    if (b.innerHTML === currentCorrectAnswer) b.classList.add("correct");
+                });
+            }
+
+            setTimeout(loadNewQuestion, 2000); 
+        }
+
+        // लूडो स्टाइल में लाइव प्लेयर अपडेट्स
+        function listenToLeaderboard() {
+            const playersRef = ref(db, 'players');
+            onValue(playersRef, (snapshot) => {
+                const data = snapshot.val();
+                livePlayersBoard.innerHTML = "";
+                
+                if (data) {
+                    const sortedPlayers = Object.entries(data).sort((a, b) => b[1].score - a[1].score);
+                    
+                    sortedPlayers.forEach(([name, info]) => {
+                        // नाम का पहला अक्षर अवतार (Avatar) के लिए निकालें
+                        const initial = name.charAt(0).toUpperCase();
+                        
+                        const playerToken = document.createElement("div");
+                        playerToken.classList.add("player-token");
+                        
+                        // अगर प्लेयर खुद है, तो उसे हाइलाइट करें (बॉर्डर बदलें)
+                        if(name === playerName) {
+                            playerToken.style.borderColor = "#00ff00";
+                        }
+
+                        playerToken.innerHTML = `
+                            <div class="avatar">${initial}</div>
+                            <div class="info">
+                                <span class="name">${name}</span>
+                                <span class="score">${info.score} Pt</span>
+                            </div>
+                        `;
+                        livePlayersBoard.appendChild(playerToken);
+                    });
+                }
+            });
+        }
+
+        window.addEventListener("beforeunload", () => {
+            if (playerName) remove(ref(db, 'players/' + playerName));
+        });
+    </script>
+</body>
+</html>
